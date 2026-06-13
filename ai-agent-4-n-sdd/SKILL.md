@@ -1,4 +1,8 @@
-# SKILL: 4+N 总分拓扑 SDD 开发工作流 (Modular Spec-Driven Development)
+# SKILL: 4+N Topology SDD Workflow (Modular Spec-Driven Development)
+
+> **Version:** 1.0.0 | **Author:** zhgstudio
+> **Platforms:** OpenCode, Claude Code, Cursor
+> **Type:** Workflow / Methodology
 
 ## 👤 技能概述
 本技能用于指导和约束 AI 智能体严格遵循人类与 AI 协同的“4+N 总分拓扑”轻量级规范驱动开发流程。其核心逻辑是通过“全局宏观标准单文件”与“局部模块设计分目录”的物理隔离，实现上下文绝对降噪，支持复杂多模块系统的高质量、自主测试驱动开发（TDD）。
@@ -62,14 +66,14 @@
 ### 阶段四：微型任务分解 (Micro-Planning)
 - **输入**：上述所有已定稿的宏观与局部文档。
 - **智能体行为**：
-  1. 结合 `superpowers` 技能，在 `docs/PLAN.md` 中更新或生成该模块的微型执行计划。
+  1. 结合 AI 平台的任务编排能力，在 `docs/PLAN.md` 中更新或生成该模块的微型执行计划。
   2. 每个任务必须包含 `[ ]` 标记、原子任务 ID（如 `[T001]`）以及核心功能星号（如 `*`）。
 - **晋级条件**：无需人类过度评审，直接进入自主编码。
 
 ### 阶段五：测试驱动与自主开发 (TDD & Autonomous Coding)
 - **输入**：上述 4+N 文档体系，以及根目录 `AGENTS.md`。
 - **智能体行为**：
-  1. **测试先行**：调用 `playwright-cli` 或本地单测工具，首先根据该模块的 `api.md`/`protocol.md` 把自动化测试用例和断言写出来。
+  1. **测试先行**：调用测试工具（Playwright、Vitest、pytest 等），首先根据该模块的 `api.md`/`protocol.md` 把自动化测试用例和断言写出来。
   2. **上下文隔离**：在此阶段编码时，智能体的上下文**只能加载** 4 个全局文件和**当前正在开发的局部模块子目录**，严禁扫描其他模块目录，实现 100% 降噪。
   3. **严格禁止自嗨打勾**：只有当本地单测或 `playwright` 自动化测试命令**实际运行全部绿灯通过**后，智能体才允许将 `PLAN.md` 中对应任务的 `[ ]` 改为 `[x]`。
   4. **原子提交**：在 Git Commit 消息中必须注明完成的任务 ID（例如：`feat(auth): implement T001 and pass verification`）。

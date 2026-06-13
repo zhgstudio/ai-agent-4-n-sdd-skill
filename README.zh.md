@@ -102,6 +102,8 @@ curl -o .opencode/skills/sdd-workflow.md https://raw.githubusercontent.com/zhgst
 
 提交 Issue、PR 或建议！详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
+---
+
 ## 开源协议
 
 MIT © zhgstudio

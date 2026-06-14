@@ -80,22 +80,32 @@ Each stage ends with a **human review gate**. Nothing advances without explicit 
 ### 1. Install the skill
 
 ```bash
-# OpenCode
-mkdir -p .opencode/skills/
-curl -o .opencode/skills/sdd-workflow.md https://raw.githubusercontent.com/zhgstudio/ai-agent-4-n-sdd-skill/main/ai-agent-4-n-sdd/SKILL.md
-
-# Claude Code
-mkdir -p .claude/skills/
-curl -o .claude/skills/sdd-workflow.md https://raw.githubusercontent.com/zhgstudio/ai-agent-4-n-sdd-skill/main/ai-agent-4-n-sdd/SKILL.md
-
-# Cursor
-# Copy the SKILL.md content into your .cursorrules
+# Clone the repository, then copy the skill directory
+git clone --depth 1 https://github.com/zhgstudio/ai-agent-4-n-sdd-skill.git /tmp/sdd-skill
+cp -r /tmp/sdd-skill/ai-agent-4-n-sdd .opencode/skills/
+rm -rf /tmp/sdd-skill
 ```
+
+Or if you only want the skill directory (no git history):
+
+```bash
+# Linux / macOS
+mkdir -p .opencode/skills/
+curl -sL https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/archive/main.tar.gz | tar -xz --strip=2 -C .opencode/skills/ ai-agent-4-n-sdd-skill-main/ai-agent-4-n-sdd
+
+# Windows PowerShell
+mkdir .opencode\skills\ -Force
+curl -L https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/archive/main.tar.gz -o $env:TEMP\sdd.tar.gz
+tar -xzf $env:TEMP\sdd.tar.gz -C .opencode\skills\ --strip-components 2 ai-agent-4-n-sdd-skill-main/ai-agent-4-n-sdd
+Remove-Item $env:TEMP\sdd.tar.gz
+```
+
+For **Claude Code** and **Cursor**, follow the same approach but install to `.claude/skills/` or `.cursor/` respectively.
 
 ### 2. Start a new session
 
 ```
-"Read .opencode/skills/sdd-workflow.md. My new project idea is: [your one-liner].
+"Read .opencode/skills/ai-agent-4-n-sdd/SKILL.md. My new project idea is: [your one-liner].
 Follow the skill strictly and start Stage 1 — generate docs/SPEC.md."
 ```
 

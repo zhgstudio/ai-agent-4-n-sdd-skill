@@ -75,15 +75,30 @@ AI 自主编码时，经常遇到三个死穴：
 ### 1. 安装技能
 
 ```bash
-# OpenCode
+# 克隆仓库，复制 Skill 目录
+git clone --depth 1 https://github.com/zhgstudio/ai-agent-4-n-sdd-skill.git /tmp/sdd-skill
+cp -r /tmp/sdd-skill/ai-agent-4-n-sdd .opencode/skills/
+rm -rf /tmp/sdd-skill
+```
+
+或直接下载解压（无需 git）：
+
+```bash
+# Linux / macOS
 mkdir -p .opencode/skills/
-curl -o .opencode/skills/sdd-workflow.md https://raw.githubusercontent.com/zhgstudio/ai-agent-4-n-sdd-skill/main/ai-agent-4-n-sdd/SKILL.md
+curl -sL https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/archive/main.tar.gz | tar -xz --strip=2 -C .opencode/skills/ ai-agent-4-n-sdd-skill-main/ai-agent-4-n-sdd
+
+# Windows PowerShell
+mkdir .opencode\skills\ -Force
+curl -L https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/archive/main.tar.gz -o $env:TEMP\sdd.tar.gz
+tar -xzf $env:TEMP\sdd.tar.gz -C .opencode\skills\ --strip-components 2 ai-agent-4-n-sdd-skill-main/ai-agent-4-n-sdd
+Remove-Item $env:TEMP\sdd.tar.gz
 ```
 
 ### 2. 唤醒你的 AI
 
 ```
-"请读取 .opencode/skills/sdd-workflow.md。我的新项目是：[一句话描述]。
+"请读取 .opencode/skills/ai-agent-4-n-sdd/SKILL.md。我的新项目是：[一句话描述]。
 请严格按照 Skill 规范启动阶段一，在 docs/SPEC.md 中生成需求初稿。"
 ```
 

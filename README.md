@@ -51,20 +51,20 @@ Each role starts a fresh session with a minimal, scoped context. No role confusi
 
 ---
 
-## The 6-Step Protocol
+## The 5-Stage Protocol
 
 ```
 ─── Harness Engineering (human-supervised) ───
 Stage 1: SPEC.md          → PM Agent writes requirements
 Stage 2: ARCHITECTURE.md  → Architect Agent designs system
 Stage 3: Module Designs   → Designer Agent per module
-         Scaffolding      → Developer Agent sets up build + test framework
+         Code Scaffolding → Developer Agent sets up build + test framework
 ─── AI Autonomous Coding ───
 Stage 4: PLAN.md          → Developer Agent breaks down micro-tasks
 Stage 5: TDD & Code       → Developer Agent implements, test-first
 ```
 
-Every Harness stage ends with a **human review gate**. Autonomous stages run without intervention.
+Every Harness stage (plus scaffolding) ends with a **human review gate**. Autonomous stages run without intervention.
 
 ---
 

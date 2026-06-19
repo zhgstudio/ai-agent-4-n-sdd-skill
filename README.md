@@ -49,6 +49,8 @@ AI coding agents suffer from three fatal flaws:
 
 Each role starts a fresh session with a minimal, scoped context. No role confusion, no context pollution.
 
+> **Note:** All generated documents (SPEC.md, ARCHITECTURE.md, AGENTS.md, PLAN.md, module designs) are written in **Chinese**. The SKILL.md workflow instructions are also in Chinese.
+
 ---
 
 ## The 5-Stage Protocol
@@ -83,6 +85,8 @@ rm -rf /tmp/sdd-skill
 ```
 
 ### 2. Start a new session
+
+> **Language note:** All generated documents (SPEC.md, ARCHITECTURE.md, PLAN.md, AGENTS.md, module designs) are written in **Chinese**. See [README.zh.md](README.zh.md) for the Chinese version of this documentation.
 
 ```
 Read .opencode/skills/ai-agent-4-n-sdd/SKILL.md.

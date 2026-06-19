@@ -104,6 +104,8 @@ cp -r /tmp/sdd-skill/ai-agent-4-n-sdd .opencode/skills/
 rm -rf /tmp/sdd-skill
 ```
 
+> **语言说明**：所有生成的文档（SPEC.md、ARCHITECTURE.md、AGENTS.md、PLAN.md 以及模块设计文件）均使用**中文**编写。
+
 ### 2. 唤醒你的 AI
 
 ```

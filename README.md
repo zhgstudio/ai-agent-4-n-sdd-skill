@@ -1,39 +1,42 @@
-# 4+N SDD — Modular Spec-Driven Development for AI Agents
+# OpenSDD — Open Spec-Driven Documentation
 
-> **Stop vibe coding. Start spec driving.** A lightweight topology-based workflow that prevents AI attention dilution, fake progress checkmarks, and historical context pollution — with **four-role isolation** (PM / Architect / Designer / Developer).
+> **Stop coding blind. Start with specs.** A lightweight workflow for the pre-development specification phase. Formalizes 5 types of documents through 4 dedicated AI agent roles, producing contract-grade specs that guide subsequent AI autonomous coding.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/actions/workflows/ci.yml)
-[![skills.sh](https://skills.sh/b/zhgstudio/ai-agent-4-n-sdd-skill)](https://skills.sh/zhgstudio/ai-agent-4-n-sdd-skill/ai-agent-4-n-sdd)
+[![skills.sh](https://skills.sh/b/zhgstudio/ai-agent-4-n-sdd-skill)](https://skills.sh/zhgstudio/ai-agent-4-n-sdd-skill/opensdd)
 
 ---
 
-## The Pain
+## The Problem
 
-AI coding agents suffer from three fatal flaws:
+AI coding agents jump into implementation without a shared understanding of what to build. This leads to:
 
 | # | Problem | Symptom |
 |---|---------|---------|
-| 1 | **Attention Dilution** | All design in one file → AI gets confused as context grows |
-| 2 | **Fake Checkmarks** | Tasks marked done before tests pass → broken code ships |
-| 3 | **History Pollution** | Old review docs pile up → AI stitches new logic onto dead designs |
+| 1 | **Attention Dilution** | Everything in one file → AI gets confused as context grows |
+| 2 | **Fake Progress** | Tasks marked done without verification → broken code ships |
+| 3 | **History Pollution** | Outdated design scraps pile up → AI stitches new logic onto dead decisions |
 
-**4+N SDD solves all three** by physically isolating global specs from modular designs, and assigning each phase to a dedicated role with its own context scope.
+**OpenSDD solves all three** by enforcing a structured pre-development phase where requirements, architecture, module designs, and plans are formalized as independent, reviewable documents before any code is written.
 
 ---
 
-## The 4+N Topology
+## The Topology
 
 ```
-├── docs/
-│   ├── SPEC.md             # 👑 1. Global Requirements (WHAT)
-│   ├── ARCHITECTURE.md     # 🏛️ 2. Global Architecture (HOW)
-│   ├── PLAN.md             # 🏃 3. Execution Plan
-│   │
-│   └── modules/            # 📦 N. Isolated Module Designs
-│       ├── {module_a}/     # data-model.md, api.md
-│       └── {module_b}/     # protocol.md, state.md
-└── AGENTS.md               # 👑 4. Global Agent Behavior Contract
+docs/
+├── SPEC.md                 # 👑 1. Requirements specification (PM Agent)
+├── ARCHITECTURE.md         # 🏛️ 2. Architecture design (Architect Agent)
+├── PLAN.md                 # 📋 3. Task plan (Project Manager Agent)
+├── AGENTS.md               # 📖 4. Entry guide for coding phase (accumulated, locked by human)
+│
+└── modules/                # 📦 N. Module designs
+    ├── 01-auth/
+    │   └── DESIGN.md       # Module detailed design (Designer Agent)
+    ├── 02-task-core/
+    │   └── DESIGN.md
+    └── ...
 ```
 
 ---
@@ -42,31 +45,60 @@ AI coding agents suffer from three fatal flaws:
 
 | Role | Phase | Reads | Writes |
 |------|-------|-------|--------|
-| **PM Agent** | Stage 1 | Nothing (fresh session) | SPEC.md |
-| **Architect Agent** | Stage 2 | SPEC.md (read-only) | ARCHITECTURE.md, AGENTS.md |
-| **Designer Agent** | Stage 3 | ARCHITECTURE.md (dependency matrix) | docs/modules/{module}/ |
-| **Developer Agent** | Scaffolding → Stage 4-5 | AGENTS.md + module design files | src/ (code + tests) |
+| **PM Agent** | Stage 1 | Nothing (fresh session) | SPEC.md, appends quality criteria to AGENTS.md |
+| **Architect Agent** | Stage 2 | SPEC.md (read-only) | ARCHITECTURE.md, writes AGENTS.md body |
+| **Designer Agent** × N | Stage 3 | ARCHITECTURE.md + dependency module DESIGN.md | docs/modules/{NN}-{name}/DESIGN.md |
+| **Project Manager Agent** | Stage 4 | All finalized design docs | PLAN.md, appends task conventions to AGENTS.md |
 
-Each role starts a fresh session with a minimal, scoped context. No role confusion, no context pollution.
+Each role starts a fresh session with a scoped context. Every stage ends with a **human review gate**.
 
-> **Note:** All generated documents (SPEC.md, ARCHITECTURE.md, AGENTS.md, PLAN.md, module designs) are written in **Chinese**. The SKILL.md workflow instructions are also in Chinese.
+> **Language note:** All generated documents (SPEC.md, ARCHITECTURE.md, AGENTS.md, PLAN.md, module DESIGN.md files) are written in **Chinese**.
 
 ---
 
-## The 5-Stage Protocol
+## The 4-Stage Protocol
 
 ```
-─── Harness Engineering (human-supervised) ───
-Stage 1: SPEC.md          → PM Agent writes requirements
-Stage 2: ARCHITECTURE.md  → Architect Agent designs system
-Stage 3: Module Designs   → Designer Agent per module
-         Code Scaffolding → Developer Agent sets up build + test framework
-─── AI Autonomous Coding ───
-Stage 4: PLAN.md          → Developer Agent breaks down micro-tasks
-Stage 5: TDD & Code       → Developer Agent implements, test-first
+Stage 1 ──→ Stage 2 ──→ Stage 3 ──→ Stage 4 ──→ Finalized
+PM Agent    Architect   Designer     PM Agent     Human review
+SPEC.md     ARCH.md     module       PLAN.md      locks all docs
+             AGENTS.md   DESIGN.md    append       AGENTS.md ready
+                         (serial per  AGENTS.md    for coding phase
+                          module)
 ```
 
-Every Harness stage (plus scaffolding) ends with a **human review gate**. Autonomous stages run without intervention.
+### Stage 1: Requirements (PM Agent)
+
+- Writes `docs/SPEC.md` from raw human input
+- Covers: business context, functional requirements, data needs, non-functional constraints
+- Appends **quality acceptance criteria** section to `AGENTS.md`
+
+### Stage 2: Architecture (Architect Agent)
+
+- Reads `SPEC.md` (read-only), writes `docs/ARCHITECTURE.md`
+- Defines: tech stack, global conventions, **module reference table** (with `NN-name` numbering), dependency matrix, shared design decisions
+- Only global/public design lives in ARCHITECTURE.md — module internals go to DESIGN.md
+- Writes main body of `AGENTS.md`: file scope, commit conventions, test requirements, escalation rules, cross-module rules
+
+### Stage 3: Module Design (Designer Agent)
+
+- One module at a time, dependency order first
+- Creates `docs/modules/{NN}-{name}/DESIGN.md` per module
+- Contains: module boundary, data structures, interface definitions, **feature list (F-{NNN})**
+- Naming: `NN` is the two-digit prefix matching the module reference table in ARCHITECTURE.md
+
+### Stage 4: Task Plan (Project Manager Agent)
+
+- Reads all finalized DESIGN.md files, extracts F-{NNN} features
+- Writes `docs/PLAN.md` — task tracking with references to DESIGN.md sections
+- Each task: `- [ ] T-{NNN}: description [NN-name/DESIGN.md#F-NNN]`
+- Appends PLAN.md task conventions to `AGENTS.md`
+
+### Finalization (Human)
+
+- Reviews all 5 document types for consistency
+- Locks `AGENTS.md` as the entry point for the coding phase
+- Git commit marks the OpenSDD phase complete
 
 ---
 
@@ -76,49 +108,47 @@ Every Harness stage (plus scaffolding) ends with a **human review gate**. Autono
 
 ```bash
 # Recommended — auto-detects your AI platform
-npx skills add https://github.com/zhgstudio/ai-agent-4-n-sdd-skill --skill ai-agent-4-n-sdd
+npx skills add https://github.com/zhgstudio/ai-agent-4-n-sdd-skill --skill opensdd
 
 # Or manually
-git clone --depth 1 https://github.com/zhgstudio/ai-agent-4-n-sdd-skill.git /tmp/sdd-skill
-cp -r /tmp/sdd-skill/ai-agent-4-n-sdd .opencode/skills/
-rm -rf /tmp/sdd-skill
+git clone --depth 1 https://github.com/zhgstudio/ai-agent-4-n-sdd-skill.git /tmp/opensdd-skill
+cp -r /tmp/opensdd-skill/opensdd .opencode/skills/
+rm -rf /tmp/opensdd-skill
 ```
 
 ### 2. Start a new session
 
-> **Language note:** All generated documents (SPEC.md, ARCHITECTURE.md, PLAN.md, AGENTS.md, module designs) are written in **Chinese**. See [README.zh.md](README.zh.md) for the Chinese version of this documentation.
-
 ```
-Read .opencode/skills/ai-agent-4-n-sdd/SKILL.md.
+Read .opencode/skills/opensdd/SKILL.md.
 My new project is: [one-line description].
 Follow the skill strictly and start Stage 1 — generate docs/SPEC.md.
 ```
 
 ### 3. Iterate through stages
 
-Human reviews → AI implements → Tests pass → Git commit → Next stage.
+Human reviews → AI refines → Stage gate passed → Next stage.
 
 ---
 
 ## Tooling: sdd-check
 
-Validate your project's SDD structure compliance with the built-in checker:
+Validate your project's OpenSDD structure compliance:
 
 ```bash
 node tools/sdd-check/index.js --path /path/to/project
 ```
 
-It performs 5 checks:
+5 checks:
 
 | Check | What it validates |
 |-------|-------------------|
 | **FILE_EXISTS** | `SPEC.md`, `ARCHITECTURE.md`, `PLAN.md`, `AGENTS.md` all present |
-| **PLAN_FORMAT** | Task lines match `- [ ] T###: description` format |
-| **DEP_MATRIX** | Modules in dependency matrix have `docs/modules/{name}/` directories |
-| **NO_GARBAGE** | No `_v2.md`, `_final.md`, `.bak.md` versioned garbage files |
-| **AGENTS_SECTIONS** | All 5 required sections present in `AGENTS.md` |
+| **PLAN_FORMAT** | Task lines match format with DESIGN.md references |
+| **DEP_MATRIX** | Module directories (`NN-name`) exist for dependency matrix entries |
+| **NO_GARBAGE** | No `_v2.md`, `_final.md`, `.bak.md` versioned garbage |
+| **AGENTS_SECTIONS** | All required sections present in AGENTS.md |
 
-Use `--json` for CI integration and `--strict` to treat warnings as errors.
+Use `--json` for CI and `--strict` to treat warnings as errors.
 
 ---
 
@@ -135,14 +165,14 @@ Use `--json` for CI integration and `--strict` to treat warnings as errors.
 
 ## Comparison
 
-| Aspect | Traditional (Vibe Coding) | 4+N SDD |
-|--------|---------------------------|---------|
-| Context size | Grows unbounded | Physically scoped |
-| Task tracking | Self-reported | Test-verified |
-| Design docs | One giant file | 4+N isolated files |
+| Aspect | Vibe Coding | OpenSDD |
+|--------|-------------|---------|
+| Pre-development phase | None | 4 stages, 4 roles |
+| Requirement scope | Vague | Full SPEC.md |
+| Design artifacts | One giant file | 4+N isolated files |
+| Task tracking | None / self-reported | Referenced to design |
 | Human review | Once at end | Per-stage gates |
-| Role separation | None (one agent does all) | 4 dedicated roles |
-| History handling | `_v2.md` garbage | Git-based overwrite |
+| Context scope | Everything at once | Physically isolated per role |
 
 ---
 

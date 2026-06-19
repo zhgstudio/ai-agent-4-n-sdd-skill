@@ -1,6 +1,29 @@
 # Changelog
 
-All notable changes to the 4+N SDD Skill will be documented here.
+All notable changes to the OpenSDD Skill will be documented here.
+
+## [3.0.0] - 2026-06-19
+
+### Changed
+- **Renamed**: `ai-agent-4-n-sdd` → `opensdd` (Open Spec-Driven Documentation)
+- **Repositioned**: Skill scope narrowed to pre-development specification phase only (no coding, no TDD)
+- **Four-role model revised**: Last role changed from Developer to Project Manager Agent
+- **Document topology restructured**: `docs/modules/{NN}-{name}/DESIGN.md` with two-digit numeric prefix
+- **AGENTS.md**: Changed from single-stage architect output to multi-stage incremental accumulation
+- **PLAN.md**: Repositioned as pure task tracking with mandatory DESIGN.md section references
+- **ARCHITECTURE.md**: Now contains module reference table with `NN-name` format + per-module DESIGN.md references
+- **Change propagation**: Formalized cascading update protocol for cross-document traceability
+
+### Added
+- **Module reference table** in ARCHITECTURE.md with numbered entries
+- **F-{NNN} feature numbering** in DESIGN.md for traceability
+- **DESIGN.md section references** in PLAN.md tasks (e.g. `[01-auth/DESIGN.md#F-001]`)
+- **AGENTS.md accumulation model**: PM (quality criteria) → Architect (technical rules) → PM (task conventions) → Human (lock)
+
+### Removed
+- All coding-related phases (TDD, contract-first, test verification) — now belongs to downstream skills
+- `docs/modules/{name}/` flat naming → replaced with `docs/modules/{NN}-{name}/DESIGN.md`
+- Designer Agent no longer writes to AGENTS.md
 
 ## [2.0.0] - 2026-06-15
 

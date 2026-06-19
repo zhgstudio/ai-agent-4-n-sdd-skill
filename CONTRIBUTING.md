@@ -1,4 +1,4 @@
-# Contributing to 4+N SDD Skill
+# Contributing to OpenSDD Skill
 
 Thanks for your interest! Here's how to contribute.
 
@@ -17,7 +17,7 @@ Be respectful. We're all here to make AI-assisted development better.
 ## What needs help
 
 - **Documentation** — examples, translations, clearer explanations
-- **Bug fixes** — broken links, typos, edge cases in SDD workflow
+- **Bug fixes** — broken links, typos, edge cases in the workflow
 - **Methodology** — new module types, better patterns
 - **Community** — helping others in issues and discussions
 

@@ -45,7 +45,7 @@ async function main() {
 
 function printHelp() {
   console.log(`
-sdd-check — Validate 4+N SDD project structure
+sdd-check — Validate OpenSDD project structure
 
 USAGE
   node index.js [options]
@@ -58,8 +58,8 @@ OPTIONS
 
 CHECKS
   FILE_EXISTS     SPEC.md, ARCHITECTURE.md, PLAN.md, AGENTS.md presence
-  PLAN_FORMAT     Task format validity in PLAN.md
-  DEP_MATRIX      Module directories exist for dependency matrix entries
+  PLAN_FORMAT     Task format validity in PLAN.md (with DESIGN.md references)
+  DEP_MATRIX      Module directories (NN-name) exist with DESIGN.md for dependency matrix entries
   NO_GARBAGE      No _v2.md, _final.md, _tmp etc. versioned garbage files
   AGENTS_SECTIONS Required sections present in AGENTS.md
 `);

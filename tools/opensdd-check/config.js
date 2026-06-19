@@ -24,7 +24,6 @@ const path = require('path');
 const DEFAULT_CONFIG = {
   requiredFiles: ['docs/SPEC.md', 'docs/ARCHITECTURE.md', 'docs/PLAN.md', 'AGENTS.md'],
   requiredAgentSections: [
-    { keywords: ['质量验收', 'quality acceptance', '质量要求', 'quality standard', '验收标准'] },
     { keywords: ['文件操作范围', 'file operation scope', 'file access scope'] },
     { keywords: ['提交规范', 'commit specification', 'commit convention', 'commit message'] },
     { keywords: ['测试要求', 'test requirement', 'test coverage', '测试覆盖'] },
@@ -35,6 +34,8 @@ const DEFAULT_CONFIG = {
   garbagePatterns: ['_v\\d+', '_final', '_tmp\\w*', '_old', '_backup', '\\.bak', '-v\\d+'],
   taskRegex: '^\\-\\s+\\[([ x])\\]\\s+(T-\\d+)\\s*:\\s*(.+)$',
   moduleDirPattern: '^\\d{2}-[a-zA-Z0-9_-]+$',
+  requiredInterfaceSections: ['模块概述与职责边界', '核心数据结构', '接口定义'],
+  requiredInternalsSections: ['核心逻辑流程', '内部实现细节', '功能特性列表'],
   skipDirs: ['node_modules', '.git', '.github'],
 };
 
@@ -71,6 +72,15 @@ function loadConfig(root) {
     const raw = fs.readFileSync(configPath, 'utf-8');
     /** @type {Partial<SddConfig>} */
     const userConfig = JSON.parse(raw);
+
+    // Warn about unknown config keys (likely typos)
+    const knownKeys = Object.keys(DEFAULT_CONFIG);
+    for (const key of Object.keys(userConfig)) {
+      if (!knownKeys.includes(key)) {
+        console.warn(`Warning: Unknown config key "${key}" in .sddrc.json (typo?)`);
+      }
+    }
+
     return mergeConfig(DEFAULT_CONFIG, userConfig);
   } catch (err) {
     console.error(`Warning: Failed to parse ${configPath}: ${err.message}`);

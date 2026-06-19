@@ -45,23 +45,31 @@ function extractEndpoints(content) {
   for (const raw of lines) {
     const trimmed = raw.trim();
 
-    const methodPathMatch = trimmed.match(/^(GET|POST|PUT|PATCH|DELETE)\s+(\/\S+)/i);
-    if (methodPathMatch) {
-      endpoints.push({
-        method: methodPathMatch[1].toUpperCase(),
-        path: methodPathMatch[2],
-        raw: trimmed,
-      });
-      continue;
-    }
+    // Match METHOD /path at line start, inline, or within markdown table cells
+    // Table cells have leading `|` or trailing `|` — strip them
+    const cellText = trimmed.replace(/^\||\|$/g, '').trim();
+    const candidates = [trimmed, cellText].filter((s, i, a) => a.indexOf(s) === i);
 
-    const codeMatch = trimmed.match(/`(GET|POST|PUT|PATCH|DELETE)\s+(\/\S+)`/i);
-    if (codeMatch) {
-      endpoints.push({
-        method: codeMatch[1].toUpperCase(),
-        path: codeMatch[2],
-        raw: trimmed,
-      });
+    for (const text of candidates) {
+      const methodPathMatch = text.match(/^(GET|POST|PUT|PATCH|DELETE)\s+(\/\S+)/i);
+      if (methodPathMatch) {
+        endpoints.push({
+          method: methodPathMatch[1].toUpperCase(),
+          path: methodPathMatch[2],
+          raw: trimmed,
+        });
+        break;
+      }
+
+      const codeMatch = text.match(/`(GET|POST|PUT|PATCH|DELETE)\s+(\/\S+)`/i);
+      if (codeMatch) {
+        endpoints.push({
+          method: codeMatch[1].toUpperCase(),
+          path: codeMatch[2],
+          raw: trimmed,
+        });
+        break;
+      }
     }
   }
 

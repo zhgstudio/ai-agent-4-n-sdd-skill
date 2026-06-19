@@ -63,9 +63,6 @@ describe('opensdd-check smoke test', () => {
     fs.writeFileSync(path.join(tmpDir, 'AGENTS.md'), [
       '# AGENTS',
       '',
-      '## 质量验收标准',
-      '所有接口须通过测试。',
-      '',
       '## 文件操作范围',
       '仅允许操作 src/ 目录。',
       '',

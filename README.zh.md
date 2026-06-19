@@ -106,7 +106,7 @@ SPEC.md     ARCHITECTURE.md  模块 INTERFACE+  PLAN.md      AGENTS.md 就绪
 
 ### 阶段三：模块详细设计（Designer Agent）
 
-产出 `docs/modules/{NN}-{name}/INTERFACE.md` + `INTERNALS.md`，包含模块边界、数据结构、接口定义、**{NN}-F{NNN} 功能特性列表**。按依赖顺序串行推进，一次只做一个模块。
+产出 `docs/modules/{NN}-{name}/INTERFACE.md` + `INTERNALS.md`，包含模块边界、数据结构、接口定义、**{NN}-F{NNN} 功能特性列表**。严格串行——按模块引用表顺序逐个设计，不允许并行。
 
 ### 阶段四：任务计划（Project Manager Agent）
 

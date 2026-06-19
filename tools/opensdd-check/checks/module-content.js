@@ -3,19 +3,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const REQUIRED_INTERFACE_SECTIONS = [
-  '模块概述与职责边界',
-  '核心数据结构',
-  '接口定义',
-];
-
-const REQUIRED_INTERNALS_SECTIONS = [
-  '核心逻辑流程',
-  '内部实现细节',
-  '功能特性列表',
-];
-
 function checkModuleContent(root, config) {
+  const REQUIRED_INTERFACE_SECTIONS = config.requiredInterfaceSections;
+  const REQUIRED_INTERNALS_SECTIONS = config.requiredInternalsSections;
   const modulesDir = path.join(root, 'docs/modules');
 
   if (!fs.existsSync(modulesDir)) {

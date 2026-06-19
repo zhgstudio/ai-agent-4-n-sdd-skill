@@ -232,14 +232,6 @@ module.exports = async function check(root, config) {
     }
   }
 
-  if (issues.length === 0) {
-    return {
-      name: 'DEP_MATRIX',
-      status: 'pass',
-      messages: [`${moduleNames.size} modules in matrix, all have docs/modules/{NN}-{name}/INTERFACE.md`],
-    };
-  }
-
   // Check for orphan module directories (exist in docs/modules/ but not declared in ARCHITECTURE.md)
   const modulesDir = path.join(root, 'docs/modules');
   if (fs.existsSync(modulesDir)) {
@@ -261,6 +253,14 @@ module.exports = async function check(root, config) {
         }
       }
     }
+  }
+
+  if (issues.length === 0) {
+    return {
+      name: 'DEP_MATRIX',
+      status: 'pass',
+      messages: [`${moduleNames.size} modules in matrix, all have docs/modules/{NN}-{name}/INTERFACE.md`],
+    };
   }
 
   return {

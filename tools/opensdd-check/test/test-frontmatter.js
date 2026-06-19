@@ -1,20 +1,26 @@
 'use strict';
 
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
+const { describe, it, before, after } = require('node:test');
+const assert = require('node:assert');
+const fs = require('node:fs');
+const path = require('node:path');
+const os = require('node:os');
 
-async function run() {
-  // Create temp directory with test skill files
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sdd-test-fm-'));
-  const skillsDir = path.join(tmpDir, 'opensdd');
-  fs.mkdirSync(skillsDir, { recursive: true });
+const check = require('../checks/frontmatter');
 
-  // Valid frontmatter file
-  fs.writeFileSync(
-    path.join(skillsDir, 'SKILL.md'),
-    `---
+describe('FRONTMATTER check', () => {
+  /** @type {string} */
+  let tmpDir;
+
+  before(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sdd-test-fm-'));
+    const skillsDir = path.join(tmpDir, 'opensdd');
+    fs.mkdirSync(skillsDir, { recursive: true });
+
+    // Valid frontmatter
+    fs.writeFileSync(
+      path.join(skillsDir, 'SKILL.md'),
+      `---
 name: opensdd
 description: "Test skill"
 metadata:
@@ -24,40 +30,31 @@ metadata:
 
 # Test
 `,
-  );
+    );
 
-  // Missing frontmatter
-  fs.writeFileSync(
-    path.join(skillsDir, 'phase-1.md'),
-    `# No frontmatter
-`,
-  );
+    // No frontmatter
+    fs.writeFileSync(path.join(skillsDir, 'phase-1.md'), '# No frontmatter\n');
 
-  // Partial frontmatter
-  fs.writeFileSync(
-    path.join(skillsDir, 'phase-2.md'),
-    `---
+    // Partial frontmatter (name only, missing description/author/version)
+    fs.writeFileSync(
+      path.join(skillsDir, 'phase-2.md'),
+      `---
 name: phase2
 ---
 
 # Partial
 `,
-  );
+    );
+  });
 
-  const check = require('../checks/frontmatter');
-  const result = await check(tmpDir, {});
+  after(() => {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
 
-  assert.strictEqual(result.name, 'FRONTMATTER');
-  assert.strictEqual(result.status, 'warn');
-  assert.ok(result.messages.length >= 2, `Expected 2+ issues, got ${result.messages.length}`);
-
-  // Cleanup
-  fs.rmSync(tmpDir, { recursive: true, force: true });
-
-  console.log('  PASS frontmatter check');
-}
-
-run().catch((err) => {
-  console.error('FAIL:', err.message);
-  process.exit(1);
+  it('should warn when files have missing or partial frontmatter', async () => {
+    const result = await check(tmpDir, {});
+    assert.strictEqual(result.name, 'FRONTMATTER');
+    assert.strictEqual(result.status, 'warn');
+    assert.ok(result.messages.length >= 2, `Expected 2+ issues, got ${result.messages.length}`);
+  });
 });

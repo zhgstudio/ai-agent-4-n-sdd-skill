@@ -6,6 +6,16 @@ const path = require('path');
 const CHINESE_PATTERN = /[\u4e00-\u9fff]/;
 const ENGLISH_PATTERN = /[a-zA-Z]/;
 
+/**
+ * Detect document language based on character ratio.
+ *
+ * NOTE: 30% threshold is a heuristic. Documents mixing Chinese prose
+ * with English code blocks (API names, identifiers) may be misclassified.
+ * No universal solution; trade-off accepted.
+ *
+ * @param {string} text - Document content
+ * @returns {string} 'zh', 'en', or 'unknown'
+ */
 function detectLanguage(text) {
   const chineseMatches = (text.match(CHINESE_PATTERN) || []).length;
   const englishMatches = (text.match(ENGLISH_PATTERN) || []).length;

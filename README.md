@@ -95,7 +95,7 @@ SPEC.md     ARCHITECTURE.md  module       PLAN.md      locks all docs
 
 ### Stage 3: Module Design (Designer Agent)
 
-- One module at a time, dependency order first
+- Strictly serial — one module at a time, dependency order first (no parallel)
 - Creates `docs/modules/{NN}-{name}/INTERFACE.md` + `INTERNALS.md` per module
 - `INTERFACE.md` contains: module boundary, data structures, interface definitions
 - `INTERNALS.md` contains: internal logic, implementation details, **feature list ({NN}-F{NNN})**

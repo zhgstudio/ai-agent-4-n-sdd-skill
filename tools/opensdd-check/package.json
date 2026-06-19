@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "node --test",
+    "test:coverage": "node --experimental-test-coverage --test",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.js\"",
     "format-check": "prettier --check \"**/*.js\""

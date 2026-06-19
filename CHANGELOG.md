@@ -2,11 +2,37 @@
 
 All notable changes to the OpenSDD Skill will be documented here.
 
+## [3.2.0] - 2026-06-19
+
+### Changed
+- **Parallel design removed**: Phase 3 reverted to strictly serial per-module design (no parallel). Parallelism added little value and risked API rate limits
+- **Quality acceptance moved to SPEC.md**: `config.js` required-agent-sections no longer expects quality criteria in AGENTS.md — now part of SPEC.md non-functional requirements
+- **garbage.js severity**: Stale/backup file detection changed from warn to fail, matching the hard prohibition in SKILL.md
+- **module-content.js**: Hardcoded section name arrays moved to `config.js` as `requiredInterfaceSections` and `requiredInternalsSections` for user configurability
+- **Unknown config keys**: `loadConfig()` now warns on unknown `.sddrc.json` keys to catch typos
+
+### Fixed
+- **matrix.js orphan detection**: Orphan module scan now executes before the early-return-for-pass, ensuring orphan directories are always reported
+- **reporter.js JSON _root**: JSON report `projectRoot` now correctly reflects user-specified `--path` instead of always falling back to `cwd`
+- **interface-consistency.js endpoint extraction**: Now handles HTTP methods inside markdown table cells (previously only matched line-start)
+- **test-matrix.js test data**: Updated stale `DESIGN.md` path references to `INTERFACE.md`
+- **test-agents.js / test-smoke.js**: Removed quality acceptance section from test data to match current spec
+- **phase-3.md typo**: "不予许" → "不允许"
+- **SKILL.md prompt template**: Clarified serial-only constraint for Designer Agent startup prompt
+- **SKILL.md change propagation**: Added `SKILL.md` version bump rule to change propagation protocol
+
+### Added
+- **CI workflow_dispatch**: Manual CI trigger now supported
+- **Coverage script**: `npm run test:coverage` for native Node.js test coverage
+
+### Infrastructure
+- **ESLint + Prettier**: Code style enforcement in CI (unchanged from v3.1.0)
+- **Test runner**: All tests consistently use `node:test` describe/it pattern
+
 ## [3.1.0] - 2026-06-19
 
 ### Changed
 - **SKILL.md restructuring**: Split phase execution contracts into 5 independent files (phase-1.md ~ phase-4.md + finalization.md). SKILL.md now only contains overview, topology, role model, constraints, and references to phase files — eliminating significant redundancy
-- **Phase 3 serial constraint relaxed**: Non-dependent modules can now be designed in parallel (previously all modules were strictly serial)
 - **Document language made configurable**: Language is now specified by the human at project start, applied to all phases (previously hardcoded to Chinese)
 - **Module numbering clarified**: Numbers are append-only identifiers (like serial numbers), no insertion allowed — explicitly documented
 - **Git push allowed**: AI is now permitted `git push` (current branch only) in addition to `git add` and `git commit`

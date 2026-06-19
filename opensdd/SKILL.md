@@ -3,7 +3,7 @@ name: opensdd
 description: "Open Spec-Driven Documentation — 编码前规范阶段工作流。为 AI 智能体提供需求规格、架构设计、模块详细设计、任务计划、入口指引共 5 类文档的规范化生成流程，产物作为后续 AI 自主编码阶段的契约依据。"
 metadata:
   author: zhgstudio
-  version: 3.1.0
+  version: 3.2.0
 ---
 
 # OpenSDD — 编码前规范阶段工作流
@@ -88,7 +88,7 @@ SPEC.md     ARCHITECTURE.md  模块 INTERFACE+   PLAN.md      锁定全部文档
 ### 核心约束
 
 - 每个阶段以人类明确回复"定稿"为晋级条件
-- 阶段三中：**无依赖关系的模块可并行设计**，各自独立通过人类评审；有依赖链的模块须按依赖顺序串行推进
+- 阶段三中：所有模块严格按依赖顺序串行推进——被依赖模块设计定稿后，才能开始依赖它的模块
 - 一个模块产出设计文件后即进入人类评审，不等所有模块完成
 - 所有文档使用人类指定的统一语言
 
@@ -121,6 +121,7 @@ SPEC.md     ARCHITECTURE.md  模块 INTERFACE+   PLAN.md      锁定全部文档
    - `SPEC.md` 变更 → 评审是否需要更新 `ARCHITECTURE.md` → 受影响模块的 `INTERFACE.md` / `INTERNALS.md`
    - `ARCHITECTURE.md` 变更 → 评审各 `INTERFACE.md` / `INTERNALS.md` 是否需要同步更新
    - `INTERFACE.md` / `INTERNALS.md` 变更 → 更新 `PLAN.md` 中的引用关系，确保 `[NN-name/INTERNALS.md#{NN}-F{NNN}]` 可追溯链完整
+   - `SKILL.md` 变更 → 同步更新 frontmatter 中的 `metadata.version` 字段
 5. **重新评审**：仅重新评审受影响的文档和模块
 
 ---
@@ -186,7 +187,7 @@ SPEC.md     ARCHITECTURE.md  模块 INTERFACE+   PLAN.md      锁定全部文档
 请以模块设计师（Designer Agent）角色启动阶段三。
 读取 docs/ARCHITECTURE.md。
 当前要设计的模块是：[模块名，如 01-auth]。
-在 docs/modules/{NN}-{name}/ 下生成本模块的 INTERFACE.md 和 INTERNALS.md。
+按照 ARCHITECTURE.md 模块引用表顺序依次设计，在 docs/modules/{NN}-{name}/ 下生成本模块的 INTERFACE.md 和 INTERNALS.md。
 特征列表以 {NN}-F{NNN} 编号。
 请严格按照技能规范执行，一次只做一个模块。
 ```

@@ -24,9 +24,6 @@ describe('AGENTS_SECTIONS check', () => {
   it('should pass when all required sections have matching headings', async () => {
     const agentsContent = `# AGENTS.md
 
-## 质量验收标准
-This section describes quality acceptance criteria.
-
 ## 文件操作范围
 Defines file operation scope for the agent.
 

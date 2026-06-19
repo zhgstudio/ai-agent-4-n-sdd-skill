@@ -83,7 +83,7 @@ function terminalReport(results, strict) {
  * @param {boolean} strict - Whether to treat warnings as errors
  * @returns {number} Exit code (0 = pass, 1 = fail)
  */
-function jsonReport(results, strict) {
+function jsonReport(results, strict, projectRoot) {
   let errors = 0;
   let warnings = 0;
   let passed = 0;
@@ -95,7 +95,7 @@ function jsonReport(results, strict) {
   }
 
   const output = {
-    projectRoot: results.length > 0 ? results[0]._root || process.cwd() : process.cwd(),
+    projectRoot: projectRoot || process.cwd(),
     timestamp: new Date().toISOString(),
     summary: { passed, failed: errors, warnings },
     strict,
@@ -124,13 +124,14 @@ function jsonReport(results, strict) {
  */
 module.exports.report = function report(results, opts = {}) {
   if (opts.json) {
-    // strip internal _root before serializing
+    // strip internal _root before serializing (keep reference for projectRoot)
+    const projectRoot = results.length > 0 ? results[0]._root : undefined;
     const clean = results.map((r) => {
       const copy = { ...r };
       delete copy._root;
       return copy;
     });
-    return jsonReport(clean, opts.strict);
+    return jsonReport(clean, opts.strict, projectRoot);
   }
   return terminalReport(results, opts.strict);
 };

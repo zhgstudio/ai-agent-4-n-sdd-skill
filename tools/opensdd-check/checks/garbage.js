@@ -51,7 +51,7 @@ module.exports = async function check(root, config) {
 
   return {
     name: 'NO_GARBAGE',
-    status: 'warn',
+    status: 'fail',
     messages: hits.map((f) => `Found garbage file: ${f}`),
   };
 };

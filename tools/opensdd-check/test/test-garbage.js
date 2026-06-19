@@ -15,7 +15,7 @@ describe('NO_GARBAGE check', () => {
     try {
       fs.writeFileSync(path.join(tmpDir, 'doc_v2.md'), 'garbage', 'utf-8');
       const result = await check(tmpDir, DEFAULT_CONFIG);
-      assert.strictEqual(result.status, 'warn');
+      assert.strictEqual(result.status, 'fail');
       assert.ok(result.messages[0].includes('garbage'));
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -27,7 +27,7 @@ describe('NO_GARBAGE check', () => {
     try {
       fs.writeFileSync(path.join(tmpDir, 'report_final.md'), 'garbage', 'utf-8');
       const result = await check(tmpDir, DEFAULT_CONFIG);
-      assert.strictEqual(result.status, 'warn');
+      assert.strictEqual(result.status, 'fail');
       assert.ok(result.messages[0].includes('garbage'));
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -39,7 +39,7 @@ describe('NO_GARBAGE check', () => {
     try {
       fs.writeFileSync(path.join(tmpDir, 'spec.bak.md'), 'garbage', 'utf-8');
       const result = await check(tmpDir, DEFAULT_CONFIG);
-      assert.strictEqual(result.status, 'warn');
+      assert.strictEqual(result.status, 'fail');
       assert.ok(result.messages[0].includes('garbage'));
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -79,7 +79,7 @@ describe('NO_GARBAGE check', () => {
     try {
       fs.writeFileSync(path.join(tmpDir, 'notes_tmp.md'), 'garbage', 'utf-8');
       const result = await check(tmpDir, DEFAULT_CONFIG);
-      assert.strictEqual(result.status, 'warn');
+      assert.strictEqual(result.status, 'fail');
       assert.ok(result.messages[0].includes('garbage'));
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -91,7 +91,7 @@ describe('NO_GARBAGE check', () => {
     try {
       fs.writeFileSync(path.join(tmpDir, 'draft_old.md'), 'garbage', 'utf-8');
       const result = await check(tmpDir, DEFAULT_CONFIG);
-      assert.strictEqual(result.status, 'warn');
+      assert.strictEqual(result.status, 'fail');
       assert.ok(result.messages[0].includes('garbage'));
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });

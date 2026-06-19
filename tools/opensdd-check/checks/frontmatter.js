@@ -43,21 +43,17 @@ module.exports = async function check(root, _config) {
       continue;
     }
 
-    // Find closing ---
-    const endIdx = content.indexOf('\n---\n', 4);
-    const endIdxCR = content.indexOf('\r\n---\n', 4);
-    const endIdxCRLF = content.indexOf('\r\n---\r\n', 4);
-    let endPos = -1;
-    if (endIdx !== -1) endPos = endIdx;
-    if (endIdxCR !== -1 && (endPos === -1 || endIdxCR < endPos)) endPos = endIdxCR;
-    if (endIdxCRLF !== -1 && (endPos === -1 || endIdxCRLF < endPos)) endPos = endIdxCRLF;
-
-    if (endPos === -1) {
+    // Find closing --- (handles LF, CRLF, mixed line endings)
+    const openLen = content.startsWith('---\r\n') ? 5 : 4;
+    const afterOpen = content.slice(openLen);
+    const closeMatch = afterOpen.match(/\r?\n---\r?\n/);
+    if (!closeMatch) {
       issues.push(`${file}: YAML frontmatter has no closing ---`);
       continue;
     }
+    const endPos = openLen + closeMatch.index;
 
-    const frontmatter = content.substring(4, endPos);
+    const frontmatter = content.substring(openLen, endPos);
 
     // Check required fields
     const hasName = /^name\s*:/m.test(frontmatter);

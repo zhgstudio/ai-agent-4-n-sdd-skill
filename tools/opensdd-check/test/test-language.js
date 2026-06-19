@@ -26,7 +26,8 @@ describe('language detection', () => {
     });
 
     it('should classify mixed Chinese/English as zh when Chinese dominates', () => {
-      const mixed = '\u7528\u6237\u767b\u5f55\u63a5\u53e3 POST /auth/login \u9a8c\u8bc1\u7528\u6237\u8d26\u53f7\u5bc6\u7801';
+      const mixed =
+        '\u7528\u6237\u767b\u5f55\u63a5\u53e3 POST /auth/login \u9a8c\u8bc1\u7528\u6237\u8d26\u53f7\u5bc6\u7801';
       assert.strictEqual(detectLanguage(mixed), 'zh');
     });
 
@@ -67,7 +68,8 @@ describe('language detection', () => {
     });
 
     it('should ignore inline code spans', () => {
-      const content = '\u4f7f\u7528 `createUser()` \u51fd\u6570\u521b\u5efa\u7528\u6237\u3002' +
+      const content =
+        '\u4f7f\u7528 `createUser()` \u51fd\u6570\u521b\u5efa\u7528\u6237\u3002' +
         '\u8c03\u7528 `validateToken(token)` \u9a8c\u8bc1\u4ee4\u724c\u3002';
       assert.strictEqual(detectLanguage(content), 'zh');
     });

@@ -58,13 +58,7 @@ describe('interface-consistency', () => {
     // Consumer module (02-task-core) needs API.md for interface check to run
     fs.writeFileSync(
       path.join(mod02Dir, 'API.md'),
-      [
-        '# 02-task-core API',
-        '',
-        '## \u63a5\u53e3\u5b9a\u4e49',
-        '- POST /task/create',
-        '- POST /task/list',
-      ].join('\n'),
+      ['# 02-task-core API', '', '## \u63a5\u53e3\u5b9a\u4e49', '- POST /task/create', '- POST /task/list'].join('\n'),
       'utf-8',
     );
   });
@@ -83,12 +77,7 @@ describe('interface-consistency', () => {
     const mod01Dir = path.join(tmpDir, 'docs/modules/01-auth');
     fs.writeFileSync(
       path.join(mod01Dir, 'API.md'),
-      [
-        '# 01-auth API',
-        '',
-        '## \u63a5\u53e3\u5b9a\u4e49',
-        '- POST /auth/register',
-      ].join('\n'),
+      ['# 01-auth API', '', '## \u63a5\u53e3\u5b9a\u4e49', '- POST /auth/register'].join('\n'),
       'utf-8',
     );
 
@@ -122,11 +111,7 @@ describe('interface-consistency', () => {
     const noDepDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sdd-iface-nodep-'));
     const docsDir = path.join(noDepDir, 'docs');
     fs.mkdirSync(docsDir, { recursive: true });
-    fs.writeFileSync(
-      path.join(docsDir, 'ARCHITECTURE.md'),
-      '# Architecture\n\nJust a description.\n',
-      'utf-8',
-    );
+    fs.writeFileSync(path.join(docsDir, 'ARCHITECTURE.md'), '# Architecture\n\nJust a description.\n', 'utf-8');
     const result = await check(noDepDir, DEFAULT_CONFIG);
     assert.strictEqual(result.status, 'skip');
     fs.rmSync(noDepDir, { recursive: true, force: true });

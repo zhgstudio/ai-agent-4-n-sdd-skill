@@ -120,17 +120,36 @@ async function checkInterfaceConsistency(root, config) {
     };
   }
 
+  // Cache file contents to avoid repeated I/O
+  const contentCache = new Map();
+
+  /**
+   * Read a file with caching.
+   *
+   * @param {string} filePath - Absolute path to the file
+   * @returns {string|null} File content or null if unreadable
+   */
+  function readCached(filePath) {
+    if (contentCache.has(filePath)) return contentCache.get(filePath);
+    try {
+      if (fs.existsSync(filePath)) {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        contentCache.set(filePath, content);
+        return content;
+      }
+    } catch (_) {
+      /* skip unreadable */
+    }
+    contentCache.set(filePath, null);
+    return null;
+  }
+
   // Collect all module document contents for auto-detection
   const docContents = [];
   for (const entry of depMatrix) {
     const modulePath = path.join(root, 'docs/modules', entry.name, 'API.md');
-    try {
-      if (fs.existsSync(modulePath)) {
-        docContents.push(fs.readFileSync(modulePath, 'utf-8'));
-      }
-    } catch (_) {
-      // skip unreadable files
-    }
+    const c = readCached(modulePath);
+    if (c !== null) docContents.push(c);
   }
 
   const { strategy, detected } = resolveStrategy(config.interfaceStrategy || 'auto', docContents);
@@ -142,7 +161,7 @@ async function checkInterfaceConsistency(root, config) {
     const callerModule = entry.name;
     const callerPath = path.join(root, 'docs/modules', callerModule, 'API.md');
 
-    if (!fs.existsSync(callerPath)) {
+    if (readCached(callerPath) === null) {
       continue;
     }
 
@@ -156,16 +175,9 @@ async function checkInterfaceConsistency(root, config) {
 
       const depPath = path.join(root, 'docs/modules', dep, 'API.md');
 
-      if (!fs.existsSync(depPath)) {
+      const depContent = readCached(depPath);
+      if (depContent === null) {
         issues.push(`Module '${callerModule}' depends on '${dep}' but API.md not found`);
-        continue;
-      }
-
-      let depContent;
-      try {
-        depContent = fs.readFileSync(depPath, 'utf-8');
-      } catch (err) {
-        issues.push(`Failed to read ${dep}/API.md: ${err.message}`);
         continue;
       }
 

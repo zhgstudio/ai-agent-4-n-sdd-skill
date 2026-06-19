@@ -10,7 +10,6 @@ const agentsCheck = require('./checks/agents');
 const frontmatterCheck = require('./checks/frontmatter');
 const moduleContentCheck = require('./checks/module-content');
 const interfaceConsistencyCheck = require('./checks/interface-consistency');
-const languageCheck = require('./checks/language');
 const publicDesignComplianceCheck = require('./checks/public-design-compliance');
 const { report } = require('./lib/reporter');
 const { loadConfig } = require('./config');
@@ -39,7 +38,6 @@ CHECKS
   AGENTS_SECTIONS       Required sections present in AGENTS.md
   MODULE_CONTENT        API.md/DESIGN.md required sections and feature list
   API_CONSISTENCY       Cross-module interface signature matching
-  LANGUAGE_CONSISTENCY  All documents use consistent language (zh/en)
   PUBLIC_DESIGN_COMPLIANCE  Module files follow ARCHITECTURE.md public design rules
 `);
 }
@@ -95,7 +93,6 @@ async function main() {
     frontmatterCheck(resolvedRoot, config),
     moduleContentCheck(resolvedRoot, config),
     interfaceConsistencyCheck(resolvedRoot, config),
-    languageCheck(resolvedRoot, config),
     publicDesignComplianceCheck(resolvedRoot, config),
   ]);
 

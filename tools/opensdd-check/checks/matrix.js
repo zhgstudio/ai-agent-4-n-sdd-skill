@@ -4,6 +4,32 @@ const fs = require('fs');
 const path = require('path');
 
 /**
+ * Replace inline code spans with placeholders to protect their content
+ * from pipe splitting within table cells.
+ *
+ * @param {string} str - Raw string
+ * @param {string[]} store - Array to store captured code spans
+ * @returns {string} String with code spans replaced by placeholders
+ */
+function protectCodeSpans(str, store) {
+  return str.replace(/`[^`]+`/g, (match) => {
+    store.push(match);
+    return `\x00CODE${store.length - 1}\x00`;
+  });
+}
+
+/**
+ * Restore code span placeholders in a cell value.
+ *
+ * @param {string} str - Cell value with placeholders
+ * @param {string[]} store - Array of captured code spans
+ * @returns {string} Cell value with original code spans restored
+ */
+function restoreCodeSpans(str, store) {
+  return str.replace(/\x00CODE(\d+)\x00/g, (_, idx) => store[Number(idx)] || '');
+}
+
+/**
  * Split a markdown table row into cell values.
  * Handles 3-column and 4-column tables.
  *
@@ -16,15 +42,32 @@ function splitRow(trimmed) {
   const stripped = trimmed.replace(/[\s|]/g, '');
   if (/^[-:]+$/.test(stripped)) return null;
 
+  // Protect inline code spans so pipes inside backticks don't break cell parsing
+  const codeSpans = [];
+  const masked = protectCodeSpans(trimmed, codeSpans);
+
   // Match 3 or 4 cells: | cell | cell | cell |  or  | cell | cell | cell | cell |
   const re3 = /^\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/;
   const re4 = /^\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/;
 
-  let match = trimmed.match(re4);
-  if (match) return [match[1].trim(), match[2].trim(), match[3].trim(), match[4].trim()];
+  let match = masked.match(re4);
+  if (match) {
+    return [
+      restoreCodeSpans(match[1].trim(), codeSpans),
+      restoreCodeSpans(match[2].trim(), codeSpans),
+      restoreCodeSpans(match[3].trim(), codeSpans),
+      restoreCodeSpans(match[4].trim(), codeSpans),
+    ];
+  }
 
-  match = trimmed.match(re3);
-  if (match) return [match[1].trim(), match[2].trim(), match[3].trim()];
+  match = masked.match(re3);
+  if (match) {
+    return [
+      restoreCodeSpans(match[1].trim(), codeSpans),
+      restoreCodeSpans(match[2].trim(), codeSpans),
+      restoreCodeSpans(match[3].trim(), codeSpans),
+    ];
+  }
 
   return null;
 }
@@ -276,3 +319,7 @@ module.exports.parseDependencies = parseDependencies;
 
 /** @package */
 module.exports.splitRow = splitRow;
+/** @package */
+module.exports.protectCodeSpans = protectCodeSpans;
+/** @package */
+module.exports.restoreCodeSpans = restoreCodeSpans;

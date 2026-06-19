@@ -1,6 +1,6 @@
 ---
 name: opensdd
-description: "Open Spec-Driven Documentation — 编码前规范阶段工作流。为 AI 智能体提供需求规格、架构设计、模块详细设计、任务计划、入口指引共 5 类文档的规范化生成流程，产物作为后续 AI 自主编码阶段的契约依据。"
+description: "Open Spec-Driven Documentation — 编码前规范阶段工作流。为 AI 智能体提供需求规格、架构设计、模块详细设计、任务计划、入口指引共 5 类文档的规范化生成流程，产物作为后续 AI 自主编码阶段的契约依据。【注意：本技能由人类主动加载调用，AI 不应在未被人类明确要求时自行触发整个流程】"
 metadata:
   author: zhgstudio
   version: 3.3.0
@@ -13,6 +13,8 @@ metadata:
 本技能解决的是 **AI 自主编码前"先想清楚再写"** 的问题。通过 4 个角色的分阶段协作，生成 5 类规范文档，作为后续编码阶段的契约依据。
 
 **核心原则**：本技能不涉及任何代码编写，只产出文档。所有文档经过人类多轮评审定稿后，才进入编码阶段。
+
+> **加载方式**：本技能由**人类主动加载调用**——人类在需要时手动启动某个阶段，AI **不应**在未被人类明确要求时自行触发整个流程。
 
 ---
 
@@ -72,6 +74,19 @@ docs/
 每个角色启动新的 AI 会话，只加载职责范围内的文件。每阶段产物经人类评审定稿后，才能进入下一阶段。
 
 > **会话管理说明：** 每个角色启动新会话的操作由**人类**手动完成。如果使用的 AI 平台不支持洁净会话隔离，人类可以在同一会话中手动重置上下文。本技能定义的"新会话"是指认知上的上下文隔离——确保同一角色只加载职责范围内的文件。
+
+### 角色职责边界
+
+各角色的行为边界由其读写范围自然界定：
+- **PM Agent** 聚焦业务需求，不介入技术方案讨论
+- **Architect Agent** 只做整体架构与公共设计，不深入模块内部设计
+- **Designer Agent** 只设计当前模块，不写代码，不读取所依赖模块的 `DESIGN.md`
+- **Project Manager Agent** 只做任务跟踪，不修改设计内容
+
+此外，各阶段执行中还应遵守：
+- 不允许创建 `_v2.md`、`_final.md`、`.bak.md` 等版本残留文件，物理覆盖即可
+- `PLAN.md` 的每条任务必须引用对应 `DESIGN.md` 的章节
+- AI 仅允许 `git add`、`git commit`、`git push`（仅推送当前分支），不创建/切换分支，不执行 `merge`、`rebase`
 
 ---
 
@@ -145,14 +160,6 @@ SPEC.md     ARCHITECTURE.md  模块 API+   PLAN.md      锁定全部文档
 - **AI 可应人类要求主动执行验证**——人类在任意阶段说"检查项目结构"或"run validation"时，AI 应当执行 `node tools/opensdd-check/index.js`
 - 人类也可手动执行：`node tools/opensdd-check/index.js`（默认检查当前目录）
 - 建议在最终定稿前运行 `node tools/opensdd-check/index.js --strict` 执行全量严格检查（将所有警告视为错误），其中包含 `PUBLIC_DESIGN_COMPLIANCE` 公共设计合规性检查
-
-## 核心禁令
-
-- **禁止越权**：PM 不讨论技术方案，Architect 不写模块设计细节，Designer 不写代码，Project Manager 不修改设计内容
-- **禁止创建垃圾文件**：不允许创建 `_v2.md`、`_final.md`、`.bak.md` 等版本残留文件，一律物理覆盖
-- **禁止跨模块注意力污染**：Designer 在设计模块 A 时只允许读取所依赖模块的接口部分
-- **禁止脱离引用**：PLAN.md 的每条任务必须引用对应 `DESIGN.md` 的章节
-- **禁止 AI 操作远程仓库**：AI 仅允许 `git add` 和 `git commit`、`git push`（仅推送当前分支）。不允许创建/切换分支，不允许 `merge`、`rebase`
 
 ---
 

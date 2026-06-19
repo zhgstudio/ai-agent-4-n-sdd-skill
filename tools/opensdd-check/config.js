@@ -28,12 +28,46 @@ const path = require('path');
 const DEFAULT_CONFIG = {
   requiredFiles: ['docs/SPEC.md', 'docs/ARCHITECTURE.md', 'docs/PLAN.md', 'AGENTS.md'],
   requiredAgentSections: [
-    { keywords: ['文件操作范围', 'file operation scope', 'file access scope'] },
-    { keywords: ['提交规范', 'commit specification', 'commit convention', 'commit message'] },
-    { keywords: ['测试要求', 'test requirement', 'test coverage', '测试覆盖'] },
-    { keywords: ['升级条件', 'escalation condition', 'human介入', 'human intervention', 'pause and ask', '请求人类'] },
-    { keywords: ['跨模块规则', 'cross-module rule', 'cross module rule', '模块间'] },
-    { keywords: ['plan.md', '任务规范', 'task convention', '任务标记'] },
+    { keywords: ['文件操作范围', 'file operation scope', 'file access scope', '文件访问范围', '读写范围', '目录范围'] },
+    {
+      keywords: [
+        '提交规范',
+        'commit specification',
+        'commit convention',
+        'commit message',
+        'git 规范',
+        '提交约定',
+        'commit 格式',
+      ],
+    },
+    { keywords: ['测试要求', 'test requirement', 'test coverage', '测试覆盖', '测试规范', 'testing', '单元测试'] },
+    {
+      keywords: [
+        '升级条件',
+        'escalation condition',
+        'human介入',
+        'human intervention',
+        'pause and ask',
+        '请求人类',
+        '上报条件',
+        '升级规则',
+        '暂停条件',
+        '人工介入',
+      ],
+    },
+    { keywords: ['跨模块规则', 'cross-module rule', 'cross module rule', '模块间', '跨模块', '模块依赖', '模块通信'] },
+    {
+      keywords: [
+        'plan.md',
+        '任务规范',
+        'task convention',
+        '任务标记',
+        '任务格式',
+        '任务约定',
+        'task format',
+        '任务追踪',
+      ],
+    },
   ],
   garbagePatterns: ['_v\\d+', '_final', '_tmp\\w*', '_old', '_backup', '\\.bak', '-v\\d+'],
   taskRegex: '^\\-\\s+\\[([ x])\\]\\s+(T-\\d+)\\s*:\\s*(.+)$',
@@ -45,6 +79,11 @@ const DEFAULT_CONFIG = {
   publicDesignRules: {
     namingConvention: 'camelCase',
     allowedPatterns: [],
+    pascalCaseAllowedPatterns: [
+      '^(Date|String|Number|Boolean|Array|Object|Promise|Error|Map|Set|Symbol|BigInt|RegExp|Buffer|Event|Json|Void|Never|Any|Unknown|Null|Undefined|Id|Url|Uri|Dto|Vo|Po|Do|Api)$',
+      '^I[A-Z][a-z]+[A-Za-z]*$',
+      '^[A-Z][a-z]+(Request|Response|Dto|Vo|Po|Do|Event|Command|Query|Handler|Service|Controller|Repository|Factory|Builder|Provider|Module|Config|Exception|Manager|Helper|Util|Utils|Model|Entity|View|Model|Input|Output|Result|Payload|Header|Body|Params|Option|Options|Context|Interceptor|Guard|Pipe|Filter|Adapter|Strategy|Converter|Mapper|Transformer|Validator|Resolver|Loader|Writer|Reader|Client|Server|Gateway|Proxy|Facade|Singleton|Prototype|State|Strategy|Observer|Listener|Publisher|Subscriber|Producer|Consumer|Task|Job)$',
+    ],
   },
 };
 
@@ -61,7 +100,14 @@ function mergeConfig(defaults, user) {
     if (Array.isArray(defaults[key]) && Array.isArray(user[key])) {
       // Arrays extend (don't replace)
       result[key] = [...defaults[key], ...user[key]];
-    } else if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key]) && typeof user[key] === 'object' && user[key] !== null && !Array.isArray(user[key])) {
+    } else if (
+      typeof defaults[key] === 'object' &&
+      defaults[key] !== null &&
+      !Array.isArray(defaults[key]) &&
+      typeof user[key] === 'object' &&
+      user[key] !== null &&
+      !Array.isArray(user[key])
+    ) {
       // Nested objects merge recursively (e.g. publicDesignRules)
       result[key] = { ...defaults[key], ...user[key] };
     } else if (defaults[key] !== undefined) {

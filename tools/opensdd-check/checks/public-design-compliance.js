@@ -69,38 +69,22 @@ function extractPublicDesign(content) {
  * @returns {{camelCase: string[], snake_case: string[], PascalCase: string[], kebabCase: string[]}}
  */
 const HTTP_METHODS = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS']);
-const ALLOWED_PASCAL = new Set([
-  'Date',
-  'String',
-  'Number',
-  'Boolean',
-  'Array',
-  'Object',
-  'Promise',
-  'Error',
-  'Map',
-  'Set',
-  'Symbol',
-  'BigInt',
-  'RegExp',
-  'Buffer',
-  'Event',
-  'Json',
-  'Void',
-  'Never',
-  'Any',
-  'Unknown',
-  'Null',
-  'Undefined',
-  'Id',
-  'Url',
-  'Uri',
-  'Dto',
-  'Vo',
-  'Po',
-  'Do',
-  'Api',
-]);
+
+/**
+ * Check if a PascalCase token is allowed based on config patterns.
+ *
+ * @param {string} token - The identifier to check
+ * @param {import('../config').SddConfig} config - SDD configuration
+ * @returns {boolean} Whether the token is allowed
+ */
+function isPascalCaseAllowed(token, config) {
+  const rules = config.publicDesignRules || {};
+  const patterns = rules.pascalCaseAllowedPatterns || [];
+  for (const pattern of patterns) {
+    if (new RegExp(pattern).test(token)) return true;
+  }
+  return false;
+}
 
 function extractIdentifiers(content) {
   const lines = content.split('\n');
@@ -128,7 +112,6 @@ function extractIdentifiers(content) {
       if (!cleaned || cleaned.length < 2) continue;
       if (/^\d/.test(cleaned)) continue;
       if (HTTP_METHODS.has(cleaned.toUpperCase())) continue;
-      if (ALLOWED_PASCAL.has(cleaned)) continue;
 
       const key = cleaned.toLowerCase();
       if (seen.has(key)) continue;
@@ -182,6 +165,8 @@ function checkNamingCompliance(moduleDir, fileType, content, design, config) {
   for (const { token, type } of allTokens) {
     const isAllowed = allowed.some((p) => new RegExp(p).test(token));
     if (isAllowed) continue;
+
+    if (type === 'PascalCase' && isPascalCaseAllowed(token, config)) continue;
 
     if (type !== expectedConvention) {
       issues.push(

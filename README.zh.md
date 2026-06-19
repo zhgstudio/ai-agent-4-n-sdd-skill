@@ -3,8 +3,8 @@
 > **拒绝盲目盲写 (Vibe Coding)！** 在 AI 自主编码之前，先系统化地完成需求规格、架构设计、模块详细设计、任务计划的规范化产出。通过**四角色隔离**（PM / 架构师 / 模块设计师 / 项目经理）确保每个阶段 AI 只加载职责范围内的上下文，最终锁定 `AGENTS.md` 作为编码阶段的入口指引。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/actions/workflows/ci.yml)
-[![skills.sh](https://skills.sh/b/zhgstudio/ai-agent-4-n-sdd-skill)](https://skills.sh/zhgstudio/ai-agent-4-n-sdd-skill/opensdd)
+[![CI](https://github.com/zhgstudio/opensdd/actions/workflows/ci.yml/badge.svg)](https://github.com/zhgstudio/opensdd/actions/workflows/ci.yml)
+[![skills.sh](https://skills.sh/b/zhgstudio/opensdd)](https://skills.sh/zhgstudio/ai-agent-4-n-sdd-skill/opensdd)
 
 ---
 
@@ -82,7 +82,7 @@ docs/
 ```
 阶段一 ───→ 阶段二 ───→ 阶段三 ───→ 阶段四 ───→ 人类最终审查
 PM Agent    Architect   Designer     PM Agent     锁定全部文档
-SPEC.md     ARCH.md     模块 DESIGN   PLAN.md      AGENTS.md 就绪
+SPEC.md     ARCHITECTURE.md  模块 DESIGN   PLAN.md      AGENTS.md 就绪
              AGENTS.md   (逐个串行)   追加 AGENTS   进入编码阶段
 ```
 
@@ -124,10 +124,10 @@ SPEC.md     ARCH.md     模块 DESIGN   PLAN.md      AGENTS.md 就绪
 
 ```bash
 # 推荐 — 自动识别兼容的 AI 平台
-npx skills add https://github.com/zhgstudio/ai-agent-4-n-sdd-skill --skill opensdd
+npx skills add https://github.com/zhgstudio/opensdd --skill opensdd
 
 # 或手动克隆
-git clone --depth 1 https://github.com/zhgstudio/ai-agent-4-n-sdd-skill.git /tmp/opensdd-skill
+git clone --depth 1 https://github.com/zhgstudio/opensdd.git /tmp/opensdd-skill
 cp -r /tmp/opensdd-skill/opensdd .opencode/skills/
 rm -rf /tmp/opensdd-skill
 ```

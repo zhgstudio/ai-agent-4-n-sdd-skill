@@ -3,8 +3,8 @@
 > **Stop coding blind. Start with specs.** A lightweight workflow for the pre-development specification phase. Formalizes 5 types of documents through 4 dedicated AI agent roles, producing contract-grade specs that guide subsequent AI autonomous coding.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/zhgstudio/ai-agent-4-n-sdd-skill/actions/workflows/ci.yml)
-[![skills.sh](https://skills.sh/b/zhgstudio/ai-agent-4-n-sdd-skill)](https://skills.sh/zhgstudio/ai-agent-4-n-sdd-skill/opensdd)
+[![CI](https://github.com/zhgstudio/opensdd/actions/workflows/ci.yml/badge.svg)](https://github.com/zhgstudio/opensdd/actions/workflows/ci.yml)
+[![skills.sh](https://skills.sh/b/zhgstudio/opensdd)](https://skills.sh/zhgstudio/ai-agent-4-n-sdd-skill/opensdd)
 
 ---
 
@@ -61,7 +61,7 @@ Each role starts a fresh session with a scoped context. Every stage ends with a 
 ```
 Stage 1 ──→ Stage 2 ──→ Stage 3 ──→ Stage 4 ──→ Finalized
 PM Agent    Architect   Designer     PM Agent     Human review
-SPEC.md     ARCH.md     module       PLAN.md      locks all docs
+SPEC.md     ARCHITECTURE.md  module       PLAN.md      locks all docs
              AGENTS.md   DESIGN.md    append       AGENTS.md ready
                          (serial per  AGENTS.md    for coding phase
                           module)
@@ -108,10 +108,10 @@ SPEC.md     ARCH.md     module       PLAN.md      locks all docs
 
 ```bash
 # Recommended — auto-detects your AI platform
-npx skills add https://github.com/zhgstudio/ai-agent-4-n-sdd-skill --skill opensdd
+npx skills add https://github.com/zhgstudio/opensdd --skill opensdd
 
 # Or manually
-git clone --depth 1 https://github.com/zhgstudio/ai-agent-4-n-sdd-skill.git /tmp/opensdd-skill
+git clone --depth 1 https://github.com/zhgstudio/opensdd.git /tmp/opensdd-skill
 cp -r /tmp/opensdd-skill/opensdd .opencode/skills/
 rm -rf /tmp/opensdd-skill
 ```

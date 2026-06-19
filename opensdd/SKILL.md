@@ -69,7 +69,7 @@ docs/
 ```
 阶段一 ───→ 阶段二 ───→ 阶段三 ───→ 阶段四 ───→ 定稿
 PM Agent    Architect   Designer     PM Agent     人类审查
-SPEC.md     ARCH.md    模块 DESIGN   PLAN.md      锁定全部文档
+SPEC.md     ARCHITECTURE.md 模块 DESIGN   PLAN.md      锁定全部文档
              AGENTS.md   (串行逐个)  追加 AGENTS    AGENTS.md
                          设计完成                   最终定稿
 ```

@@ -12,23 +12,62 @@
 
 锁定 `AGENTS.md`，标记 OpenSDD 阶段完成
 
-## 行为
+## 审查清单
 
-1. **审查全部文档的完整性和一致性**
-2. **运行全量自动化验证**，执行以下检查（可用 `node tools/opensdd-check/index.js --strict` 一键执行全部）：
-   - **结构合规**：`FILE_EXISTS`、`DEP_MATRIX`、`PLAN_FORMAT`、`NO_GARBAGE` — 确保目录拓扑和命名规范
-   - **模块内容**：`MODULE_CONTENT` — 每个 INTERFACE.md 和 INTERNALS.md 包含所有必要章节
-   - **接口一致性**：`INTERFACE_CONSISTENCY` — 跨模块接口签名匹配，被依赖方提供的接口与依赖方调用的接口一致
-   - **语言一致性**：`LANGUAGE_CONSISTENCY` — 所有文档使用统一的语言
-   - **公共设计合规**：`PUBLIC_DESIGN_COMPLIANCE` — 各模块的命名风格等遵循 ARCHITECTURE.md 公共设计规范
-   - **技能元数据**：`FRONTMATTER` — 技能文件含有效的 YAML frontmatter
-3. **完整性交叉验证**（人类或 AI 辅助）：
-   - 确认 `PLAN.md` 中的 `T-{NNN}` 任务已完整覆盖所有模块 `INTERNALS.md` 中的 `{NN}-F{NNN}` 特性，无遗漏
-   - 确认 `AGENTS.md` 中的所有章节有实质内容（非空或仅占位符）
-   - 确认 `AGENTS.md` 中引用的模块目录路径 `docs/modules/{NN}-{name}/` 与实际目录一致
-4. 确认 `AGENTS.md` 已覆盖编码阶段所需的所有指引
-5. **锁定 `AGENTS.md`**：确认 `AGENTS.md` 内容完备后，不再修改。将其作为编码阶段的入口文件
-6. 提交 Git，标记 OpenSDD 阶段完成，准备进入编码阶段
+### 人工审查
+
+逐项核验以下全部维度：
+
+**SPEC.md**
+- [ ] 业务背景与目标清晰、成功标准可衡量
+- [ ] 功能需求以用户旅程或用例形式列出，可独立验证
+- [ ] 非功能性约束已量化（如响应时间、并发数）
+- [ ] 边界与排除项明确
+
+**ARCHITECTURE.md**
+- [ ] 技术栈标准完整（语言、框架、版本、工具）
+- [ ] 模块引用表与模块目录实际存在一致
+- [ ] 模块依赖矩阵准确，接口签名写清
+- [ ] 全局编码规范（命名、文件结构、错误格式）明确
+
+**模块设计（每个模块）**
+- [ ] INTERFACE.md 包含模块概述、核心数据结构、接口定义
+- [ ] INTERNALS.md 包含核心逻辑、实现细节、`{NN}-F{NNN}` 特性列表
+- [ ] 命名与 ARCHITECTURE.md 规范一致
+- [ ] 接口签名与被依赖方声明匹配
+
+**PLAN.md**
+- [ ] `T-{NNN}` 任务覆盖所有 `{NN}-F{NNN}` 特性
+- [ ] 每条任务引用 `[NN-name/INTERNALS.md#{NN}-F{NNN}]`
+- [ ] 任务按依赖拓扑排序，不包含方案细节
+
+**AGENTS.md**
+- [ ] 所有章节有实质内容，无空章节或占位符
+- [ ] 引用的模块目录路径与实际一致
+- [ ] 覆盖编码阶段所需全部指引
+
+### 自动化验证
+
+运行 `node tools/opensdd-check/index.js --strict` 并确认全部通过：
+
+| 检查项 | 验证内容 |
+|--------|----------|
+| FILE_EXISTS | SPEC.md / ARCHITECTURE.md / PLAN.md / AGENTS.md 存在 |
+| DEP_MATRIX | 模块目录与引用表一致，无孤儿目录 |
+| PLAN_FORMAT | 任务格式正确，引用有效 |
+| NO_GARBAGE | 无版本残留文件 |
+| AGENTS_SECTIONS | AGENTS.md 含必要章节 |
+| MODULE_CONTENT | 各模块文件含必要章节和特征列表 |
+| INTERFACE_CONSISTENCY | 跨模块接口签名匹配 |
+| LANGUAGE_CONSISTENCY | 所有文档语言统一 |
+| PUBLIC_DESIGN_COMPLIANCE | 命名规范遵循公共设计 |
+| FRONTMATTER | 技能文件含有效 frontmatter |
+
+## 定稿锁定
+
+1. 上述人工审查 + 自动化验证全部通过
+2. **锁定 `AGENTS.md`**：确认内容完备后，不再修改，作为编码阶段的入口文件
+3. 提交 Git，标记 OpenSDD 阶段完成，准备进入编码阶段
 
 ## 锁定后的使用方式
 

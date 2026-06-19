@@ -33,9 +33,11 @@ docs/
 │
 └── modules/                # 📦 N. Module designs
     ├── 01-auth/
-    │   └── DESIGN.md       # Module detailed design (Designer Agent)
+    │   ├── INTERFACE.md    # Interface definitions (Designer Agent)
+    │   └── INTERNALS.md    # Internal implementation details (Designer Agent)
     ├── 02-task-core/
-    │   └── DESIGN.md
+    │   ├── INTERFACE.md
+    │   └── INTERNALS.md
     └── ...
 ```
 
@@ -55,14 +57,14 @@ docs/
 
 | Role | Phase | Reads | Writes |
 |------|-------|-------|--------|
-| **PM Agent** | Stage 1 | Nothing (fresh session) | SPEC.md, appends quality criteria to AGENTS.md |
+| **PM Agent** | Stage 1 | Nothing (fresh session) | SPEC.md |
 | **Architect Agent** | Stage 2 | SPEC.md (read-only) | ARCHITECTURE.md, writes AGENTS.md body |
-| **Designer Agent** × N | Stage 3 | ARCHITECTURE.md + dependency module DESIGN.md | docs/modules/{NN}-{name}/DESIGN.md |
+| **Designer Agent** × N | Stage 3 | ARCHITECTURE.md + dependency module INTERFACE.md | docs/modules/{NN}-{name}/INTERFACE.md + INTERNALS.md |
 | **Project Manager Agent** | Stage 4 | All finalized design docs | PLAN.md, appends task conventions to AGENTS.md |
 
 Each role starts a fresh session with a scoped context. Every stage ends with a **human review gate**.
 
-> **Language note:** All generated documents (SPEC.md, ARCHITECTURE.md, AGENTS.md, PLAN.md, module DESIGN.md files) are written in **Chinese**.
+> **Language note:** All generated documents (SPEC.md, ARCHITECTURE.md, AGENTS.md, PLAN.md, module INTERFACE.md / INTERNALS.md files) are written in **Chinese**.
 
 ---
 
@@ -72,36 +74,38 @@ Each role starts a fresh session with a scoped context. Every stage ends with a 
 Stage 1 ──→ Stage 2 ──→ Stage 3 ──→ Stage 4 ──→ Finalized
 PM Agent    Architect   Designer     PM Agent     Human review
 SPEC.md     ARCHITECTURE.md  module       PLAN.md      locks all docs
-             AGENTS.md   DESIGN.md    append       AGENTS.md ready
-                         (serial per  AGENTS.md    for coding phase
-                          module)
+             AGENTS.md   INTERFACE.md  append       AGENTS.md ready
+                          + INTERNALS  AGENTS.md    for coding phase
+                          (serial per
+                           module)
 ```
 
 ### Stage 1: Requirements (PM Agent)
 
 - Writes `docs/SPEC.md` from raw human input
 - Covers: business context, functional requirements, data needs, non-functional constraints
-- Appends **quality acceptance criteria** section to `AGENTS.md`
+
 
 ### Stage 2: Architecture (Architect Agent)
 
 - Reads `SPEC.md` (read-only), writes `docs/ARCHITECTURE.md`
 - Defines: tech stack, global conventions, **module reference table** (with `NN-name` numbering), dependency matrix, shared design decisions
-- Only global/public design lives in ARCHITECTURE.md — module internals go to DESIGN.md
+- Only global/public design lives in ARCHITECTURE.md — module internals go to INTERNALS.md
 - Writes main body of `AGENTS.md`: file scope, commit conventions, test requirements, escalation rules, cross-module rules
 
 ### Stage 3: Module Design (Designer Agent)
 
 - One module at a time, dependency order first
-- Creates `docs/modules/{NN}-{name}/DESIGN.md` per module
-- Contains: module boundary, data structures, interface definitions, **feature list (F-{NNN})**
+- Creates `docs/modules/{NN}-{name}/INTERFACE.md` + `INTERNALS.md` per module
+- `INTERFACE.md` contains: module boundary, data structures, interface definitions
+- `INTERNALS.md` contains: internal logic, implementation details, **feature list ({NN}-F{NNN})**
 - Naming: `NN` is the two-digit prefix matching the module reference table in ARCHITECTURE.md
 
 ### Stage 4: Task Plan (Project Manager Agent)
 
-- Reads all finalized DESIGN.md files, extracts F-{NNN} features
-- Writes `docs/PLAN.md` — task tracking with references to DESIGN.md sections
-- Each task: `- [ ] T-{NNN}: description [NN-name/DESIGN.md#F-NNN]`
+- Reads all finalized INTERFACE.md / INTERNALS.md files, extracts {NN}-F{NNN} features
+- Writes `docs/PLAN.md` — task tracking with references to INTERNALS.md sections
+- Each task: `- [ ] T-{NNN}: description [NN-name/INTERNALS.md#{NN}-F{NNN}]`
 - Appends PLAN.md task conventions to `AGENTS.md`
 
 ### Finalization (Human)
@@ -161,8 +165,8 @@ node tools/opensdd-check/index.js --path /path/to/project
 | Check | What it validates |
 |-------|-------------------|
 | **FILE_EXISTS** | `SPEC.md`, `ARCHITECTURE.md`, `PLAN.md`, `AGENTS.md` all present |
-| **PLAN_FORMAT** | Task lines match format with DESIGN.md references |
-| **DEP_MATRIX** | Module directories (`NN-name`) exist for dependency matrix entries |
+| **PLAN_FORMAT** | Task lines match format with INTERNALS.md references |
+| **DEP_MATRIX** | Module directories (`NN-name`) with INTERFACE.md exist for dependency matrix entries |
 | **NO_GARBAGE** | No `_v2.md`, `_final.md`, `.bak.md` versioned garbage |
 | **AGENTS_SECTIONS** | All required sections present in AGENTS.md |
 

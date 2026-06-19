@@ -6,7 +6,7 @@
 
 ## 输入
 
-全部 5 类已定稿文档：`SPEC.md`、`ARCHITECTURE.md`、各 `DESIGN.md`、`PLAN.md`、`AGENTS.md`
+全部 5 类已定稿文档：`SPEC.md`、`ARCHITECTURE.md`、各 `INTERFACE.md` / `INTERNALS.md`、`PLAN.md`、`AGENTS.md`
 
 ## 输出
 
@@ -26,6 +26,6 @@
 
 1. 先读取 `AGENTS.md` 了解项目规则
 2. 根据当前要开发的模块，读取 `ARCHITECTURE.md`（公共设计部分）
-3. 读取对应模块的 `docs/modules/{NN}-{name}/DESIGN.md`
+3. 读取对应模块的 `docs/modules/{NN}-{name}/INTERFACE.md` 和 `INTERNALS.md`
 4. 通过 `PLAN.md` 了解任务优先级和完成状态
-5. 严格遵循 `DESIGN.md` 中的接口定义和数据结构实现代码
+5. 严格遵循 `INTERFACE.md` 中的接口定义和 `INTERNALS.md` 中的实现规范实现代码

@@ -3,11 +3,11 @@
 const fs = require('fs');
 const path = require('path');
 
-// Optional reference at end: [NN-name/DESIGN.md#F-NNN]
-const REF_RE = /\[([a-zA-Z0-9]+-[a-zA-Z0-9_-]+\/DESIGN\.md#\d{2}-F\d+)\]/;
+// Optional reference at end: [NN-name/INTERNALS.md#NN-FNNN]
+const REF_RE = /\[([a-zA-Z0-9]+-[a-zA-Z0-9_-]+\/INTERNALS\.md#\d{2}-F\d+)\]/;
 
 /**
- * Extract module name from the ref path (e.g., "01-auth" from "01-auth/DESIGN.md#F-001").
+ * Extract module name from the ref path (e.g., "01-auth" from "01-auth/INTERNALS.md#01-F001").
  *
  * @param {string} ref - Reference string from task line
  * @returns {string|null} Module name or null
@@ -64,7 +64,7 @@ module.exports = async function check(root, config) {
       issues.push(`line ${i + 1}: invalid task ID "${taskId}", expected T-{NNN}`);
     }
 
-    // Check for DESIGN.md reference
+    // Check for INTERNALS.md reference
     const refMatch = descriptionPart.match(REF_RE);
     if (refMatch) {
       refCount++;
@@ -74,16 +74,16 @@ module.exports = async function check(root, config) {
       // Verify module directory exists
       if (moduleName && MODULE_DIR_RE.test(moduleName)) {
         const moduleDirPath = path.join(root, 'docs/modules', moduleName);
-        const designPath = path.join(moduleDirPath, 'DESIGN.md');
-        if (!fs.existsSync(designPath)) {
-          issues.push(`line ${i + 1}: referenced module dir "${moduleName}" exists but DESIGN.md not found`);
+        const internalsPath = path.join(moduleDirPath, 'INTERNALS.md');
+        if (!fs.existsSync(internalsPath)) {
+          issues.push(`line ${i + 1}: referenced module dir "${moduleName}" exists but INTERNALS.md not found`);
         }
       }
     }
   }
 
   if (issues.length === 0) {
-    const detail = `${taskCount} tasks, ${refCount} with DESIGN.md references`;
+    const detail = `${taskCount} tasks, ${refCount} with INTERNALS.md references`;
     return { name: 'PLAN_FORMAT', status: 'pass', messages: [detail] };
   }
 

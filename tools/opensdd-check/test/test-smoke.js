@@ -25,16 +25,29 @@ function createMinimalProject(dir) {
   fs.writeFileSync(path.join(dir, 'docs/SPEC.md'), '# SPEC', 'utf-8');
   fs.writeFileSync(
     path.join(dir, 'docs/ARCHITECTURE.md'),
-    '# ARCHITECTURE\n\n## 模块引用表\n| 编号 | 模块名 | 功能简述 | 详细设计 |\n|------|--------|----------|----------|\n| 01 | auth | Auth | docs/modules/01-auth/DESIGN.md |\n\n## 模块依赖矩阵\n| 模块 | 依赖 | 所需接口 |\n|------|------|----------|\n| 01-auth | - | none |\n',
+    '# ARCHITECTURE\n\n## 模块引用表\n| 编号 | 模块名 | 功能简述 | 详细设计 |\n|------|--------|----------|----------|\n| 01 | auth | Auth | docs/modules/01-auth/INTERFACE.md |\n\n## 模块依赖矩阵\n| 模块 | 依赖 | 所需接口 |\n|------|------|----------|\n| 01-auth | - | none |\n',
     'utf-8',
   );
-  fs.writeFileSync(path.join(dir, 'docs/PLAN.md'), '# Plan\n\n- [ ] T-001: Setup [01-auth/DESIGN.md#F-001]\n', 'utf-8');
+  fs.writeFileSync(
+    path.join(dir, 'docs/PLAN.md'),
+    '# Plan\n\n- [ ] T-001: Setup [01-auth/INTERNALS.md#01-F001]\n',
+    'utf-8',
+  );
   fs.writeFileSync(
     path.join(dir, 'AGENTS.md'),
     '# AGENTS.md\n\n## 质量验收标准\nContent\n\n## 文件操作范围\nContent\n\n## 提交规范\nContent\n\n## 测试要求\nContent\n\n## 升级条件\nContent\n\n## 跨模块规则\nContent\n\n## 任务规范\nContent\n',
     'utf-8',
   );
-  fs.writeFileSync(path.join(dir, 'docs/modules/01-auth/DESIGN.md'), '## DESIGN\n\n### F-001: Auth feature\n', 'utf-8');
+  fs.writeFileSync(
+    path.join(dir, 'docs/modules/01-auth/INTERFACE.md'),
+    '## INTERFACE\n\n### Data Structures\nAuth module interface\n',
+    'utf-8',
+  );
+  fs.writeFileSync(
+    path.join(dir, 'docs/modules/01-auth/INTERNALS.md'),
+    '## INTERNALS\n\n### 01-F001: Auth feature\n',
+    'utf-8',
+  );
 }
 
 describe('opensdd-check — smoke test (full E2E)', () => {

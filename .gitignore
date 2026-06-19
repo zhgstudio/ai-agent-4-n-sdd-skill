@@ -10,6 +10,7 @@ Thumbs.db
 
 # Dependencies
 node_modules/
+tools/opensdd-check/node_modules/
 
 # Skills CLI
 .agents/

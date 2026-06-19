@@ -23,3 +23,24 @@ jobs:
         with:
           args: --exclude 'https://github.com' --exclude 'http://localhost' -- '.'
           fail: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: opensdd-check — Install dependencies
+        run: npm ci
+        working-directory: tools/opensdd-check
+
+      - name: opensdd-check — Lint
+        run: npm run lint
+        working-directory: tools/opensdd-check
+
+      - name: opensdd-check — Format check
+        run: npm run format-check
+        working-directory: tools/opensdd-check
+
+      - name: opensdd-check — Run tests
+        run: npm test
+        working-directory: tools/opensdd-check

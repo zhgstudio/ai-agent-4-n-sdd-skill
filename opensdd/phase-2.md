@@ -6,7 +6,7 @@
 
 ## 上下文
 
-仅加载 `docs/SPEC.md`（只读）+ `AGENTS.md`（只读，了解质量验收标准）
+仅加载 `docs/SPEC.md`（只读）
 
 ## 输入
 
@@ -34,12 +34,12 @@
    ## 模块引用表
    | 编号 | 模块名 | 功能简述 | 详细设计 |
    |------|--------|----------|----------|
-   | 01 | auth | 用户认证 | docs/modules/01-auth/DESIGN.md |
-   | 02 | task-core | 任务核心 | docs/modules/02-task-core/DESIGN.md |
-   ```
-   - **编号** = 两位数字，与模块目录名一致
-   - **模块名** = 英文短名，与目录名一致
-   - **详细设计** = 指向该模块 DESIGN.md 的引用路径
+    | 01 | auth | 用户认证 | docs/modules/01-auth/INTERFACE.md |
+    | 02 | task-core | 任务核心 | docs/modules/02-task-core/INTERFACE.md |
+    ```
+    - **编号** = 两位数字，与模块目录名一致
+    - **模块名** = 英文短名，与目录名一致
+    - **详细设计** = 指向该模块 INTERFACE.md 的引用路径
 
    ### 模块依赖矩阵
    ```markdown
@@ -53,9 +53,9 @@
    ### 公共设计
    跨模块共用的设计决策：认证方案、数据流拓扑、部署架构概览（如适用）。
 
-3. **重要职责边界**：`ARCHITECTURE.md` 只写整体架构和公共设计，具体的模块内部设计放在对应模块的 `DESIGN.md` 中。`ARCHITECTURE.md` 中通过模块引用表引用到各 `DESIGN.md`，这样编码阶段的开发者只需要阅读 `AGENTS.md` + `ARCHITECTURE.md`（公共部分）+ 当前模块的 `DESIGN.md`
+3. **重要职责边界**：`ARCHITECTURE.md` 只写整体架构和公共设计，具体的模块内部设计放在对应模块的 `INTERNALS.md` 中。`ARCHITECTURE.md` 中通过模块引用表引用到各 `INTERFACE.md`，这样编码阶段的开发者只需要阅读 `AGENTS.md` + `ARCHITECTURE.md`（公共部分）+ 当前模块的 `INTERFACE.md` 和 `INTERNALS.md`
 
-4. **写入 `AGENTS.md` 主体**，以 `## ` 为章节标题追加以下章节：
+4. **写入 `AGENTS.md` 主体**，以 `## ` 为章节标题追加以下章节（AGENTS.md 全部章节**必须使用 `## ` 二级标题**，不允许使用 `### ` 三级标题，以确保 `opensdd-check` 的 AGENTS_SECTIONS 检查项能正确识别）：
    - 文件操作范围（AI 可读/可写的目录白名单）
    - 提交规范（Commit 消息格式）
    - 测试要求（最小覆盖率、必须通过的测试范围）

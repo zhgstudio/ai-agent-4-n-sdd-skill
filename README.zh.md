@@ -33,9 +33,11 @@ docs/
 │
 └── modules/                # 📦 N. 模块详细设计
     ├── 01-auth/
-    │   └── DESIGN.md
+    │   ├── INTERFACE.md
+    │   └── INTERNALS.md
     ├── 02-task-core/
-    │   └── DESIGN.md
+    │   ├── INTERFACE.md
+    │   └── INTERNALS.md
     └── ...
 ```
 
@@ -73,9 +75,9 @@ docs/
 
 | 角色 | 阶段 | 读取 | 写入 |
 |------|------|------|------|
-| **PM Agent**（产品经理） | 阶段一 | 无（新会话） | `SPEC.md`、追加 `AGENTS.md` 质量验收标准 |
+| **PM Agent**（产品经理） | 阶段一 | 无（新会话） | `SPEC.md` |
 | **Architect Agent**（架构师） | 阶段二 | `SPEC.md`（只读） | `ARCHITECTURE.md`、写入 `AGENTS.md` 主体 |
-| **Designer Agent**（模块设计师）× N | 阶段三 | `ARCHITECTURE.md` + 被依赖模块的接口部分 | `docs/modules/{NN}-{name}/DESIGN.md` |
+| **Designer Agent**（模块设计师）× N | 阶段三 | `ARCHITECTURE.md` + 被依赖模块的 `INTERFACE.md` | `docs/modules/{NN}-{name}/INTERFACE.md` + `INTERNALS.md` |
 | **Project Manager Agent**（项目经理） | 阶段四 | 全部已定稿文档 | `PLAN.md`、追加 `AGENTS.md` 任务规范 |
 
 每个角色启动新会话时只加载职责范围内的文件，每阶段末尾有人工评审门禁。
@@ -87,27 +89,28 @@ docs/
 ```
 阶段一 ───→ 阶段二 ───→ 阶段三 ───→ 阶段四 ───→ 人类最终审查
 PM Agent    Architect   Designer     PM Agent     锁定全部文档
-SPEC.md     ARCHITECTURE.md  模块 DESIGN   PLAN.md      AGENTS.md 就绪
-             AGENTS.md   (逐个串行)   追加 AGENTS   进入编码阶段
+SPEC.md     ARCHITECTURE.md  模块 INTERFACE+  PLAN.md      AGENTS.md 就绪
+             AGENTS.md   INTERNALS   追加 AGENTS   进入编码阶段
+                        (逐个串行)
 ```
 
 ### 阶段一：需求规格（PM Agent）
 
-产出 `docs/SPEC.md`，覆盖业务背景、功能需求、数据需求、非功能性约束。同时在 `AGENTS.md` 中追加质量验收标准章节。
+产出 `docs/SPEC.md`，覆盖业务背景、功能需求、数据需求、非功能性约束。
 
 ### 阶段二：总体架构设计（Architect Agent）
 
 产出 `docs/ARCHITECTURE.md`，包含技术栈标准、全局编码规范、**模块引用表**（`NN-name` 编号格式）、模块依赖矩阵、公共设计。同时写入 `AGENTS.md` 主体（文件操作范围、提交规范、测试要求、升级条件、跨模块规则）。
 
-**职责边界**：ARCHITECTURE.md 只写整体架构和公共设计，模块内部设计放在对应的 DESIGN.md 中。
+**职责边界**：ARCHITECTURE.md 只写整体架构和公共设计，模块内部设计放在对应的 INTERNALS.md 中。
 
 ### 阶段三：模块详细设计（Designer Agent）
 
-产出 `docs/modules/{NN}-{name}/DESIGN.md`，包含模块边界、数据结构、接口定义、**F-{NNN} 功能特性列表**。按依赖顺序串行推进，一次只做一个模块。
+产出 `docs/modules/{NN}-{name}/INTERFACE.md` + `INTERNALS.md`，包含模块边界、数据结构、接口定义、**{NN}-F{NNN} 功能特性列表**。按依赖顺序串行推进，一次只做一个模块。
 
 ### 阶段四：任务计划（Project Manager Agent）
 
-产出 `docs/PLAN.md`，每个任务引用对应 DESIGN.md 的 F-{NNN} 章节（如 `[01-auth/DESIGN.md#F-001]`）。严格不涉及方案细节，只做任务跟踪。同时追加 `AGENTS.md` 的 PLAN.md 任务规范章节。
+产出 `docs/PLAN.md`，每个任务引用对应 INTERNALS.md 的 {NN}-F{NNN} 章节（如 `[01-auth/INTERNALS.md#01-F001]`）。严格不涉及方案细节，只做任务跟踪。同时追加 `AGENTS.md` 的 PLAN.md 任务规范章节。
 
 ### 最终定稿（人类）
 
@@ -117,8 +120,8 @@ SPEC.md     ARCHITECTURE.md  模块 DESIGN   PLAN.md      AGENTS.md 就绪
 
 ## 变更传播
 
-1. 修改源头文档（SPEC → ARCH → DESIGN → PLAN）
-2. 级联更新引用关系，确保 `PLAN.md` 中的 `[NN-name/DESIGN.md#F-NNN]` 可追溯链完整
+1. 修改源头文档（SPEC → ARCH → INTERFACE/INTERNALS → PLAN）
+2. 级联更新引用关系，确保 `PLAN.md` 中的 `[NN-name/INTERNALS.md#{NN}-F{NNN}]` 可追溯链完整
 3. 跨模块接口变更须升级给人类仲裁
 
 ---
@@ -137,7 +140,7 @@ cp -r /tmp/opensdd-skill/opensdd .opencode/skills/
 rm -rf /tmp/opensdd-skill
 ```
 
-> **语言说明**：所有生成的文档（SPEC.md、ARCHITECTURE.md、AGENTS.md、PLAN.md 以及模块 DESIGN.md）均使用**中文**编写。
+> **语言说明**：所有生成的文档（SPEC.md、ARCHITECTURE.md、AGENTS.md、PLAN.md 以及模块 INTERFACE.md / INTERNALS.md）均使用**中文**编写。
 
 ### 2. 唤醒你的 AI
 
@@ -174,8 +177,8 @@ node tools/opensdd-check/index.js --path /path/to/project
 | 检查项 | 校验内容 |
 |--------|----------|
 | **FILE_EXISTS** | `SPEC.md`、`ARCHITECTURE.md`、`PLAN.md`、`AGENTS.md` 是否存在 |
-| **PLAN_FORMAT** | 任务行格式是否符合规范并引用正确的 DESIGN.md 章节 |
-| **DEP_MATRIX** | 依赖矩阵中声明的模块是否有对应的 `docs/modules/{NN}-{name}/DESIGN.md` |
+| **PLAN_FORMAT** | 任务行格式是否符合规范并引用正确的 INTERNALS.md 章节 |
+| **DEP_MATRIX** | 依赖矩阵中声明的模块是否有对应的 `docs/modules/{NN}-{name}/INTERFACE.md` |
 | **NO_GARBAGE** | 是否混入 `_v2.md`、`_final.md` 等版本残留垃圾文件 |
 | **AGENTS_SECTIONS** | AGENTS.md 中是否包含全部必要章节 |
 

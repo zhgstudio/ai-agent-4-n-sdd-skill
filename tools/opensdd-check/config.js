@@ -32,7 +32,7 @@ const DEFAULT_CONFIG = {
     { keywords: ['跨模块规则', 'cross-module rule', 'cross module rule', '模块间'] },
     { keywords: ['plan.md', '任务规范', 'task convention', '任务标记'] },
   ],
-  garbagePatterns: ['_v\\d+', '_final', '_tmp\\w*', '_old', '_backup', '\\.bak'],
+  garbagePatterns: ['_v\\d+', '_final', '_tmp\\w*', '_old', '_backup', '\\.bak', '-v\\d+'],
   taskRegex: '^\\-\\s+\\[([ x])\\]\\s+(T-\\d+)\\s*:\\s*(.+)$',
   moduleDirPattern: '^\\d{2}-[a-zA-Z0-9_-]+$',
 };

@@ -18,6 +18,9 @@
     "lib/"
   ],
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "devDependencies": {
     "eslint": "^8.57.0",
     "prettier": "^3.0.0"

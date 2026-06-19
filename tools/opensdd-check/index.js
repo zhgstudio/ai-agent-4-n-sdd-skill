@@ -38,7 +38,7 @@ CHECKS
   NO_GARBAGE            No _v2.md, _final.md, _tmp etc. versioned garbage files
   AGENTS_SECTIONS       Required sections present in AGENTS.md
   MODULE_CONTENT        API.md/DESIGN.md required sections and feature list
-  INTERFACE_CONSISTENCY Cross-module interface signature matching
+  API_CONSISTENCY       Cross-module interface signature matching
   LANGUAGE_CONSISTENCY  All documents use consistent language (zh/en)
   PUBLIC_DESIGN_COMPLIANCE  Module files follow ARCHITECTURE.md public design rules
 `);

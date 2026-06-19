@@ -93,7 +93,7 @@ async function checkInterfaceConsistency(root, config) {
 
   if (!fs.existsSync(archPath)) {
     return {
-      name: 'INTERFACE_CONSISTENCY',
+      name: 'API_CONSISTENCY',
       status: 'skip',
       messages: ['docs/ARCHITECTURE.md not found, skipping'],
     };
@@ -104,7 +104,7 @@ async function checkInterfaceConsistency(root, config) {
     content = fs.readFileSync(archPath, 'utf-8');
   } catch (err) {
     return {
-      name: 'INTERFACE_CONSISTENCY',
+      name: 'API_CONSISTENCY',
       status: 'fail',
       messages: [`Failed to read ARCHITECTURE.md: ${err.message}`],
     };
@@ -114,7 +114,7 @@ async function checkInterfaceConsistency(root, config) {
 
   if (depMatrix.length === 0) {
     return {
-      name: 'INTERFACE_CONSISTENCY',
+      name: 'API_CONSISTENCY',
       status: 'skip',
       messages: ['No dependency matrix found in ARCHITECTURE.md'],
     };
@@ -190,14 +190,14 @@ async function checkInterfaceConsistency(root, config) {
 
   if (issues.length === 0) {
     return {
-      name: 'INTERFACE_CONSISTENCY',
+      name: 'API_CONSISTENCY',
       status: 'pass',
       messages: [`Cross-module interface signatures consistent (strategy: ${strategyLabel})`],
     };
   }
 
   return {
-    name: 'INTERFACE_CONSISTENCY',
+    name: 'API_CONSISTENCY',
     status: 'fail',
     messages: issues,
   };

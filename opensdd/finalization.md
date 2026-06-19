@@ -58,7 +58,7 @@
 | NO_GARBAGE | 无版本残留文件 |
 | AGENTS_SECTIONS | AGENTS.md 含必要章节 |
 | MODULE_CONTENT | 各模块文件含必要章节和特征列表 |
-| INTERFACE_CONSISTENCY | 跨模块接口签名匹配 |
+| API_CONSISTENCY | 跨模块接口签名匹配 |
 | LANGUAGE_CONSISTENCY | 所有文档语言统一 |
 | PUBLIC_DESIGN_COMPLIANCE | 命名规范遵循公共设计 |
 | FRONTMATTER | 技能文件含有效 frontmatter |

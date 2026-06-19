@@ -61,6 +61,9 @@ function mergeConfig(defaults, user) {
     if (Array.isArray(defaults[key]) && Array.isArray(user[key])) {
       // Arrays extend (don't replace)
       result[key] = [...defaults[key], ...user[key]];
+    } else if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key]) && typeof user[key] === 'object' && user[key] !== null && !Array.isArray(user[key])) {
+      // Nested objects merge recursively (e.g. publicDesignRules)
+      result[key] = { ...defaults[key], ...user[key] };
     } else if (defaults[key] !== undefined) {
       // Known keys: user overrides
       result[key] = user[key];

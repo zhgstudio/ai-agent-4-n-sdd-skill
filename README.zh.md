@@ -77,7 +77,7 @@ docs/
 |------|------|------|------|
 | **PM Agent**（产品经理） | 阶段一 | 无（新会话） | `SPEC.md` |
 | **Architect Agent**（架构师） | 阶段二 | `SPEC.md`（只读） | `ARCHITECTURE.md`、写入 `AGENTS.md` 主体 |
-| **Designer Agent**（模块设计师）× N | 阶段三 | `ARCHITECTURE.md` + 被依赖模块的 `API.md` | `docs/modules/{NN}-{name}/API.md` + `DESIGN.md` |
+| **Designer Agent**（模块设计师）× N | 阶段三 | `ARCHITECTURE.md` + 所依赖模块的 `API.md` | `docs/modules/{NN}-{name}/API.md` + `DESIGN.md` |
 | **Project Manager Agent**（项目经理） | 阶段四 | 全部已定稿文档 | `PLAN.md`、追加 `AGENTS.md` 任务规范 |
 
 每个角色启动新会话时只加载职责范围内的文件，每阶段末尾有人工评审门禁。

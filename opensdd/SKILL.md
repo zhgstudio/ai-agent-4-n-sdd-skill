@@ -27,7 +27,7 @@ docs/
 │
 └── modules/                # N. 模块详细设计
     ├── 01-{name}/
-    │   ├── API.md    # 对外接口定义（被依赖方只读）
+    │   ├── API.md    # 对外接口定义（所依赖方只读）
     │   └── DESIGN.md    # 内部实现细节（本模块可读写）
     ├── 02-{name}/
     │   ├── API.md
@@ -66,7 +66,7 @@ docs/
 |------|------|----|----|
 | **PM Agent**（产品经理） | 阶段一 | 无（新会话） | `docs/SPEC.md` |
 | **Architect Agent**（架构师） | 阶段二 | `SPEC.md`（只读） | `docs/ARCHITECTURE.md`、写入 `AGENTS.md` 主体 |
-| **Designer Agent**（模块设计师） × N | 阶段三 | `ARCHITECTURE.md` + 被依赖模块的 `API.md` | `docs/modules/{NN}-{name}/API.md` + `DESIGN.md` |
+| **Designer Agent**（模块设计师） × N | 阶段三 | `ARCHITECTURE.md` + 所依赖模块的 `API.md` | `docs/modules/{NN}-{name}/API.md` + `DESIGN.md` |
 | **Project Manager Agent**（项目经理） | 阶段四 | 全部已定稿设计文档 | `docs/PLAN.md`、追加 `AGENTS.md` 任务规范 |
 
 每个角色启动新的 AI 会话，只加载职责范围内的文件。每阶段产物经人类评审定稿后，才能进入下一阶段。
@@ -88,7 +88,7 @@ SPEC.md     ARCHITECTURE.md  模块 API+   PLAN.md      锁定全部文档
 ### 核心约束
 
 - 每个阶段以人类明确回复"定稿"为晋级条件
-- 阶段三中：所有模块严格按依赖顺序串行推进——被依赖模块设计定稿后，才能开始依赖它的模块
+- 阶段三中：所有模块严格按依赖顺序串行推进——所依赖模块设计定稿后，才能开始依赖它的模块
 - 一个模块产出设计文件后即进入人类评审，不等所有模块完成
 - 所有文档使用人类指定的统一语言
 
@@ -150,7 +150,7 @@ SPEC.md     ARCHITECTURE.md  模块 API+   PLAN.md      锁定全部文档
 
 - **禁止越权**：PM 不讨论技术方案，Architect 不写模块设计细节，Designer 不写代码，Project Manager 不修改设计内容
 - **禁止创建垃圾文件**：不允许创建 `_v2.md`、`_final.md`、`.bak.md` 等版本残留文件，一律物理覆盖
-- **禁止跨模块注意力污染**：Designer 在设计模块 A 时只允许读取被依赖模块的接口部分
+- **禁止跨模块注意力污染**：Designer 在设计模块 A 时只允许读取所依赖模块的接口部分
 - **禁止脱离引用**：PLAN.md 的每条任务必须引用对应 `DESIGN.md` 的章节
 - **禁止 AI 操作远程仓库**：AI 仅允许 `git add` 和 `git commit`、`git push`（仅推送当前分支）。不允许创建/切换分支，不允许 `merge`、`rebase`
 

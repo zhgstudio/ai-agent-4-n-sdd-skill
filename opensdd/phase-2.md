@@ -55,7 +55,7 @@
 
 3. **重要职责边界**：`ARCHITECTURE.md` 只写整体架构和公共设计，具体的模块内部设计放在对应模块的 `DESIGN.md` 中。`ARCHITECTURE.md` 中通过模块引用表引用到各模块目录，这样编码阶段的开发者只需要阅读 `AGENTS.md` + `ARCHITECTURE.md`（公共部分）+ 当前模块目录下的 `API.md` 和 `DESIGN.md`
 
-4. **写入 `AGENTS.md` 主体**，以 `## ` 为章节标题追加以下章节（AGENTS.md 全部章节**必须使用 `## ` 二级标题**，不允许使用 `### ` 三级标题，以确保 `opensdd-check` 的 AGENTS_SECTIONS 检查项能正确识别）：
+4. **写入 `AGENTS.md` 主体**，以 `## ` 为章节标题追加以下章节（AGENTS.md 的顶层章节须使用 `## ` 二级标题，子层级允许使用 `### ` 三级标题，以确保 `opensdd-check` 的 AGENTS_SECTIONS 检查项能正确识别顶层章节）：
    - 文件操作范围（AI 可读/可写的目录白名单）
    - 提交规范（Commit 消息格式）
    - 测试要求（最小覆盖率、必须通过的测试范围）

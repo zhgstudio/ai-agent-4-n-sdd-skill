@@ -57,4 +57,12 @@ describe('config', () => {
     console.warn = origWarn;
     assert.ok(warnings.some((w) => w.includes('unknownKey')));
   });
+
+  it('should merge nested objects (not replace)', () => {
+    const configPath = path.join(tmpDir, '.sddrc.json');
+    fs.writeFileSync(configPath, JSON.stringify({ publicDesignRules: { namingConvention: 'snake_case' } }));
+    const config = loadConfig(tmpDir);
+    assert.strictEqual(config.publicDesignRules.namingConvention, 'snake_case');
+    assert.deepStrictEqual(config.publicDesignRules.allowedPatterns, []);
+  });
 });

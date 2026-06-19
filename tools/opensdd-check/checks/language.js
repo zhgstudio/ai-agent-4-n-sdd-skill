@@ -3,22 +3,31 @@
 const fs = require('fs');
 const path = require('path');
 
-const CHINESE_PATTERN = /[\u4e00-\u9fff]/;
-const ENGLISH_PATTERN = /[a-zA-Z]/;
+const CHINESE_PATTERN = /[\u4e00-\u9fff]/g;
+const ENGLISH_PATTERN = /[a-zA-Z]/g;
 
 /**
  * Detect document language based on character ratio.
+ * Strips code blocks and markdown formatting before analysis
+ * to reduce false positives from English identifiers in Chinese docs.
  *
- * NOTE: 30% threshold is a heuristic. Documents mixing Chinese prose
- * with English code blocks (API names, identifiers) may be misclassified.
- * No universal solution; trade-off accepted.
+ * NOTE: No universal solution exists for mixed-language technical docs;
+ * this heuristic improves on pure character-count but may still misclassify
+ * documents with extremely dense English code listings.
  *
  * @param {string} text - Document content
  * @returns {string} 'zh', 'en', or 'unknown'
  */
 function detectLanguage(text) {
-  const chineseMatches = (text.match(CHINESE_PATTERN) || []).length;
-  const englishMatches = (text.match(ENGLISH_PATTERN) || []).length;
+  // Strip fenced code blocks (```...```) to avoid English code skewing results
+  const stripped = text.replace(/```[\s\S]*?```/g, '');
+  // Strip inline code spans
+  const noCode = stripped.replace(/`[^`]+`/g, '');
+  // Strip URLs
+  const noUrl = noCode.replace(/https?:\/\/\S+/g, '');
+
+  const chineseMatches = (noUrl.match(CHINESE_PATTERN) || []).length;
+  const englishMatches = (noUrl.match(ENGLISH_PATTERN) || []).length;
 
   if (chineseMatches === 0 && englishMatches === 0) {
     return 'unknown';
@@ -123,3 +132,5 @@ async function checkLanguageConsistency(root, config) {
 module.exports = async function check(root, config) {
   return checkLanguageConsistency(root, config);
 };
+
+module.exports.detectLanguage = detectLanguage;

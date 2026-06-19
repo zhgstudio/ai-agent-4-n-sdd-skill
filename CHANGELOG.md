@@ -2,6 +2,27 @@
 
 All notable changes to the OpenSDD Skill will be documented here.
 
+## [3.3.0] - 2026-06-19
+
+### Changed
+- **AGENTS.md heading constraint softened** (phase-2.md): "必须使用 `## `" relaxed to "顶层章节须使用 `## `"，子层级允许 `### `
+- **Terminology clarified**: "被依赖模块" → "所依赖模块" across all skill docs, phase files, and README.zh.md to eliminate ambiguity about which module is the dependent vs provider
+- **PLAN.md dependency syntax formalized** (phase-4.md): `depends: T-NNN` with comma-separated multi-dependency syntax defined; plan.js now validates dependency references
+- **Language detection improved**: `detectLanguage()` now strips code blocks, inline code spans, and URLs before character ratio analysis to reduce false positives from English identifiers in Chinese docs; also fixed regex `g` flag omission that caused `.match()` to return only 1 match per character class
+- **Strategy auto-detection improved** (strategies/index.js): Explicit tie-breaking order (grpc > function > http) and zero-match fallback to http
+- **Version aligned**: opensdd-check package.json bumped from 3.1.0 to 3.3.0 to match SKILL.md
+
+### Fixed
+- **config.js `mergeConfig` shallow copy bug**: Nested objects (e.g. `publicDesignRules`) are now deep-merged instead of replaced, preventing `allowedPatterns` loss when user overrides only `namingConvention`
+- **.sddrc.json.example out of sync**: Removed "质量验收" section from `requiredAgentSections` (moved to SPEC.md in v3.2.0)
+
+### Added
+- **phase-1.md quality acceptance checklist item**: Explicit review entry for quantifiable acceptance criteria in SPEC.md
+- **phase-1.md output validation step**: AI advised to run `opensdd-check` after generating SPEC.md
+- **.lycheeignore**: Replaced blanket `--exclude 'https://github.com'` with targeted exclusion list in CI
+- **Unit tests**: Added test-interface-consistency.js (4 tests) and test-language.js (11 tests) for independent coverage
+- **config.js test**: Added nested object merge test case
+
 ## [3.2.0] - 2026-06-19
 
 ### Changed

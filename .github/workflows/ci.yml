@@ -22,7 +22,7 @@ jobs:
       - name: Check Dead Links
         uses: lycheeverse/lychee-action@v1
         with:
-          args: --exclude 'https://github.com' --exclude 'http://localhost' -- '.'
+          args: --exclude 'http://localhost' --exclude-path .lycheeignore -- '.'
           fail: true
 
       - name: Setup Node.js

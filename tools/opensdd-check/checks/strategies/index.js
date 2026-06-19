@@ -43,6 +43,8 @@ function getStrategy(name) {
 /**
  * Auto-detect the best strategy from document content.
  * Scores each strategy by number of matches across all documents.
+ * Tie-breaking: prefers more specific strategies in order: grpc > function > http.
+ * gRPC patterns are least likely to be false positives, HTTP patterns most likely.
  *
  * @param {string[]} contents - Array of document content strings
  * @returns {InterfaceStrategy}
@@ -58,12 +60,19 @@ function detect(contents) {
     }
   }
 
-  // Pick the strategy with the most matches
+  // If no matches: default to http (most common convention)
+  const totalMatches = Object.values(scores).reduce((a, b) => a + b, 0);
+  if (totalMatches === 0) {
+    return STRATEGIES.http;
+  }
+
+  // Tie-breaking order: grpc > function > http (specificity descending)
+  const specificity = ['grpc', 'function', 'http'];
   let best = 'http';
   let bestScore = 0;
-  for (const [name, score] of Object.entries(scores)) {
-    if (score > bestScore) {
-      bestScore = score;
+  for (const name of specificity) {
+    if (scores[name] > bestScore) {
+      bestScore = scores[name];
       best = name;
     }
   }

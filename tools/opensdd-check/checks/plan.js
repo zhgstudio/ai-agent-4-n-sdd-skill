@@ -6,6 +6,9 @@ const path = require('path');
 // Optional reference at end: [NN-name/DESIGN.md#NN-FNNN] where NNN is 3 digits per SKILL.md
 const REF_RE = /\[([a-zA-Z0-9]+-[a-zA-Z0-9_-]+\/DESIGN\.md#\d{2}-F\d{3})\]/;
 
+// Dependency syntax: depends: T-NNN or depends: T-NNN, T-NNN (comma-separated)
+const DEPENDS_RE = /\bdepends:\s*(T-\d+(?:\s*,\s*T-\d+)*)$/i;
+
 /**
  * Extract module name from the ref path (e.g., "01-auth" from "01-auth/DESIGN.md#01-F001").
  *
@@ -84,6 +87,17 @@ module.exports = async function check(root, config) {
         const internalsPath = path.join(moduleDirPath, 'DESIGN.md');
         if (!fs.existsSync(internalsPath)) {
           issues.push(`line ${i + 1}: referenced module dir "${moduleName}" exists but DESIGN.md not found`);
+        }
+      }
+    }
+
+    // Validate dependency syntax (depends: T-NNN or depends: T-NNN, T-NNN)
+    const dependsMatch = descriptionPart.match(DEPENDS_RE);
+    if (dependsMatch) {
+      const deps = dependsMatch[1].split(',').map((d) => d.trim());
+      for (const dep of deps) {
+        if (!/^T-\d+$/.test(dep)) {
+          issues.push(`line ${i + 1}: invalid dependency "${dep}", expected T-{NNN}`);
         }
       }
     }

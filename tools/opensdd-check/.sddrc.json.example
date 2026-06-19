@@ -1,7 +1,6 @@
 {
   "requiredFiles": ["docs/SPEC.md", "docs/ARCHITECTURE.md", "docs/PLAN.md", "AGENTS.md"],
   "requiredAgentSections": [
-    { "keywords": ["质量验收", "quality acceptance", "质量要求", "quality standard", "验收标准"] },
     { "keywords": ["文件操作范围", "file operation scope", "file access scope"] },
     { "keywords": ["提交规范", "commit specification", "commit convention", "commit message"] },
     { "keywords": ["测试要求", "test requirement", "test coverage", "测试覆盖"] },

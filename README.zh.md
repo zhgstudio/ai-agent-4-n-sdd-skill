@@ -174,16 +174,6 @@ node tools/opensdd-check/index.js --path /path/to/project
 
 > AI 智能体可在任意阶段主动执行验证——只需说"检查项目结构"或"run validation"。
 
-5 项检查：
-
-| 检查项 | 校验内容 |
-|--------|----------|
-| **FILE_EXISTS** | `SPEC.md`、`ARCHITECTURE.md`、`PLAN.md`、`AGENTS.md` 是否存在 |
-| **PLAN_FORMAT** | 任务行格式是否符合规范并引用正确的 DESIGN.md 章节 |
-| **DEP_MATRIX** | 依赖矩阵中声明的模块是否有对应的 `docs/modules/{NN}-{name}/API.md` |
-| **NO_GARBAGE** | 是否混入 `_v2.md`、`_final.md` 等版本残留垃圾文件 |
-| **AGENTS_SECTIONS** | AGENTS.md 中是否包含全部必要章节 |
-
 `--json` 输出 JSON 供 CI 集成，`--strict` 将 Warning 视为 Error。
 
 ---

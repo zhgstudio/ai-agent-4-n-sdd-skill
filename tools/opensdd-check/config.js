@@ -12,7 +12,6 @@ const path = require('path');
  * @typedef {object} SddConfig
  * @property {string[]} requiredFiles - List of required file paths relative to root
  * @property {AgentSection[]} requiredAgentSections - Required sections for AGENTS.md
- * @property {string[]} garbagePatterns - Regex patterns for garbage file detection
  * @property {string} taskRegex - Regex pattern for task line format in PLAN.md
  * @property {string} moduleDirPattern - Regex pattern for module directory names
  * @property {string} interfaceStrategy - Interface check strategy ('http'|'grpc'|'function'|'auto')
@@ -66,25 +65,21 @@ const DEFAULT_CONFIG = {
       ],
     },
   ],
-  garbagePatterns: ['_v\\d+', '_final', '_tmp\\w*', '_old', '_backup', '\\.bak', '-v\\d+'],
   taskRegex: '^\\-\\s+\\[([ x])\\]\\s+(T-\\d+)\\s*:\\s*(.+)$',
   moduleDirPattern: '^\\d{2}-[a-zA-Z0-9_-]+$',
   requiredApiSections: ['模块概述与职责边界', '核心数据结构', '接口定义'],
   requiredDesignSections: ['核心逻辑流程', '内部实现细节', '功能特性列表'],
   interfaceStrategy: 'auto',
-  skipDirs: ['node_modules', '.git', '.github'],
 };
 
 const CONFIG_SCHEMA = {
   requiredFiles: 'string[]',
   requiredAgentSections: 'object[]',
-  garbagePatterns: 'string[]',
   taskRegex: 'string',
   moduleDirPattern: 'string',
   interfaceStrategy: ['auto', 'http', 'grpc', 'function'],
   requiredApiSections: 'string[]',
   requiredDesignSections: 'string[]',
-  skipDirs: 'string[]',
 };
 
 /**

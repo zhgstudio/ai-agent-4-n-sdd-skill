@@ -5,7 +5,6 @@ const path = require('path');
 const filesCheck = require('./checks/files');
 const planCheck = require('./checks/plan');
 const matrixCheck = require('./checks/matrix');
-const garbageCheck = require('./checks/garbage');
 const agentsCheck = require('./checks/agents');
 const frontmatterCheck = require('./checks/frontmatter');
 const moduleContentCheck = require('./checks/module-content');
@@ -30,7 +29,6 @@ CHECKS
   FILE_EXISTS           SPEC.md, ARCHITECTURE.md, PLAN.md, AGENTS.md presence
   PLAN_FORMAT           Task format validity in PLAN.md (with DESIGN.md references)
   DEP_MATRIX            Module directories (NN-name) exist with DESIGN.md for dependency matrix entries
-  NO_GARBAGE            No _v2.md, _final.md, _tmp etc. versioned garbage files
   AGENTS_SECTIONS       Required sections present in AGENTS.md
   MODULE_CONTENT        API.md/DESIGN.md required sections and feature list
   API_CONSISTENCY       Cross-module interface signature matching
@@ -73,7 +71,6 @@ async function main() {
     filesCheck(resolvedRoot, config),
     planCheck(resolvedRoot, config),
     matrixCheck(resolvedRoot, config),
-    garbageCheck(resolvedRoot, config),
     agentsCheck(resolvedRoot, config),
     frontmatterCheck(resolvedRoot, config),
     moduleContentCheck(resolvedRoot, config),

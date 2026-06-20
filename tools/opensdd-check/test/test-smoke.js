@@ -15,7 +15,6 @@ describe('opensdd-check smoke test', () => {
       const filesCheck = require('../checks/files');
       const planCheck = require('../checks/plan');
       const matrixCheck = require('../checks/matrix');
-      const garbageCheck = require('../checks/garbage');
       const agentsCheck = require('../checks/agents');
       const frontmatterCheck = require('../checks/frontmatter');
       const moduleContentCheck = require('../checks/module-content');
@@ -26,7 +25,6 @@ describe('opensdd-check smoke test', () => {
         filesCheck(root, config),
         planCheck(root, config),
         matrixCheck(root, config),
-        garbageCheck(root, config),
         agentsCheck(root, config),
         frontmatterCheck(root, config),
         moduleContentCheck(root, config),

@@ -63,6 +63,10 @@ function detect(contents) {
   // If no matches: default to http (most common convention)
   const totalMatches = Object.values(scores).reduce((a, b) => a + b, 0);
   if (totalMatches === 0) {
+    console.warn(
+      'Warning: No interface patterns detected in any API.md — falling back to HTTP strategy. ' +
+        'If your project uses gRPC or function-call interfaces, verify your API.md documentation format.',
+    );
     return STRATEGIES.http;
   }
 

@@ -47,8 +47,9 @@ function splitRow(trimmed) {
   const masked = protectCodeSpans(trimmed, codeSpans);
 
   // Match 3 or 4 cells: | cell | cell | cell |  or  | cell | cell | cell | cell |
-  const re3 = /^\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/;
-  const re4 = /^\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/;
+  // Use *? (lazy zero-or-more) to handle empty cells
+  const re3 = /^\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|$/;
+  const re4 = /^\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|$/;
 
   let match = masked.match(re4);
   if (match) {
@@ -162,7 +163,7 @@ function parseDependencyMatrix(content) {
     if (/^\|[\s\-:]+\|/.test(trimmed)) continue;
 
     // detect table row: | cell | cell | cell |
-    const rowMatch = trimmed.match(/^\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/);
+    const rowMatch = trimmed.match(/^\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|$/);
     if (rowMatch) {
       // skip header row (检查任意列的关键字)
       const firstCell = rowMatch[1].toLowerCase().trim();

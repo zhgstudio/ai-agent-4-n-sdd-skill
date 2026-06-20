@@ -61,6 +61,16 @@ module.exports = function check(root) {
   const issues = [];
 
   if (!fs.existsSync(skillsDir)) {
+    // Detect if running on opensdd project itself (self-check mode)
+    const ownPkgPath = path.join(root, 'tools', 'opensdd-check', 'package.json');
+    const isSelfCheck = fs.existsSync(ownPkgPath);
+    if (isSelfCheck) {
+      return {
+        name: 'FRONTMATTER',
+        status: 'fail',
+        messages: ['opensdd/ directory not found — this is the opensdd project, SKILL.md is required'],
+      };
+    }
     return { name: 'FRONTMATTER', status: 'skip', messages: ['opensdd/ directory not found, skipping'] };
   }
 

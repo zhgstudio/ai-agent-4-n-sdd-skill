@@ -25,12 +25,13 @@ describe('config', () => {
     assert.deepStrictEqual(config.requiredFiles, DEFAULT_CONFIG.requiredFiles);
   });
 
-  it('should extend arrays with user values', () => {
+  it('should replace arrays with user values', () => {
     const configPath = path.join(tmpDir, '.sddrc.json');
     fs.writeFileSync(configPath, JSON.stringify({ requiredFiles: ['docs/EXTRA.md'] }));
     const config = loadConfig(tmpDir);
-    assert.ok(config.requiredFiles.includes('docs/SPEC.md'), 'should include default files');
+    assert.strictEqual(config.requiredFiles.length, 1, 'should only include user files');
     assert.ok(config.requiredFiles.includes('docs/EXTRA.md'), 'should include user files');
+    assert.ok(!config.requiredFiles.includes('docs/SPEC.md'), 'should not include default files');
   });
 
   it('should fall back to defaults on invalid JSON', () => {

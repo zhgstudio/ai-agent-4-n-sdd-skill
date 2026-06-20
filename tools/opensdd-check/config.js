@@ -119,8 +119,8 @@ function mergeConfig(defaults, user) {
   const result = { ...defaults };
   for (const key of Object.keys(user)) {
     if (Array.isArray(defaults[key]) && Array.isArray(user[key])) {
-      // Arrays extend (don't replace)
-      result[key] = [...defaults[key], ...user[key]];
+      // Arrays replace defaults entirely (user's config takes precedence)
+      result[key] = user[key];
     } else if (
       typeof defaults[key] === 'object' &&
       defaults[key] !== null &&

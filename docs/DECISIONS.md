@@ -146,6 +146,18 @@ opensdd-check 是面向下游项目的结构合规性校验工具。本仓库 CI
 
 `test-index.js`（仅验证模块加载为 `function` 类型——JavaScript require 级的最弱断言）已合并入 `test-smoke.js` 后删除。后续新增测试应直接写入有意义的边界或集成测试中。
 
+### config.js 数组合并改为用户替换默认
+
+此前 `mergeConfig` 将用户配置的数组字段追加到默认值之后（`[...defaults, ...user]`），导致用户无法通过显式设置缩小 `requiredFiles`、`requiredApiSections` 等数组的范围。改为用户数组完全替换默认数组。
+
+### decisions.js 移除"理由"/"取消条件"区段语义检查
+
+DECISIONS.md 的"理由"和"取消条件"是语义性的内容要求，不适合用脚本进行确定性硬编码匹配。已移除该区段检查，保留 frontmatter 格式验证。
+
+### 编号体系显式标注三位数能力上限
+
+在 SKILL.md 编号体系章节补充了三位数字编号的范围约束：REQ-NNN（000-999）、NN-FNNN（000-999）、T-NNN（000-999）。此范围为能力上限，不支持更大编号，超大项目应拆分为多个子项目。
+
 ## 已拒绝
 
 ### 阶段三引入并行或批量评审

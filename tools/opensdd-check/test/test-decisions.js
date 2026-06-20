@@ -20,25 +20,14 @@ describe('DECISIONS_FORMAT check', () => {
     }
   });
 
-  it('should pass when DECISIONS.md has valid frontmatter and required sections', () => {
+  it('should pass when DECISIONS.md has valid frontmatter', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sdd-dec-pass-'));
     try {
       const docsDir = path.join(dir, 'docs');
       fs.mkdirSync(docsDir, { recursive: true });
       fs.writeFileSync(
         path.join(docsDir, 'DECISIONS.md'),
-        [
-          '---',
-          'name: test-project',
-          'description: "Test decisions"',
-          '---',
-          '',
-          '## 理由',
-          '该决策因技术债务被拒绝。',
-          '',
-          '## 取消条件',
-          '当性能瓶颈出现时重新评估。',
-        ].join('\n'),
+        ['---', 'name: test-project', 'description: "Test decisions"', '---', '', '# Decision Records'].join('\n'),
         'utf-8',
       );
       const result = check(dir);
@@ -63,19 +52,19 @@ describe('DECISIONS_FORMAT check', () => {
     }
   });
 
-  it('should warn when required sections are missing', () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sdd-dec-nosec-'));
+  it('should warn when frontmatter has no closing ---', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sdd-dec-noclose-'));
     try {
       const docsDir = path.join(dir, 'docs');
       fs.mkdirSync(docsDir, { recursive: true });
       fs.writeFileSync(
         path.join(docsDir, 'DECISIONS.md'),
-        ['---', 'name: test', '---', '', '# Only a heading'].join('\n'),
+        ['---', 'name: test', 'description: "test"'].join('\n'),
         'utf-8',
       );
       const result = check(dir);
       assert.strictEqual(result.status, 'warn');
-      assert.ok(result.messages.some((m) => m.includes('Missing required section')));
+      assert.ok(result.messages.some((m) => m.includes('no closing ---')));
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
     }

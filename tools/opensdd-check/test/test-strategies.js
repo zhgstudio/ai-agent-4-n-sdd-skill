@@ -230,8 +230,8 @@ describe('strategy registry', () => {
     assert.strictEqual(result.name, 'function');
   });
 
-  it('should auto-detect to http when all contents are empty', () => {
+  it('should fallback to http when all contents are empty', () => {
     const result = detect([]);
-    assert.strictEqual(result.name, 'http');
+    assert.strictEqual(result.name, 'http (fallback)');
   });
 });

@@ -67,7 +67,7 @@ function detect(contents) {
       'Warning: No interface patterns detected in any API.md — falling back to HTTP strategy. ' +
         'If your project uses gRPC or function-call interfaces, verify your API.md documentation format.',
     );
-    return STRATEGIES.http;
+    return { ...STRATEGIES.http, name: 'http (fallback)' };
   }
 
   // Tie-breaking order: grpc > function > http (specificity descending)

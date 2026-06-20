@@ -2,10 +2,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { escapeRegex } = require('../lib/escape');
 
 /**
- * Check that DECISIONS.md has valid YAML frontmatter and required sections.
+ * Check that DECISIONS.md has valid YAML frontmatter.
  *
  * @param {string} root - Absolute path to the project root
  * @returns {{name: string, status: string, messages: string[]}} Check result
@@ -47,20 +46,11 @@ module.exports = function checkDecisions(root) {
     }
   }
 
-  // Check required sections: 理由 (reason) and 取消条件 (cancellation condition)
-  const sections = ['理由', '取消条件'];
-  for (const section of sections) {
-    const headingRegex = new RegExp(`^#{1,6}\\s*${escapeRegex(section)}`, 'm');
-    if (!headingRegex.test(content)) {
-      issues.push(`Missing required section "${section}"`);
-    }
-  }
-
   if (issues.length === 0) {
     return {
       name: 'DECISIONS_FORMAT',
       status: 'pass',
-      messages: ['docs/DECISIONS.md has valid frontmatter and required sections'],
+      messages: ['docs/DECISIONS.md has valid frontmatter'],
     };
   }
 

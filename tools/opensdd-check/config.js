@@ -95,9 +95,7 @@ function validateConfig(user) {
 
     if (Array.isArray(expected)) {
       if (!expected.includes(value)) {
-        console.warn(
-          `Warning: "${key}" is "${String(value)}", expected one of: ${expected.join(', ')}`,
-        );
+        console.warn(`Warning: "${key}" is "${String(value)}", expected one of: ${expected.join(', ')}`);
       }
     } else if (expected.endsWith('[]')) {
       if (!Array.isArray(value)) {

@@ -27,11 +27,12 @@ AI 自主编码时，最常见的三个问题：
 ## 核心目录拓扑
 
 ```text
+AGENTS.md                   # 📖 编码阶段入口指引（多阶段积累，人类锁定）
 docs/
 ├── SPEC.md                 # 👑 1. 需求规格（PM Agent）
 ├── ARCHITECTURE.md         # 🏛️ 2. 总体架构设计（Architect Agent）
 ├── PLAN.md                 # 📋 3. 任务计划（Project Manager Agent）
-├── AGENTS.md               # 📖 4. 编码阶段入口指引（多阶段积累，人类锁定）
+├── DECISIONS.md            # 4. 决策记录（可选）——被拒绝或遗留暂不处理的事项及理由，仅评审时加载
 │
 └── modules/                # 📦 N. 模块详细设计
     ├── 01-auth/

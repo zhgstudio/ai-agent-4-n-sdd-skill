@@ -99,10 +99,15 @@ function checkInterfaceConsistency(root, config) {
 
       const depDefs = strategy.extract(depContent);
 
+      // Skip [TBD] markers — placeholder signatures determined during Stage 3,
+      // do not require API.md matching
+      if (/\[TBD/i.test(entry.interface)) continue;
+
       const requiredInterfaces = entry.interface
         .split(',')
         .map((i) => i.trim())
-        .filter(Boolean);
+        .filter(Boolean)
+        .filter((i) => !/^\[TBD/i.test(i));
 
       for (const required of requiredInterfaces) {
         const found = strategy.matchRequired(required, depDefs);

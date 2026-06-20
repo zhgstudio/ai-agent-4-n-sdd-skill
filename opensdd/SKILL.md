@@ -21,12 +21,12 @@ metadata:
 ## 核心目录拓扑
 
 ```text
+AGENTS.md                   # 全局入口指引（多阶段增量积累，人类最终锁定。存在时各阶段 AI 均自动加载）
 docs/
 ├── SPEC.md                 # 1. 需求规格（PM Agent 产出）
 ├── ARCHITECTURE.md         # 2. 总体架构设计（Architect Agent 产出）
 ├── PLAN.md                 # 3. 任务计划（Project Manager Agent 产出）
-├── AGENTS.md               # 4. 全局入口指引（多阶段增量积累，人类最终锁定。存在时各阶段 AI 均自动加载）
-├── DECISIONS.md            # 5. 决策记录（可选，下游项目补充。存被拒绝/遗留的事项，评审过程加载）
+├── DECISIONS.md            # 4. 决策记录（可选）——存储被拒绝或遗留暂不处理的事项及理由，仅审查/审视/评审过程加载
 │
 └── modules/                # N. 模块详细设计
     ├── 01-{name}/
@@ -187,7 +187,7 @@ SPEC.md     ARCHITECTURE.md  模块 API+   PLAN.md      锁定全部文档
 ```
 请读取 SKILL.md 和 phase-2.md。
 请以架构师（Architect Agent）角色启动阶段二。
-读取 docs/SPEC.md（只读）。
+读取 AGENTS.md（如已存在）和 docs/SPEC.md（只读）。
 使用指定语言生成 docs/ARCHITECTURE.md。
 按照技能规范追加 AGENTS.md 主体章节。
 请严格按照技能规范执行，不写模块细节、不写代码。

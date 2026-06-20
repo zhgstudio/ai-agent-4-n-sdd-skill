@@ -38,10 +38,12 @@ function checkModuleContent(root, config) {
   }
 
   const issues = [];
+  const warnings = [];
   let checkedModules = 0;
 
   for (const moduleDir of moduleDirs) {
     if (!new RegExp(config.moduleDirPattern).test(moduleDir)) {
+      warnings.push(`Directory 'docs/modules/${moduleDir}' does not match NN-name pattern (e.g. 01-auth) — skipped`);
       continue;
     }
 
@@ -88,6 +90,15 @@ function checkModuleContent(root, config) {
     if (!featureRegex.test(internalsContent)) {
       issues.push(`Module '${moduleDir}': DESIGN.md missing feature list entries (### NN-FNNN)`);
     }
+  }
+
+  // If only warnings exist (non-matching dirs), return warn status
+  if (issues.length === 0 && warnings.length > 0) {
+    return {
+      name: 'MODULE_CONTENT',
+      status: 'warn',
+      messages: warnings,
+    };
   }
 
   if (issues.length === 0) {

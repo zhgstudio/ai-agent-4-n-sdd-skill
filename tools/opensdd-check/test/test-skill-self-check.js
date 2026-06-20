@@ -31,10 +31,7 @@ describe('SKILL.md self-check', () => {
     const opensddDir = path.join(REPO_ROOT, 'opensdd');
 
     for (const ref of expectedRefs) {
-      assert.ok(
-        fs.existsSync(path.join(opensddDir, ref)),
-        `Referenced file opensdd/${ref} does not exist`,
-      );
+      assert.ok(fs.existsSync(path.join(opensddDir, ref)), `Referenced file opensdd/${ref} does not exist`);
     }
   });
 
@@ -57,11 +54,7 @@ describe('SKILL.md self-check', () => {
     const version = flatMatch?.[1] || nestedMatch?.[1];
 
     assert.ok(version, 'metadata.version not found in SKILL.md frontmatter');
-    assert.strictEqual(
-      version,
-      pkgVersion,
-      `SKILL.md version (${version}) != package.json version (${pkgVersion})`,
-    );
+    assert.strictEqual(version, pkgVersion, `SKILL.md version (${version}) != package.json version (${pkgVersion})`);
   });
 
   it('SKILL.md frontmatter should have name, description, metadata.author, metadata.version', () => {
@@ -75,12 +68,9 @@ describe('SKILL.md self-check', () => {
     assert.ok(/^name\s*:/m.test(fm), 'Missing name');
     assert.ok(/^description\s*:/m.test(fm), 'Missing description');
 
-    const hasAuthor =
-      /^metadata\.author\s*:/m.test(fm) ||
-      /^metadata:\s*\n(?:[ \t]+.*\n)*[ \t]+author\s*:/m.test(fm);
+    const hasAuthor = /^metadata\.author\s*:/m.test(fm) || /^metadata:\s*\n(?:[ \t]+.*\n)*[ \t]+author\s*:/m.test(fm);
     const hasVersion =
-      /^metadata\.version\s*:/m.test(fm) ||
-      /^metadata:\s*\n(?:[ \t]+.*\n)*[ \t]+version\s*:/m.test(fm);
+      /^metadata\.version\s*:/m.test(fm) || /^metadata:\s*\n(?:[ \t]+.*\n)*[ \t]+version\s*:/m.test(fm);
     assert.ok(hasAuthor, 'Missing metadata.author');
     assert.ok(hasVersion, 'Missing metadata.version');
   });

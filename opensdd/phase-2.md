@@ -6,11 +6,11 @@
 
 ## 上下文
 
-`docs/SPEC.md`（只读）、`AGENTS.md`（如已存在）
+`AGENTS.md`（如已存在）、`docs/SPEC.md`（只读）
 
 ## 输入
 
-定稿的 `docs/SPEC.md`、已有的 `AGENTS.md`
+已有的 `AGENTS.md`（如存在）、定稿的 `docs/SPEC.md`
 
 ## 输出
 

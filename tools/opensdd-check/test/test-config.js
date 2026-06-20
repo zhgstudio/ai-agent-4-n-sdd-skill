@@ -55,7 +55,10 @@ describe('config', () => {
     console.warn = (...args) => warnings.push(args.join(' '));
     loadConfig(tmpDir);
     console.warn = origWarn;
-    assert.ok(warnings.some((w) => w.includes('grp')), 'should warn about invalid strategy');
+    assert.ok(
+      warnings.some((w) => w.includes('grp')),
+      'should warn about invalid strategy',
+    );
   });
 
   it('should warn on type mismatch for array field', () => {
@@ -66,7 +69,10 @@ describe('config', () => {
     console.warn = (...args) => warnings.push(args.join(' '));
     loadConfig(tmpDir);
     console.warn = origWarn;
-    assert.ok(warnings.some((w) => w.includes('requiredFiles')), 'should warn about type mismatch');
+    assert.ok(
+      warnings.some((w) => w.includes('requiredFiles')),
+      'should warn about type mismatch',
+    );
   });
 
   it('should warn on unknown config keys', () => {
@@ -79,6 +85,4 @@ describe('config', () => {
     console.warn = origWarn;
     assert.ok(warnings.some((w) => w.includes('unknownKey')));
   });
-
-
 });

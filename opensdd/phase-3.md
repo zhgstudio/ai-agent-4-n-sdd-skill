@@ -6,11 +6,11 @@
 
 ## 上下文
 
-`ARCHITECTURE.md` + `SPEC.md` + 所依赖模块的 `API.md`（只读）
+`ARCHITECTURE.md` + `SPEC.md` + 所依赖模块的 `API.md`（只读）+ `AGENTS.md`（如已存在）
 
 ## 输入
 
-定稿的 `ARCHITECTURE.md`、`SPEC.md`、所依赖模块已定稿的 `API.md`
+定稿的 `ARCHITECTURE.md`、`SPEC.md`、所依赖模块已定稿的 `API.md`、`AGENTS.md`（如已存在）
 
 ## 输出
 
@@ -58,7 +58,7 @@
 
 4. **标准继承**：所有字段命名和异常处理必须 100% 继承 `ARCHITECTURE.md` 的规范
 5. **只读约束**：只允许读取所依赖模块的 `API.md`，不允许读取所依赖模块的 `DESIGN.md`
-6. **不允许设计师写入 `AGENTS.md`**——`AGENTS.md` 是面向编码阶段的入口指引，设计师发现的模块专属约束写在 `DESIGN.md` 中即可，不需要写入 `AGENTS.md`
+6. **不允许设计师写入 `AGENTS.md`**——`AGENTS.md` 是全局入口指引，设计师发现的模块专属约束写在 `DESIGN.md` 中即可，不需要写入 `AGENTS.md`
 
 7. **设计反哺协议**：设计过程中如发现前期阶段（阶段二）的架构决策或依赖关系存在缺陷、不可行或不完整，**不得在阶段三中隐式修改前期阶段的产物**。应遵循以下处理流程：
    - 暂停当前模块的设计

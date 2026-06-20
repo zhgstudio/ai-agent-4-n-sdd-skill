@@ -25,7 +25,7 @@ docs/
 ├── SPEC.md                 # 1. 需求规格（PM Agent 产出）
 ├── ARCHITECTURE.md         # 2. 总体架构设计（Architect Agent 产出）
 ├── PLAN.md                 # 3. 任务计划（Project Manager Agent 产出）
-├── AGENTS.md               # 4. 入口指引（多阶段增量积累，人类最终锁定）
+├── AGENTS.md               # 4. 全局入口指引（多阶段增量积累，人类最终锁定。存在时各阶段 AI 均自动加载）
 │
 └── modules/                # N. 模块详细设计
     ├── 01-{name}/
@@ -60,7 +60,7 @@ docs/
 | `ARCHITECTURE.md` | 总体架构设计 + 公共设计（技术栈、命名风格、错误处理），模块引用表指向各模块目录 | Architect、Designer |
 | `modules/{NN}-{name}/API.md` + `DESIGN.md` | 该模块的接口定义与内部实现，代码开发必须严格遵循 | Designer、编码阶段的开发者 |
 | `PLAN.md` | 基于 DESIGN.md 拆分的开发任务跟踪表，仅含任务条目和完成状态，不含方案细节 | 编码阶段的开发者 |
-| `AGENTS.md` | 编码阶段的入口指引。包含项目规则、操作范围、任务规范，AI 编码前必读。注意：AGENTS.md 的内容面向编码阶段，不用于 OpenSDD 阶段自身 | 编码阶段的开发者 |
+| `AGENTS.md` | 项目级工程规则与约束的入口指引。包含文件操作范围、提交规范、测试要求、升级条件、跨模块规则等。由 OpenSDD 各阶段增量积累，人类最终锁定。**存在时各阶段 AI 角色均自动加载** | 所有角色（存在时） |
 
 ---
 
@@ -68,10 +68,10 @@ docs/
 
 | 角色 | 阶段 | 读 | 写 |
 |------|------|----|----|
-| **PM Agent**（产品经理） | 阶段一 | 无（新会话） | `docs/SPEC.md` |
-| **Architect Agent**（架构师） | 阶段二 | `SPEC.md`（只读） | `docs/ARCHITECTURE.md`、写入 `AGENTS.md` 主体 |
-| **Designer Agent**（模块设计师） × N | 阶段三 | `ARCHITECTURE.md` + 所依赖模块的 `API.md` | `docs/modules/{NN}-{name}/API.md` + `DESIGN.md` |
-| **Project Manager Agent**（项目经理） | 阶段四 | 全部已定稿设计文档 | `docs/PLAN.md`、追加 `AGENTS.md` 任务规范 |
+| **PM Agent**（产品经理） | 阶段一 | `AGENTS.md`（如已存在） | `docs/SPEC.md` |
+| **Architect Agent**（架构师） | 阶段二 | `SPEC.md`（只读）、`AGENTS.md`（如已存在） | `docs/ARCHITECTURE.md`、写入 `AGENTS.md` 主体 |
+| **Designer Agent**（模块设计师） × N | 阶段三 | `ARCHITECTURE.md` + 所依赖模块的 `API.md` + `AGENTS.md`（如已存在） | `docs/modules/{NN}-{name}/API.md` + `DESIGN.md` |
+| **Project Manager Agent**（项目经理） | 阶段四 | 全部已定稿设计文档 + `AGENTS.md`（如已存在） | `docs/PLAN.md`、追加 `AGENTS.md` 任务规范 |
 
 每个角色启动新的 AI 会话，只加载职责范围内的文件。每阶段产物经人类评审定稿后，才能进入下一阶段。
 
@@ -89,6 +89,7 @@ docs/
 - 不允许创建 `_v2.md`、`_final.md`、`.bak.md` 等版本残留文件，物理覆盖即可
 - `PLAN.md` 的每条任务必须引用对应 `DESIGN.md` 的章节
 - AI 仅允许 `git add`、`git commit`、`git push`（仅推送当前分支），不创建/切换分支，不执行 `merge`、`rebase`
+- `AGENTS.md`（存在时）为全局入口指引，各阶段 AI 角色**自动加载**。尚未生成时不读取
 
 ---
 
@@ -194,7 +195,7 @@ SPEC.md     ARCHITECTURE.md  模块 API+   PLAN.md      锁定全部文档
 ```
 请读取 SKILL.md 和 phase-3.md。
 请以模块设计师（Designer Agent）角色启动阶段三。
-读取 docs/ARCHITECTURE.md 和 docs/SPEC.md。
+读取 docs/ARCHITECTURE.md、docs/SPEC.md 和 AGENTS.md（如已存在）。
 当前要设计的模块是：[模块名，如 01-auth]。
 按照 ARCHITECTURE.md 模块引用表顺序依次设计，在 docs/modules/{NN}-{name}/ 下生成本模块的 API.md 和 DESIGN.md。
 特征列表以 {NN}-F{NNN} 编号。

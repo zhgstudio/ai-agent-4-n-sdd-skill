@@ -12,6 +12,7 @@ describe('index.js module interfaces', () => {
     const frontmatterCheck = require('../checks/frontmatter');
     const moduleContentCheck = require('../checks/module-content');
     const interfaceConsistencyCheck = require('../checks/interface-consistency');
+    const tbdResidualCheck = require('../checks/tbd-residual');
 
     assert.strictEqual(typeof filesCheck, 'function');
     assert.strictEqual(typeof planCheck, 'function');
@@ -19,5 +20,7 @@ describe('index.js module interfaces', () => {
     assert.strictEqual(typeof agentsCheck, 'function');
     assert.strictEqual(typeof frontmatterCheck, 'function');
     assert.strictEqual(typeof moduleContentCheck, 'function');
+    assert.strictEqual(typeof interfaceConsistencyCheck, 'function');
+    assert.strictEqual(typeof tbdResidualCheck, 'function');
   });
 });

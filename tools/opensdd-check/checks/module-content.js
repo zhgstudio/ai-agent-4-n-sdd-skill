@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { escapeRegex } = require('../lib/escape');
 
 function checkModuleContent(root, config) {
   const REQUIRED_API_SECTIONS = config.requiredApiSections;
@@ -114,10 +115,6 @@ function checkModuleContent(root, config) {
     status: 'fail',
     messages: issues,
   };
-}
-
-function escapeRegex(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 module.exports = function check(root, config) {

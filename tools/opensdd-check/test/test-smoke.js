@@ -19,6 +19,7 @@ describe('opensdd-check smoke test', () => {
       const frontmatterCheck = require('../checks/frontmatter');
       const moduleContentCheck = require('../checks/module-content');
       const interfaceConsistencyCheck = require('../checks/interface-consistency');
+      const tbdResidualCheck = require('../checks/tbd-residual');
       const config = require('../config').DEFAULT_CONFIG;
 
       const results = await Promise.all([
@@ -29,6 +30,7 @@ describe('opensdd-check smoke test', () => {
         frontmatterCheck(root, config),
         moduleContentCheck(root, config),
         interfaceConsistencyCheck(root, config),
+        tbdResidualCheck(root, config),
       ]);
 
       for (const r of results) {

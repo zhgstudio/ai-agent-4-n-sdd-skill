@@ -38,13 +38,14 @@ module.exports = function check(root, _config) {
     }
 
     // Check for YAML frontmatter (starts with ---)
-    if (!content.startsWith('---\n') && !content.startsWith('---\r\n')) {
+    const openMatch = content.match(/^---\r?\n/);
+    if (!openMatch) {
       issues.push(`${file}: missing YAML frontmatter (must start with ---)`);
       continue;
     }
 
     // Find closing --- (handles LF, CRLF, mixed line endings)
-    const openLen = content.startsWith('---\r\n') ? 5 : 4;
+    const openLen = openMatch[0].length;
     const afterOpen = content.slice(openLen);
     const closeMatch = afterOpen.match(/\r?\n---\r?\n/);
     if (!closeMatch) {

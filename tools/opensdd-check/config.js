@@ -135,7 +135,7 @@ function mergeConfig(defaults, user) {
       // Known keys: user overrides
       result[key] = user[key];
     }
-    // Unknown keys are silently ignored
+    // Unknown keys are dropped (caller warns on unknown keys)
   }
   return result;
 }

@@ -9,6 +9,7 @@ const agentsCheck = require('./checks/agents');
 const frontmatterCheck = require('./checks/frontmatter');
 const moduleContentCheck = require('./checks/module-content');
 const interfaceConsistencyCheck = require('./checks/interface-consistency');
+const tbdResidualCheck = require('./checks/tbd-residual');
 const { report } = require('./lib/reporter');
 const { loadConfig } = require('./config');
 
@@ -32,6 +33,7 @@ CHECKS
   AGENTS_SECTIONS       Required sections present in AGENTS.md
   MODULE_CONTENT        API.md/DESIGN.md required sections and feature list
   API_CONSISTENCY       Cross-module interface signature matching
+  TBD_RESIDUAL          No [TBD] markers remain in ARCHITECTURE.md
 
 `);
 }
@@ -75,6 +77,7 @@ async function main() {
     frontmatterCheck(resolvedRoot, config),
     moduleContentCheck(resolvedRoot, config),
     interfaceConsistencyCheck(resolvedRoot, config),
+    tbdResidualCheck(resolvedRoot, config),
   ]);
 
   const exitCode = report(results, { json: opts.json, strict: opts.strict, root: resolvedRoot });

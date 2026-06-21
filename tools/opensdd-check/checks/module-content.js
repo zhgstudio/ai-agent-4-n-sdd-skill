@@ -5,7 +5,7 @@ const path = require('path');
 const { readFile } = require('../lib/read-file');
 const { escapeRegex } = require('../lib/escape');
 
-function checkModuleContent(root, config) {
+module.exports = function checkModuleContent(root, config) {
   const REQUIRED_API_SECTIONS = config.requiredApiSections;
   const REQUIRED_DESIGN_SECTIONS = config.requiredDesignSections;
   const modulesDir = path.join(root, 'docs/modules');
@@ -84,7 +84,6 @@ function checkModuleContent(root, config) {
     }
   }
 
-  // If only warnings exist (non-matching dirs), return warn status
   if (issues.length === 0 && warnings.length > 0) {
     return {
       name: 'MODULE_CONTENT',
@@ -106,8 +105,4 @@ function checkModuleContent(root, config) {
     status: 'fail',
     messages: issues,
   };
-}
-
-module.exports = function check(root, config) {
-  return checkModuleContent(root, config);
 };

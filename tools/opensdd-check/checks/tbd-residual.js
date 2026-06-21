@@ -21,11 +21,20 @@ module.exports = function check(root, _config) {
   const tbdPattern = /\[TBD[^\]]*\]/i;
   const matches = [];
   const lines = splitLines(content);
+  let inCodeBlock = false;
 
   for (let i = 0; i < lines.length; i++) {
     const trimmed = lines[i].trim();
-    // Skip comment-like lines and code blocks that document the [TBD] concept itself
-    if (trimmed.startsWith('<!--') || trimmed.startsWith('```')) continue;
+
+    // Track fenced code block state to skip content inside code blocks
+    if (/^```/.test(trimmed)) {
+      inCodeBlock = !inCodeBlock;
+      continue;
+    }
+
+    if (inCodeBlock) continue;
+    // Skip comment-like lines that document the [TBD] concept itself
+    if (trimmed.startsWith('<!--')) continue;
     if (tbdPattern.test(trimmed)) {
       matches.push(`line ${i + 1}: ${trimmed}`);
     }

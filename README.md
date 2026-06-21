@@ -67,7 +67,7 @@ docs/
 
 Each role starts a fresh session with a scoped context. Every stage ends with a **human review gate**.
 
-> **Language note:** All generated documents (SPEC.md, ARCHITECTURE.md, AGENTS.md, PLAN.md, module API.md / DESIGN.md files) are written in **Chinese**.
+> **Language note:** By default, all generated documents (SPEC.md, ARCHITECTURE.md, AGENTS.md, PLAN.md, module API.md / DESIGN.md files) are written in **Chinese**. The language is configurable — specify your preferred language when starting Stage 1.
 
 ---
 

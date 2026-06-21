@@ -42,6 +42,23 @@ function readSkillVersion(skillPath) {
 }
 
 /**
+ * Read a JSON file and return the version field, or null if not found.
+ *
+ * @param {string} filePath - Absolute path to package.json
+ * @returns {string|null} Version string or null
+ */
+function readPackageVersion(filePath) {
+  try {
+    if (!fs.existsSync(filePath)) return null;
+    const raw = fs.readFileSync(filePath, 'utf-8');
+    const pkg = JSON.parse(raw);
+    return typeof pkg.version === 'string' ? pkg.version : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Extract version value from YAML frontmatter content.
  * Handles both dot-notation (metadata.version: X.Y.Z) and
  * nested YAML (metadata:\n  version: X.Y.Z) formats.
@@ -58,23 +75,6 @@ function extractFrontmatterVersion(frontmatter) {
     if (data.metadata && typeof data.metadata.version === 'string') return data.metadata.version;
 
     return null;
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Read a JSON file and return the version field, or null if not found.
- *
- * @param {string} filePath - Absolute path to package.json
- * @returns {string|null} Version string or null
- */
-function readPackageVersion(filePath) {
-  try {
-    if (!fs.existsSync(filePath)) return null;
-    const raw = fs.readFileSync(filePath, 'utf-8');
-    const pkg = JSON.parse(raw);
-    return typeof pkg.version === 'string' ? pkg.version : null;
   } catch {
     return null;
   }
@@ -157,3 +157,4 @@ module.exports = function check(root) {
 };
 
 module.exports.extractFrontmatterVersion = extractFrontmatterVersion;
+

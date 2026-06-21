@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { readFile } = require('../lib/read-file');
 const { escapeRegex } = require('../lib/escape');
 
 function checkModuleContent(root, config) {
@@ -48,28 +49,18 @@ function checkModuleContent(root, config) {
       continue;
     }
 
-    const modulePath = path.join(modulesDir, moduleDir);
-    const interfacePath = path.join(modulePath, 'API.md');
-    const internalsPath = path.join(modulePath, 'DESIGN.md');
-
     checkedModules++;
 
-    if (!fs.existsSync(interfacePath)) {
+    const interfaceContent = readFile(root, 'docs/modules', moduleDir, 'API.md');
+    const internalsContent = readFile(root, 'docs/modules', moduleDir, 'DESIGN.md');
+
+    if (interfaceContent === null) {
       issues.push(`Module '${moduleDir}': API.md not found`);
       continue;
     }
 
-    if (!fs.existsSync(internalsPath)) {
+    if (internalsContent === null) {
       issues.push(`Module '${moduleDir}': DESIGN.md not found`);
-      continue;
-    }
-
-    let interfaceContent, internalsContent;
-    try {
-      interfaceContent = fs.readFileSync(interfacePath, 'utf-8');
-      internalsContent = fs.readFileSync(internalsPath, 'utf-8');
-    } catch (err) {
-      issues.push(`Module '${moduleDir}': failed to read module files — ${err.message}`);
       continue;
     }
 

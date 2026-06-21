@@ -1,7 +1,19 @@
 'use strict';
 
+/**
+ * TRACEABILITY — Requirement-to-feature traceability check.
+ *
+ * WARN-only by intentional design. Full structural traceability (every REQ
+ * mapped to one or more NN-FNNN) requires human judgement — not all requirements
+ * are implementable as isolated features, and not all features map to numbered
+ * requirements. This check performs a heuristic regex scan as a lightweight
+ * aid, not a hard gate. Downstream projects that want stricter enforcement
+ * should layer their own tooling on top.
+ */
+
 const fs = require('fs');
 const path = require('path');
+const { readFile } = require('../lib/read-file');
 
 /**
  * Extract all REQ-NNN identifiers from module design files.
@@ -26,15 +38,8 @@ function collectReqReferences(modulesDir) {
 
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;
-    const designPath = path.join(modulesDir, entry.name, 'DESIGN.md');
-    if (!fs.existsSync(designPath)) continue;
-
-    let designContent;
-    try {
-      designContent = fs.readFileSync(designPath, 'utf-8');
-    } catch {
-      continue;
-    }
+    const designContent = readFile(modulesDir, entry.name, 'DESIGN.md');
+    if (designContent === null) continue;
 
     let m;
     while ((m = reqRefRegex.exec(designContent)) !== null) {
@@ -50,17 +55,10 @@ function collectReqReferences(modulesDir) {
 }
 
 module.exports = function check(root) {
-  const specPath = path.join(root, 'docs', 'SPEC.md');
+  const specContent = readFile(root, 'docs', 'SPEC.md');
 
-  if (!fs.existsSync(specPath)) {
+  if (specContent === null) {
     return { name: 'TRACEABILITY', status: 'skip', messages: ['docs/SPEC.md not found, skipping'] };
-  }
-
-  let specContent;
-  try {
-    specContent = fs.readFileSync(specPath, 'utf-8');
-  } catch (err) {
-    return { name: 'TRACEABILITY', status: 'fail', messages: [`Failed to read SPEC.md: ${err.message}`] };
   }
 
   // Collect all REQ-NNN from SPEC.md
@@ -85,15 +83,8 @@ module.exports = function check(root) {
 
     for (const entry of entries) {
       if (!entry.isDirectory()) continue;
-      const designPath = path.join(modulesDir, entry.name, 'DESIGN.md');
-      if (!fs.existsSync(designPath)) continue;
-
-      let designContent;
-      try {
-        designContent = fs.readFileSync(designPath, 'utf-8');
-      } catch {
-        continue;
-      }
+      const designContent = readFile(modulesDir, entry.name, 'DESIGN.md');
+      if (designContent === null) continue;
 
       const feRegex = /\b(\d{2}-F\d{3})\b/g;
       while ((m = feRegex.exec(designContent)) !== null) {

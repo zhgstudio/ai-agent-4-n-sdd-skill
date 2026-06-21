@@ -1,7 +1,6 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const { readFile } = require('../lib/read-file');
 
 /**
  * Check that DECISIONS.md has valid YAML frontmatter.
@@ -10,24 +9,13 @@ const path = require('path');
  * @returns {{name: string, status: string, messages: string[]}} Check result
  */
 module.exports = function checkDecisions(root) {
-  const decisionsPath = path.join(root, 'docs', 'DECISIONS.md');
+  const content = readFile(root, 'docs', 'DECISIONS.md');
 
-  if (!fs.existsSync(decisionsPath)) {
+  if (content === null) {
     return {
       name: 'DECISIONS_FORMAT',
       status: 'skip',
       messages: ['docs/DECISIONS.md not found, skipping'],
-    };
-  }
-
-  let content;
-  try {
-    content = fs.readFileSync(decisionsPath, 'utf-8');
-  } catch (err) {
-    return {
-      name: 'DECISIONS_FORMAT',
-      status: 'fail',
-      messages: [`Failed to read docs/DECISIONS.md: ${err.message}`],
     };
   }
 

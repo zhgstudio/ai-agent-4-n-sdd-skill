@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 const { readFile } = require('../lib/read-file');
 const { parseDependencyMatrix } = require('./matrix');
@@ -36,25 +35,17 @@ function checkInterfaceConsistency(root, config) {
 
   const contentCache = new Map();
 
-  function readCached(filePath) {
+  function readCached(root, ...segments) {
+    const filePath = path.join(root, ...segments);
     if (contentCache.has(filePath)) return contentCache.get(filePath);
-    try {
-      if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, 'utf-8');
-        contentCache.set(filePath, content);
-        return content;
-      }
-    } catch {
-      /* skip unreadable */
-    }
-    contentCache.set(filePath, null);
-    return null;
+    const content = readFile(root, ...segments);
+    contentCache.set(filePath, content);
+    return content;
   }
 
   const docContents = [];
   for (const entry of depMatrix) {
-    const modulePath = path.join(root, 'docs/modules', entry.name, 'API.md');
-    const c = readCached(modulePath);
+    const c = readCached(root, 'docs/modules', entry.name, 'API.md');
     if (c !== null) docContents.push(c);
   }
 
@@ -64,10 +55,9 @@ function checkInterfaceConsistency(root, config) {
   const issues = [];
 
   for (const entry of depMatrix) {
-    const callerModule = entry.name;
-    const callerPath = path.join(root, 'docs/modules', callerModule, 'API.md');
+      const callerModule = entry.name;
 
-    if (readCached(callerPath) === null) {
+      if (readCached(root, 'docs/modules', callerModule, 'API.md') === null) {
       continue;
     }
 
@@ -79,9 +69,7 @@ function checkInterfaceConsistency(root, config) {
     for (const dep of deps) {
       if (/^(-|none|null|n\/a|)$/i.test(dep)) continue;
 
-      const depPath = path.join(root, 'docs/modules', dep, 'API.md');
-
-      const depContent = readCached(depPath);
+      const depContent = readCached(root, 'docs/modules', dep, 'API.md');
       if (depContent === null) {
         issues.push(`Module '${callerModule}' depends on '${dep}' but API.md not found`);
         continue;

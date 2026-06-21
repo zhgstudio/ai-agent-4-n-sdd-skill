@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const { readFile } = require('../lib/read-file');
 
 /**
  * Parse YAML frontmatter from a markdown file.
@@ -84,12 +85,9 @@ module.exports = function check(root) {
   const files = fileList.filter((f) => f.endsWith('.md'));
 
   for (const file of files) {
-    const filePath = path.join(skillsDir, file);
-    let content;
-    try {
-      content = fs.readFileSync(filePath, 'utf-8');
-    } catch (err) {
-      issues.push(`${file}: failed to read — ${err.message}`);
+    const content = readFile(root, 'opensdd', file);
+    if (content === null) {
+      issues.push(`${file}: failed to read`);
       continue;
     }
 

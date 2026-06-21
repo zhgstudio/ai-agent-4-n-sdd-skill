@@ -1,7 +1,6 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const { readFile } = require('../lib/read-file');
 const { splitLines } = require('../lib/line-split');
 
 /**
@@ -13,17 +12,10 @@ const { splitLines } = require('../lib/line-split');
  * @returns {{name: string, status: string, messages: string[]}} Check result
  */
 module.exports = function check(root, config) {
-  const agentsPath = path.join(root, 'AGENTS.md');
+  const content = readFile(root, 'AGENTS.md');
 
-  if (!fs.existsSync(agentsPath)) {
+  if (content === null) {
     return { name: 'AGENTS_SECTIONS', status: 'skip', messages: ['AGENTS.md not found, skipping'] };
-  }
-
-  let content;
-  try {
-    content = fs.readFileSync(agentsPath, 'utf-8');
-  } catch (err) {
-    return { name: 'AGENTS_SECTIONS', status: 'fail', messages: [`Failed to read AGENTS.md: ${err.message}`] };
   }
 
   const headings = splitLines(content)

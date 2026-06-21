@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { readFile } = require('../lib/read-file');
 const { splitLines } = require('../lib/line-split');
 
 // Optional reference at end: [NN-name/DESIGN.md#NN-FNNN] where NNN is 3 digits per SKILL.md
@@ -34,15 +35,10 @@ module.exports = function check(root, config) {
   const MODULE_DIR_RE = new RegExp(config.moduleDirPattern);
   const planPath = path.join(root, 'docs/PLAN.md');
 
-  if (!fs.existsSync(planPath)) {
-    return { name: 'PLAN_FORMAT', status: 'skip', messages: ['docs/PLAN.md not found, skipping'] };
-  }
+  const content = readFile(root, 'docs/PLAN.md');
 
-  let content;
-  try {
-    content = fs.readFileSync(planPath, 'utf-8');
-  } catch (err) {
-    return { name: 'PLAN_FORMAT', status: 'fail', messages: [`Failed to read ${planPath}: ${err.message}`] };
+  if (content === null) {
+    return { name: 'PLAN_FORMAT', status: 'skip', messages: ['docs/PLAN.md not found, skipping'] };
   }
 
   const lines = splitLines(content);

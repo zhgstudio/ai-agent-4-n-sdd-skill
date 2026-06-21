@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { readFile } = require('../lib/read-file');
 const { splitLines } = require('../lib/line-split');
 
 /**
@@ -209,17 +210,10 @@ function parseDependencies(depStr) {
 
 module.exports = function check(root, config) {
   const MODULE_DIR_RE = new RegExp(config.moduleDirPattern);
-  const archPath = path.join(root, 'docs/ARCHITECTURE.md');
+  const content = readFile(root, 'docs/ARCHITECTURE.md');
 
-  if (!fs.existsSync(archPath)) {
+  if (content === null) {
     return { name: 'DEP_MATRIX', status: 'skip', messages: ['docs/ARCHITECTURE.md not found, skipping'] };
-  }
-
-  let content;
-  try {
-    content = fs.readFileSync(archPath, 'utf-8');
-  } catch (err) {
-    return { name: 'DEP_MATRIX', status: 'fail', messages: [`Failed to read ARCHITECTURE.md: ${err.message}`] };
   }
 
   const moduleTable = parseModuleTable(content);

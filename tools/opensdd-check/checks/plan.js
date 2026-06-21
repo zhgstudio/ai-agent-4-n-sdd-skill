@@ -33,7 +33,6 @@ function extractModuleFromRef(ref) {
 module.exports = function check(root, config) {
   const TASK_RE = new RegExp(config.taskRegex);
   const MODULE_DIR_RE = new RegExp(config.moduleDirPattern);
-  const planPath = path.join(root, 'docs/PLAN.md');
 
   const content = readFile(root, 'docs/PLAN.md');
 

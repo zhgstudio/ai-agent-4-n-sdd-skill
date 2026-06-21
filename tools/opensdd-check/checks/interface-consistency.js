@@ -55,9 +55,9 @@ function checkInterfaceConsistency(root, config) {
   const issues = [];
 
   for (const entry of depMatrix) {
-      const callerModule = entry.name;
+    const callerModule = entry.name;
 
-      if (readCached(root, 'docs/modules', callerModule, 'API.md') === null) {
+    if (readCached(root, 'docs/modules', callerModule, 'API.md') === null) {
       continue;
     }
 

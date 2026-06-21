@@ -124,7 +124,7 @@ opensdd-check 是面向下游项目的结构合规性校验工具。本仓库 CI
 
 ### tmp/ 目录清理检查
 
-`NO_TMP` 已作为 opensdd-check 的内置检查项。检测项目根目录下是否存在 `tmp/` 目录（临时过程文档未清理的迹象）。存在时 fail。已在 `finalization.md` 的自动化验证表中取代已移除的 `NO_GARBAGE`。
+`NO_TMP` 已作为 opensdd-check 的内置检查项。检测 `docs/` 目录下是否存在 `tmp/` 目录（临时过程文档未清理的迹象）。存在时 fail。已在 `finalization.md` 的自动化验证表中取代已移除的 `NO_GARBAGE`。
 
 ### 公共设计栅栏规则
 

@@ -130,4 +130,3 @@ module.exports = function check(root) {
 };
 
 module.exports.extractFrontmatterVersion = extractFrontmatterVersion;
-

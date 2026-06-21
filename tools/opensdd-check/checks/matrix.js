@@ -161,20 +161,16 @@ function parseDependencyMatrix(content) {
 
     if (!inMatrix) continue;
 
-    // skip separator rows (|----|----|---|)
-    if (/^\|[\s\-:]+\|/.test(trimmed)) continue;
-
-    // detect table row: | cell | cell | cell |
-    const rowMatch = trimmed.match(/^\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|$/);
-    if (rowMatch) {
+    const cells = splitRow(trimmed);
+    if (cells && cells.length >= 3) {
       // skip header row (检查任意列的关键字)
-      const firstCell = rowMatch[1].toLowerCase().trim();
+      const firstCell = cells[0].toLowerCase();
       if (firstCell === '模块' || firstCell === 'module') continue;
 
       modules.push({
-        name: rowMatch[1].trim(),
-        depends: rowMatch[2].trim(),
-        interface: rowMatch[3].trim(),
+        name: cells[0],
+        depends: cells[1],
+        interface: cells[2],
       });
       continue;
     }

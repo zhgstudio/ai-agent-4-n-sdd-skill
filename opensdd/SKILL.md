@@ -85,10 +85,10 @@ OpenSDD 使用三层编号体系实现从需求到任务的完整追溯链：
 
 | 角色 | 阶段 | 读 | 写 |
 |------|------|----|----|
-| **PM Agent**（产品经理） | 阶段一 | `AGENTS.md`（如已存在） | `docs/SPEC.md` |
-| **Architect Agent**（架构师） | 阶段二 | `SPEC.md`（只读）、`AGENTS.md`（如已存在） | `docs/ARCHITECTURE.md`、写入 `AGENTS.md` 主体 |
-| **Designer Agent**（模块设计师） × N | 阶段三 | `ARCHITECTURE.md` + `SPEC.md` + 所依赖模块的 `API.md`（只读） + `AGENTS.md`（如已存在） | `docs/modules/{NN}-{name}/API.md` + `DESIGN.md` |
-| **Project Manager Agent**（项目经理） | 阶段四 | 全部已定稿设计文档 + `AGENTS.md`（如已存在） | `docs/PLAN.md`、追加 `AGENTS.md` 任务规范 |
+| **PM Agent**（产品经理） | 阶段一 | — | `docs/SPEC.md` |
+| **Architect Agent**（架构师） | 阶段二 | `SPEC.md`（只读） | `docs/ARCHITECTURE.md`、写入 `AGENTS.md` 主体 |
+| **Designer Agent**（模块设计师） × N | 阶段三 | `ARCHITECTURE.md` + `SPEC.md` + 所依赖模块的 `API.md`（只读） | `docs/modules/{NN}-{name}/API.md` + `DESIGN.md` |
+| **Project Manager Agent**（项目经理） | 阶段四 | 全部已定稿设计文档 | `docs/PLAN.md`、追加 `AGENTS.md` 任务规范 |
 
 每个角色启动新的 AI 会话，只加载职责范围内的文件。每阶段产物经人类评审定稿后，才能进入下一阶段。
 
@@ -131,7 +131,7 @@ SPEC.md     ARCHITECTURE.md  模块 API+   PLAN.md      锁定全部文档
 
 ## 阶段执行契约
 
-各阶段的详细执行契约见独立文件：
+各阶段的详细执行契约见独立文件（AI 在下文「阶段自动触发条件」匹配时自动加载对应文件，无需人类指定）：
 
 | 阶段 | 文件 | 角色 |
 |------|------|------|
@@ -183,50 +183,19 @@ SPEC.md     ARCHITECTURE.md  模块 API+   PLAN.md      锁定全部文档
 
 ---
 
-## 各阶段会话启动提示词模板
+## 阶段自动触发条件
 
-### 阶段一：启动 PM Agent
+各阶段由 AI 根据用户意图结合项目文档状态自动匹配加载对应的 phase 文件，无需人类手动指定阶段编号：
 
-```
-请读取 phase-1.md。
-我的新项目是：[一句话描述]。
-请以产品经理（PM Agent）角色启动阶段一。
-文档语言使用：[中文/English/...]。
-在 docs/SPEC.md 中生成需求规格初稿。
-请严格按照技能规范执行，不讨论技术实现。
-```
+| 阶段 | 角色 | 典型触发场景 | 前置门禁 |
+|------|------|-------------|----------|
+| 阶段一：需求规格 | PM Agent | 人类表达需求定义、项目规划等意图，且 `docs/SPEC.md` 不存在 | 无（项目起点） |
+| 阶段二：总体架构设计 | Architect Agent | 人类表达架构设计、技术选型等意图，且 `docs/ARCHITECTURE.md` 不存在 | `docs/SPEC.md` 已定稿 |
+| 阶段三：模块详细设计 | Designer Agent | 人类表达模块设计、接口定义等意图，且对应模块 `API.md`/`DESIGN.md` 不存在 | `docs/ARCHITECTURE.md` 已定稿 |
+| 阶段四：任务计划 | Project Manager Agent | 人类表达任务拆分、计划排期等意图，且 `docs/PLAN.md` 不存在 | 各模块设计均已定稿 |
 
-### 阶段二：启动 Architect Agent
-
-```
-请读取 phase-2.md。
-请以架构师（Architect Agent）角色启动阶段二。
-读取 AGENTS.md（如已存在）和 docs/SPEC.md（只读）。
-使用指定语言生成 docs/ARCHITECTURE.md。
-按照技能规范追加 AGENTS.md 主体章节。
-请严格按照技能规范执行，不写模块细节、不写代码。
-```
-
-### 阶段三：启动 Designer Agent
-
-```
-请读取 phase-3.md。
-请以模块设计师（Designer Agent）角色启动阶段三。
-读取 docs/ARCHITECTURE.md、docs/SPEC.md 和 AGENTS.md（如已存在）。
-当前要设计的模块是：[模块名，如 01-auth]。
-按依赖顺序串行推进——所依赖模块设计定稿后才能开始设计当前模块，无依赖关系的模块按模块引用表顺序依次设计。在 docs/modules/{NN}-{name}/ 下生成本模块的 API.md 和 DESIGN.md。
-特征列表以 {NN}-F{NNN} 编号。
-请严格按照技能规范执行，一次只做一个模块。
-```
-
-### 阶段四：启动 Project Manager Agent
-
-```
-请读取 phase-4.md。
-请以项目经理（Project Manager Agent）角色启动阶段四。
-读取所有已定稿的 docs/SPEC.md、docs/ARCHITECTURE.md、docs/modules/*/API.md。
-在 docs/PLAN.md 中生成任务跟踪表。
-每条任务引用对应 DESIGN.md 的 {NN}-F{NNN} 章节。
-追加 AGENTS.md 的 PLAN.md 任务规范章节。
-请严格按照技能规范执行，不涉及方案细节。
-```
+**触发规则**：
+- AI 应结合用户当前意图和项目文档实际状态综合判断应加载的阶段
+- **意图模糊时**：AI 不得猜测，应向人类反馈并提供选择，人类给出明确指示后才执行动作
+- **前置门禁不满足时**：AI 应告知人类当前完成状态和下一步建议，不跨阶段加载
+- **会话已有阶段产物时**：AI 应提示人类完成当前阶段的评审定稿后再启动新阶段，不在同一会话中跨阶段执行

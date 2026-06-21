@@ -6,7 +6,7 @@
 
 ## 上下文
 
-全部已定稿文档（`SPEC.md`、`ARCHITECTURE.md`、各模块 `API.md` / `DESIGN.md`、`AGENTS.md`）
+全部已定稿文档（`SPEC.md`、`ARCHITECTURE.md`、各模块 `API.md` / `DESIGN.md`）。`AGENTS.md` 加载规则见 SKILL.md「角色职责边界」章节。
 
 ## 输入
 

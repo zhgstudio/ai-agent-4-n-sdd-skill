@@ -6,11 +6,11 @@
 
 ## 上下文
 
-`AGENTS.md`（如已存在）、`docs/SPEC.md`（只读）
+`docs/SPEC.md`（只读）。`AGENTS.md` 加载规则见 SKILL.md「角色职责边界」章节。
 
 ## 输入
 
-已有的 `AGENTS.md`（如存在）、定稿的 `docs/SPEC.md`
+定稿的 `docs/SPEC.md`
 
 ## 输出
 

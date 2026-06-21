@@ -6,11 +6,11 @@
 
 ## 上下文
 
-`ARCHITECTURE.md` + `SPEC.md` + 所依赖模块的 `API.md`（只读）+ `AGENTS.md`（如已存在）
+`ARCHITECTURE.md` + `SPEC.md` + 所依赖模块的 `API.md`（只读）。`AGENTS.md` 加载规则见 SKILL.md「角色职责边界」章节。
 
 ## 输入
 
-定稿的 `ARCHITECTURE.md`、`SPEC.md`、所依赖模块已定稿的 `API.md`、`AGENTS.md`（如已存在）
+定稿的 `ARCHITECTURE.md`、`SPEC.md`、所依赖模块已定稿的 `API.md`
 
 ## 输出
 

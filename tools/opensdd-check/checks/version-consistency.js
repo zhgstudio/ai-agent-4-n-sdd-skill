@@ -2,12 +2,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const yaml = require('js-yaml');
+const { parseFrontmatter, getField } = require('../lib/frontmatter');
 
 /**
  * Parse SKILL.md frontmatter and extract version.
- * Supports both dot-notation (metadata.version: X.Y.Z) and
- * nested YAML (metadata:\n  version: X.Y.Z) formats.
  *
  * @param {string} skillPath - Absolute path to SKILL.md
  * @returns {string|null} Version string or null
@@ -16,26 +14,10 @@ function readSkillVersion(skillPath) {
   try {
     if (!fs.existsSync(skillPath)) return null;
     const content = fs.readFileSync(skillPath, 'utf-8');
-
-    const openMatch = content.match(/^---\r?\n/);
-    if (!openMatch) return null;
-
-    const openLen = openMatch[0].length;
-    const afterOpen = content.slice(openLen);
-    const closeMatch = afterOpen.match(/\r?\n---\r?\n/);
-    if (!closeMatch) return null;
-
-    const yamlStr = content.substring(openLen, openLen + closeMatch.index);
-    const data = yaml.load(yamlStr);
-    if (typeof data !== 'object' || data === null) return null;
-
-    // Try dot-notation: data['metadata.version']
-    if (typeof data['metadata.version'] === 'string') return data['metadata.version'];
-
-    // Try nested: data.metadata.version
-    if (data.metadata && typeof data.metadata.version === 'string') return data.metadata.version;
-
-    return null;
+    const { data } = parseFrontmatter(content);
+    if (!data) return null;
+    const version = getField(data, 'metadata.version');
+    return typeof version === 'string' ? version : null;
   } catch {
     return null;
   }
@@ -59,25 +41,16 @@ function readPackageVersion(filePath) {
 }
 
 /**
- * Extract version value from YAML frontmatter content.
- * Handles both dot-notation (metadata.version: X.Y.Z) and
- * nested YAML (metadata:\n  version: X.Y.Z) formats.
+ * Extract version value from raw YAML frontmatter content (without --- markers).
  *
- * @param {string} frontmatter - Raw frontmatter string (between --- markers)
+ * @param {string} frontmatter - Raw YAML string (as it appears between --- markers)
  * @returns {string|null} Version string or null if not found
  */
 function extractFrontmatterVersion(frontmatter) {
-  try {
-    const data = require('js-yaml').load(frontmatter);
-    if (typeof data !== 'object' || data === null) return null;
-
-    if (typeof data['metadata.version'] === 'string') return data['metadata.version'];
-    if (data.metadata && typeof data.metadata.version === 'string') return data.metadata.version;
-
-    return null;
-  } catch {
-    return null;
-  }
+  const { data } = parseFrontmatter('---\n' + frontmatter + '\n---\n');
+  if (!data) return null;
+  const version = getField(data, 'metadata.version');
+  return typeof version === 'string' ? version : null;
 }
 
 /**

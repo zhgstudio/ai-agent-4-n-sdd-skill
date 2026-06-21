@@ -2,54 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const yaml = require('js-yaml');
 const { readFile } = require('../lib/read-file');
-
-/**
- * Parse YAML frontmatter from a markdown file.
- *
- * @param {string} content - File content
- * @returns {{ data: object|null, error: string|null }} Parsed data or error description
- */
-function parseFrontmatter(content) {
-  const openMatch = content.match(/^---\r?\n/);
-  if (!openMatch) return { data: null, error: 'missing YAML frontmatter (must start with ---)' };
-
-  const openLen = openMatch[0].length;
-  const afterOpen = content.slice(openLen);
-  const closeMatch = afterOpen.match(/\r?\n---\r?\n/);
-  if (!closeMatch) return { data: null, error: 'YAML frontmatter has no closing ---' };
-
-  const yamlStr = content.substring(openLen, openLen + closeMatch.index);
-
-  try {
-    const data = yaml.load(yamlStr);
-    return { data: typeof data === 'object' && data !== null ? data : {}, error: null };
-  } catch (err) {
-    return { data: null, error: `YAML parse error: ${err.message}` };
-  }
-}
-
-/**
- * Extract a field from parsed frontmatter data, supporting both
- * dot-notation (metadata.version) and nested (metadata: { version }) forms.
- *
- * @param {object} data - Parsed YAML data
- * @param {string} dottedPath - Dot-notation path (e.g. "metadata.version")
- * @returns {*} Field value or undefined
- */
-function getField(data, dottedPath) {
-  const direct = data[dottedPath];
-  if (direct !== undefined) return direct;
-
-  const parts = dottedPath.split('.');
-  let current = data;
-  for (const part of parts) {
-    if (current === null || typeof current !== 'object') return undefined;
-    current = current[part];
-  }
-  return current;
-}
+const { parseFrontmatter, getField } = require('../lib/frontmatter');
 
 /**
  * Check that skill files have valid YAML frontmatter.

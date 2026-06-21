@@ -35,21 +35,30 @@ function findTmpDirs(dirPath) {
 }
 
 /**
- * Check that no tmp/ directories exist in the project.
- * Recursively scans all subdirectories for any tmp/ directory.
+ * Check that no tmp/ directories exist under docs/.
  * tmp/ directories indicate temporary process documents not meant for version control.
  *
  * @param {string} root - Absolute path to the project root
  * @returns {{name: string, status: string, messages: string[]}} Check result
  */
 module.exports = function checkTmpDirs(root) {
-  const tmpDirs = findTmpDirs(root);
+  const docsDir = path.join(root, 'docs');
+
+  if (!fs.existsSync(docsDir)) {
+    return {
+      name: 'NO_TMP',
+      status: 'pass',
+      messages: ['docs/ directory not found, skipping'],
+    };
+  }
+
+  const tmpDirs = findTmpDirs(docsDir);
 
   if (tmpDirs.length === 0) {
     return {
       name: 'NO_TMP',
       status: 'pass',
-      messages: ['No tmp/ directories found'],
+      messages: ['No tmp/ directories found under docs/'],
     };
   }
 

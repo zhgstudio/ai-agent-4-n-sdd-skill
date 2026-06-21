@@ -65,7 +65,6 @@ docs/
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
 ├── LICENSE
-├── skills-lock.json
 └── .github/
     └── workflows/ci.yml
 ```

@@ -15,6 +15,8 @@ const path = require('path');
  * @property {string} taskRegex - Regex pattern for task line format in PLAN.md
  * @property {string} moduleDirPattern - Regex pattern for module directory names
  * @property {string} interfaceStrategy - Interface check strategy ('http'|'grpc'|'function'|'auto')
+ * @property {string[]} requiredApiSections - Required section keywords for API.md
+ * @property {string[]} requiredDesignSections - Required section keywords for DESIGN.md
  */
 
 /**

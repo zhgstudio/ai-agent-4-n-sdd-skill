@@ -44,7 +44,7 @@ function checkInterfaceConsistency(root, config) {
         contentCache.set(filePath, content);
         return content;
       }
-    } catch (_) {
+    } catch {
       /* skip unreadable */
     }
     contentCache.set(filePath, null);

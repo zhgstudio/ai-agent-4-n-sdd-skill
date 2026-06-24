@@ -24,7 +24,7 @@ function statusIcon(status) {
 }
 
 function terminalReport(results, strict, root) {
-  console.log(`\nSDD Check Report — ${root}`);
+  console.log(`\nOpenSDD Check Report — ${root}`);
   console.log('━'.repeat(50));
 
   let errors = 0;

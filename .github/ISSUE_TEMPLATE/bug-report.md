@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a problem with the SDD skill
+about: Report a problem with the OpenSDD skill
 title: '[Bug] '
 labels: bug
 assignees: ''

@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest an improvement to the SDD methodology or tooling
+about: Suggest an improvement to the OpenSDD methodology or tooling
 title: '[Feature] '
 labels: enhancement
 assignees: ''

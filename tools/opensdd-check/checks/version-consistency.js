@@ -80,7 +80,7 @@ module.exports = function check(root) {
 
   const entries = [
     { label: 'SKILL.md', path: skillPath, version: skillVersion, source: 'metadata.version' },
-    { label: '根 package.json', path: rootPkgPath, version: null, source: 'version' },
+    { label: 'Root package.json', path: rootPkgPath, version: null, source: 'version' },
     { label: 'tools/opensdd-check/package.json', path: checkPkgPath, version: null, source: 'version' },
   ];
 
@@ -101,7 +101,7 @@ module.exports = function check(root) {
     messages.push(`${entry.label}: version = ${ver} (${entry.source})`);
 
     if (ver !== skillVersion) {
-      messages.push(`  → MISMATCH: SKILL.md 为 ${skillVersion}, ${entry.label} 为 ${ver}`);
+      messages.push(`  → MISMATCH: SKILL.md version ${skillVersion}, ${entry.label} version ${ver}`);
       hasMismatch = true;
     }
   }

@@ -4,11 +4,11 @@
   "private": true,
   "description": "Open Spec-Driven Documentation — pre-development specification workflow for AI coding agents",
   "scripts": {
-    "test": "npm --prefix tools/opensdd-check test",
-    "test:coverage": "npm --prefix tools/opensdd-check run test:coverage",
-    "lint": "npm --prefix tools/opensdd-check run lint",
-    "format": "npm --prefix tools/opensdd-check run format",
-    "format-check": "npm --prefix tools/opensdd-check run format-check"
+    "test": "npm --prefix opensdd/opensdd-check test",
+    "test:coverage": "npm --prefix opensdd/opensdd-check run test:coverage",
+    "lint": "npm --prefix opensdd/opensdd-check run lint",
+    "format": "npm --prefix opensdd/opensdd-check run format",
+    "format-check": "npm --prefix opensdd/opensdd-check run format-check"
   },
   "license": "MIT",
   "engines": {

@@ -82,7 +82,7 @@ This repository contains two types of `AGENTS.md`:
 
 Root-level files:
 - `opensdd/` — Skill source: `SKILL.md` (workflow overview) + `phase-1.md` through `phase-4.md` + `finalization.md`
-- `tools/opensdd-check/` — Project structure validation tool (12 checks)
+- `opensdd/opensdd-check/` — Project structure validation tool (12 checks)
 - `.github/` — CI workflows, issue/PR templates
 - Root configs: `package.json`, `.npmrc`, `.gitignore`, `.lycheeignore`
 
@@ -172,17 +172,17 @@ Human reviews → AI refines → Stage gate passed → Next stage.
 Validate your project's OpenSDD structure compliance with a single command — defaults to the current directory:
 
 ```bash
-node tools/opensdd-check/index.js
+node opensdd/opensdd-check/index.js
 
 # Or target a specific project:
-node tools/opensdd-check/index.js --path /path/to/project
+node opensdd/opensdd-check/index.js --path /path/to/project
 ```
 
 > AI agent can also run validation on request — just say "check compliance", "run validation", "检查项目结构", or "检查是否满足opensdd规范" during any phase.
 
 Use `--json` for CI and `--strict` to treat warnings as errors. Run with `--help` to list all checks.
 
-The tool supports user configuration via `.sddrc.json` in the project root. See [`tools/opensdd-check/.sddrc.json.example`](tools/opensdd-check/.sddrc.json.example) for available options.
+The tool supports user configuration via `.sddrc.json` in the project root. See [`opensdd/opensdd-check/.sddrc.json.example`](opensdd/opensdd-check/.sddrc.json.example) for available options.
 
 ---
 

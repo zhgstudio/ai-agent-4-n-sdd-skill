@@ -28,7 +28,5 @@
     "eslint-plugin-jsdoc": "^63.0.6",
     "prettier": "^3.0.0"
   },
-  "dependencies": {
-    "js-yaml": "^4.2.0"
-  }
+  "dependencies": {}
 }

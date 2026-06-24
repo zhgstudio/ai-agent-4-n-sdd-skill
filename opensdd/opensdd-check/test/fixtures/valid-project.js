@@ -165,7 +165,7 @@ function createValidProject(overrides = {}) {
       'utf-8',
     );
 
-    const checkPkgDir = path.join(root, 'tools', 'opensdd-check');
+    const checkPkgDir = path.join(root, 'opensdd', 'opensdd-check');
     fs.mkdirSync(checkPkgDir, { recursive: true });
     fs.writeFileSync(
       path.join(root, 'package.json'),

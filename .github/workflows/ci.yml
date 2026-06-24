@@ -32,21 +32,21 @@ jobs:
 
       - name: opensdd-check — Install dependencies
         run: npm ci
-        working-directory: tools/opensdd-check
+        working-directory: opensdd/opensdd-check
 
       - name: opensdd-check — Lint
         run: npm run lint
-        working-directory: tools/opensdd-check
+        working-directory: opensdd/opensdd-check
 
       - name: opensdd-check — Format check
         run: npm run format-check
-        working-directory: tools/opensdd-check
+        working-directory: opensdd/opensdd-check
 
       - name: opensdd-check — Run tests
         run: npm test
-        working-directory: tools/opensdd-check
+        working-directory: opensdd/opensdd-check
 
       - name: opensdd-check — Coverage
         run: npm run test:coverage
-        working-directory: tools/opensdd-check
+        working-directory: opensdd/opensdd-check
         continue-on-error: true

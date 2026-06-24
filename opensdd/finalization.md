@@ -60,7 +60,7 @@
 
 ### 自动化验证
 
-运行 `node tools/opensdd-check/index.js --strict` 并确认全部通过：
+运行 `node opensdd/opensdd-check/index.js --strict` 并确认全部通过：
 
 | 检查项 | 验证内容 |
 |--------|----------|

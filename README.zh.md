@@ -54,8 +54,7 @@ docs/
 │   ├── phase-2.md            # 阶段二：总体架构设计（Architect Agent）
 │   ├── phase-3.md            # 阶段三：模块详细设计（Designer Agent）
 │   ├── phase-4.md            # 阶段四：任务计划（Project Manager Agent）
-│   └── finalization.md       # 最终定稿（人类）
-├── tools/
+│   ├── finalization.md       # 最终定稿（人类）
 │   └── opensdd-check/            # OpenSDD 项目结构校验工具
 │       ├── index.js
 │       ├── lib/
@@ -166,17 +165,17 @@ rm -rf /tmp/opensdd-skill
 校验项目是否严格遵循 OpenSDD 目录和格式规范——默认检查当前目录：
 
 ```bash
-node tools/opensdd-check/index.js
+node opensdd/opensdd-check/index.js
 
 # 或指定目标项目：
-node tools/opensdd-check/index.js --path /path/to/project
+node opensdd/opensdd-check/index.js --path /path/to/project
 ```
 
 > AI 智能体可在任意阶段主动执行验证——只需说"检查项目结构"、"检查是否满足opensdd规范"、"run validation"、"check compliance"等即可。
 
 `--json` 输出 JSON 供 CI 集成，`--strict` 将 Warning 视为 Error。
 
-工具支持通过项目根目录下的 `.sddrc.json` 进行自定义配置。参见 [`tools/opensdd-check/.sddrc.json.example`](tools/opensdd-check/.sddrc.json.example) 了解可用选项。
+工具支持通过项目根目录下的 `.sddrc.json` 进行自定义配置。参见 [`opensdd/opensdd-check/.sddrc.json.example`](opensdd/opensdd-check/.sddrc.json.example) 了解可用选项。
 
 ---
 

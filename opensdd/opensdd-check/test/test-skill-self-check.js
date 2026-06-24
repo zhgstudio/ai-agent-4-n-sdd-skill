@@ -88,7 +88,7 @@ describe('SKILL.md self-check', () => {
   });
 
   it('all registered checks should have valid require path in index.js', () => {
-    const indexPath = path.join(REPO_ROOT, 'tools', 'opensdd-check', 'index.js');
+    const indexPath = path.join(REPO_ROOT, 'opensdd', 'opensdd-check', 'index.js');
     const indexContent = fs.readFileSync(indexPath, 'utf-8');
 
     // Extract all require('./checks/...') statements
@@ -102,13 +102,13 @@ describe('SKILL.md self-check', () => {
     assert.ok(checkReqs.length >= 11, `Expected at least 11 checks, found ${checkReqs.length}`);
 
     for (const mod of checkReqs) {
-      const modPath = path.join(REPO_ROOT, 'tools', 'opensdd-check', 'checks', `${mod}.js`);
+      const modPath = path.join(REPO_ROOT, 'opensdd', 'opensdd-check', 'checks', `${mod}.js`);
       assert.ok(fs.existsSync(modPath), `Check module file not found: checks/${mod}.js`);
     }
   });
 
   it('help text should list all registered check names from loaded modules', () => {
-    const indexPath = path.join(REPO_ROOT, 'tools', 'opensdd-check', 'index.js');
+    const indexPath = path.join(REPO_ROOT, 'opensdd', 'opensdd-check', 'index.js');
     const indexContent = fs.readFileSync(indexPath, 'utf-8');
 
     // Extract module paths from require('./checks/...') calls
@@ -122,7 +122,7 @@ describe('SKILL.md self-check', () => {
     assert.ok(checkModules.length >= 11, `Expected at least 11 check modules, found ${checkModules.length}`);
 
     // Load each module and get its returned .name to verify it appears in help text
-    const checksDir = path.join(REPO_ROOT, 'tools', 'opensdd-check', 'checks');
+    const checksDir = path.join(REPO_ROOT, 'opensdd', 'opensdd-check', 'checks');
     const returnNames = [];
     for (const mod of checkModules) {
       const modPath = path.join(checksDir, `${mod}.js`);
@@ -150,7 +150,7 @@ describe('SKILL.md self-check', () => {
   });
 
   it('all registered checks should be called in main() results array', () => {
-    const indexPath = path.join(REPO_ROOT, 'tools', 'opensdd-check', 'index.js');
+    const indexPath = path.join(REPO_ROOT, 'opensdd', 'opensdd-check', 'index.js');
     const indexContent = fs.readFileSync(indexPath, 'utf-8');
 
     const varMap = [];

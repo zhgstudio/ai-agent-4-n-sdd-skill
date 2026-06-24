@@ -88,7 +88,7 @@ describe('VERSION_CONSISTENCY check', () => {
     }
 
     if (versions.check !== undefined) {
-      const checkDir = path.join(root, 'tools', 'opensdd-check');
+      const checkDir = path.join(root, 'opensdd', 'opensdd-check');
       fs.mkdirSync(checkDir, { recursive: true });
       fs.writeFileSync(
         path.join(checkDir, 'package.json'),
@@ -162,7 +162,7 @@ describe('VERSION_CONSISTENCY check', () => {
         ['---', 'name: opensdd', 'metadata:', '  author: zhg', '  version: 4.5.6', '---', ''].join('\n'),
         'utf-8',
       );
-      const checkDir = path.join(root, 'tools', 'opensdd-check');
+      const checkDir = path.join(root, 'opensdd', 'opensdd-check');
       fs.mkdirSync(checkDir, { recursive: true });
       fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify({ name: 'test', version: '4.5.6' }), 'utf-8');
       fs.writeFileSync(

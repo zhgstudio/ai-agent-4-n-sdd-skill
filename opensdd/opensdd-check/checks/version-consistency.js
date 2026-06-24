@@ -62,7 +62,7 @@ function extractFrontmatterVersion(frontmatter) {
 module.exports = function check(root) {
   const skillPath = path.join(root, 'opensdd', 'SKILL.md');
   const rootPkgPath = path.join(root, 'package.json');
-  const checkPkgPath = path.join(root, 'tools', 'opensdd-check', 'package.json');
+  const checkPkgPath = path.join(root, 'opensdd', 'opensdd-check', 'package.json');
 
   const skillVersion = readSkillVersion(skillPath);
 

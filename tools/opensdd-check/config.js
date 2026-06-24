@@ -166,7 +166,7 @@ function loadConfig(root) {
 
     return mergeConfig(DEFAULT_CONFIG, userConfig);
   } catch (err) {
-    console.error(`Warning: Failed to parse ${configPath}: ${err.message}`);
+    console.warn(`Warning: Failed to parse ${configPath}: ${err.message}`);
     return { ...DEFAULT_CONFIG };
   }
 }

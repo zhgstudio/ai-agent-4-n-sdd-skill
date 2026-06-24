@@ -41,7 +41,7 @@ CHECKS
   TBD_RESIDUAL          No [TBD] markers remain in ARCHITECTURE.md
   VERSION_CONSISTENCY   SKILL.md version matches package.json versions
   NO_TMP                No tmp/ directories exist in the project
-  DECISIONS_FORMAT      DECISIONS.md frontmatter validity and required sections
+  DECISIONS_FORMAT      DECISIONS.md frontmatter validity (format only, no semantic section check)
   TRACEABILITY          Requirement-to-feature traceability (REQ-NNN ↔ NN-FNNN, warn only)
 
 `);

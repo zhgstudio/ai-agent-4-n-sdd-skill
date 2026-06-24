@@ -101,6 +101,43 @@ describe('PLAN_FORMAT check', () => {
     }
   });
 
+  it('should pass with depends: syntax referencing valid task IDs', async () => {
+    const content = `# Plan
+
+- [ ] T-001: Setup project structure
+- [ ] T-002: Implement auth [01-auth/DESIGN.md#01-F001] depends: T-001
+- [x] T-003: Implement login [01-auth/DESIGN.md#01-F002] depends: T-001, T-002
+`;
+    const { dir, cleanup } = createPlan(content);
+    try {
+      // Create module directory with DESIGN.md so the reference validation passes
+      const modDir = path.join(dir, 'docs', 'modules', '01-auth');
+      fs.mkdirSync(modDir, { recursive: true });
+      fs.writeFileSync(path.join(modDir, 'DESIGN.md'), '# 01-auth DESIGN', 'utf-8');
+      const result = await check(dir, DEFAULT_CONFIG);
+      assert.strictEqual(result.status, 'pass');
+      assert.ok(result.messages[0].includes('3 tasks'));
+    } finally {
+      cleanup();
+    }
+  });
+
+  it('should fail when depend references non-existent task ID', async () => {
+    const content = `# Plan
+
+- [ ] T-001: Setup project
+- [ ] T-002: Implement auth depends: T-999
+`;
+    const { dir, cleanup } = createPlan(content);
+    try {
+      const result = await check(dir, DEFAULT_CONFIG);
+      assert.strictEqual(result.status, 'fail');
+      assert.ok(result.messages.some((m) => m.includes('non-existent task ID')));
+    } finally {
+      cleanup();
+    }
+  });
+
   it('should count tasks correctly', async () => {
     const content = `# Plan
 

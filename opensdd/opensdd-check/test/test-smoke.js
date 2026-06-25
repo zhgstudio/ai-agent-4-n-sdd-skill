@@ -22,6 +22,7 @@ describe('opensdd-check module loading', () => {
       '../checks/version-consistency',
       '../checks/no-tmp',
       '../checks/decisions',
+      '../checks/traceability',
     ];
     for (const mod of checkModules) {
       const fn = require(mod);

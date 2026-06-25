@@ -2,6 +2,9 @@
 
 const { describe, it } = require('node:test');
 const assert = require('node:assert');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const { parseModuleTable, parseDependencyMatrix, parseDependencies, splitRow } = require('../checks/matrix');
 
 describe('parseModuleTable', () => {
@@ -168,9 +171,6 @@ describe('parseDependencies', () => {
 });
 
 describe('DEP_MATRIX full check', () => {
-  const os = require('node:os');
-  const fs = require('node:fs');
-  const path = require('node:path');
   const { DEFAULT_CONFIG } = require('../config');
 
   function createProject(archMdContent, modules) {

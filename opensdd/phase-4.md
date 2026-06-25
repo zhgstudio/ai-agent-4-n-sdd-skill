@@ -25,15 +25,15 @@
    - `[ ]` 未完成 / `[x]` 已完成
     - 任务 ID（`T-{MODULE}-{NNN}`，MODULE 为模块目录名去除数字前缀后的大写形式）
     - 任务描述（简述，**不涉及方案细节**——方案细节在 DESIGN.md 中）
-    - **引用到 DESIGN.md 的具体章节**（格式：`[module-name/DESIGN.md#{MODULE}-F{NNN}]`）
+    - **引用到 DESIGN.md 的具体章节**（格式：`[{NN}-module-name/DESIGN.md#{MODULE}-F{NNN}]`，其中 `{NN}-module-name` 为模块目录名）
     - 依赖关系（如有），使用 `depends: T-{MODULE}-{NNN}` 语法，多依赖以逗号分隔：`depends: T-AUTH-001, T-AUTH-005`
 
     格式示例：
     ```markdown
     ## 模块：01-auth
-- [ ] T-AUTH-001: 实现用户注册接口 [auth/DESIGN.md#AUTH-F001]
-- [ ] T-AUTH-005: 实现用户登录接口 [auth/DESIGN.md#AUTH-F005] depends: T-AUTH-001
-- [ ] T-AUTH-010: 实现用户注销接口 [auth/DESIGN.md#AUTH-F010] depends: T-AUTH-001, T-AUTH-005
+    - [ ] T-AUTH-001: 实现用户注册接口 [01-auth/DESIGN.md#AUTH-F001]
+- [ ] T-AUTH-005: 实现用户登录接口 [01-auth/DESIGN.md#AUTH-F005] depends: T-AUTH-001
+- [ ] T-AUTH-010: 实现用户注销接口 [01-auth/DESIGN.md#AUTH-F010] depends: T-AUTH-001, T-AUTH-005
     ```
 
 4. **不涉及方案细节**——`PLAN.md` 是纯粹的任务跟踪，不写如何实现、不写技术细节

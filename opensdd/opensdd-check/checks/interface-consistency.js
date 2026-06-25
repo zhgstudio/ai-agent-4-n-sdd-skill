@@ -2,7 +2,7 @@
 
 const path = require('path');
 const { readFile } = require('../lib/read-file');
-const { parseDependencyMatrix } = require('./matrix');
+const { parseDependencyMatrix, parseDependencies } = require('./matrix');
 const { getStrategy, detect } = require('./strategies');
 
 function resolveStrategy(strategyName, docContents) {
@@ -61,10 +61,7 @@ function checkInterfaceConsistency(root, config) {
       continue;
     }
 
-    const deps = entry.depends
-      .split(',')
-      .map((d) => d.trim())
-      .filter(Boolean);
+    const deps = parseDependencies(entry.depends);
 
     for (const dep of deps) {
       if (/^(-|none|null|n\/a|)$/i.test(dep)) continue;

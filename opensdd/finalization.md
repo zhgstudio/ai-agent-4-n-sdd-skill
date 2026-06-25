@@ -64,7 +64,7 @@
 
 | 检查项 | 验证内容 |
 |--------|----------|
-| FILE_EXISTS | SPEC.md / ARCHITECTURE.md / PLAN.md / AGENTS.md 存在（如项目有 DECISIONS.md 也检查） |
+| FILE_EXISTS | SPEC.md / ARCHITECTURE.md / PLAN.md / AGENTS.md 存在 |
 | DEP_MATRIX | 模块目录与引用表一致，无孤儿目录 |
 | PLAN_FORMAT | 任务格式正确，引用有效 |
 | NO_TMP | 无 tmp/ 目录（临时过程文档不留存） |

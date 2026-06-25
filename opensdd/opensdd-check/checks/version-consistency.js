@@ -81,7 +81,7 @@ module.exports = function check(root) {
   const entries = [
     { label: 'SKILL.md', path: skillPath, version: skillVersion, source: 'metadata.version' },
     { label: 'Root package.json', path: rootPkgPath, version: null, source: 'version' },
-    { label: 'tools/opensdd-check/package.json', path: checkPkgPath, version: null, source: 'version' },
+    { label: 'opensdd/opensdd-check/package.json', path: checkPkgPath, version: null, source: 'version' },
   ];
 
   for (const entry of entries) {

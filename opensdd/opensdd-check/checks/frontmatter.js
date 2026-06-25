@@ -17,7 +17,7 @@ module.exports = function check(root) {
 
   if (!fs.existsSync(skillsDir)) {
     // Detect if running on opensdd project itself (self-check mode)
-    const ownPkgPath = path.join(root, 'tools', 'opensdd-check', 'package.json');
+    const ownPkgPath = path.join(root, 'opensdd', 'opensdd-check', 'package.json');
     const isSelfCheck = fs.existsSync(ownPkgPath);
     if (isSelfCheck) {
       return {

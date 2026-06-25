@@ -53,7 +53,7 @@ OpenSDD 使用三层编号体系实现从需求到任务的完整追溯链：
 | 层级 | 格式 | 所在文档 | 示例 |
 |------|------|----------|------|
 | 需求 | `REQ-{DOMAIN}-{NNN}` | `SPEC.md` | `REQ-AUTH-001` |
-| 特性 | `{MODULE}-F{NNN}` | `modules/{NN}-{name}/DESIGN.md` | `AUTH-F001` |
+| 特性 | `{MODULE}-F{NNN}` | `docs/modules/{NN}-{name}/DESIGN.md` | `AUTH-F001` |
 | 任务 | `T-{MODULE}-{NNN}` | `PLAN.md` | `T-AUTH-001` |
 
 追溯关系：`REQ-DOMAIN-NNN` → 特性所在模块的 `{MODULE}-F{NNN}` → `T-{MODULE}-{NNN}`。任务通过 `[module-name/DESIGN.md#{MODULE}-F{NNN}]` 引用到具体特性，特性通过其模块归属关联到源头需求。

@@ -126,7 +126,7 @@ SPEC.md     ARCHITECTURE.md  模块 API+  PLAN.md      AGENTS.md 就绪
 
 ### 阶段三：模块详细设计（Designer Agent）
 
-产出 `docs/modules/{NN}-{name}/API.md` + `DESIGN.md`，包含模块边界、数据结构、接口定义、**{NN}-F{NNN} 功能特性列表**。严格串行——按模块引用表顺序逐个设计，不允许并行。
+产出 `docs/modules/{NN}-{name}/API.md` + `DESIGN.md`，包含模块边界、数据结构、接口定义、**{MODULE}-F{NNN} 功能特性列表**。严格串行——按模块引用表顺序逐个设计，不允许并行。
 
 ### 阶段四：任务计划（Project Manager Agent）
 
@@ -141,7 +141,7 @@ SPEC.md     ARCHITECTURE.md  模块 API+  PLAN.md      AGENTS.md 就绪
 ## 变更传播
 
 1. 修改源头文档（SPEC → ARCH → API/DESIGN → PLAN）
-2. 级联更新引用关系，确保 `PLAN.md` 中的 `[NN-name/DESIGN.md#{NN}-F{NNN}]` 可追溯链完整
+2. 级联更新引用关系，确保 `PLAN.md` 中的 `[NN-name/DESIGN.md#{MODULE}-F{NNN}]` 可追溯链完整
 3. 跨模块接口变更须升级给人类仲裁
 
 ---

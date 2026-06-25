@@ -124,12 +124,12 @@ SPEC.md     ARCHITECTURE.md  module       PLAN.md      locks all docs
 - Strictly serial — one module at a time, dependency order first (no parallel)
 - Creates `docs/modules/{NN}-{name}/API.md` + `DESIGN.md` per module
 - `API.md` contains: module boundary, data structures, interface definitions
-- `DESIGN.md` contains: internal logic, implementation details, **feature list ({NN}-F{NNN})**
+- `DESIGN.md` contains: internal logic, implementation details, **feature list ({MODULE}-F{NNN})**
 - Naming: `NN` is the two-digit prefix matching the module reference table in ARCHITECTURE.md
 
 ### Stage 4: Task Plan (Project Manager Agent)
 
-- Reads all finalized API.md / DESIGN.md files, extracts {NN}-F{NNN} features
+- Reads all finalized API.md / DESIGN.md files, extracts {MODULE}-F{NNN} features
 - Writes `docs/PLAN.md` — task tracking with references to DESIGN.md sections
 - Each task: `- [ ] T-{MODULE}-{NNN}: description [module-name/DESIGN.md#{MODULE}-F{NNN}]`
 - Appends PLAN.md task conventions to `AGENTS.md`

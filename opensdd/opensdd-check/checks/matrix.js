@@ -267,7 +267,7 @@ module.exports = function check(root, config) {
     }
   }
 
-  // Check for orphan module directories (exist in docs/modules/ but not declared in ARCHITECTURE.md)
+  // Check for orphan module directories and case-sensitive name mismatches
   const modulesDir = path.join(root, 'docs/modules');
   if (fs.existsSync(modulesDir)) {
     let entries;
@@ -278,11 +278,38 @@ module.exports = function check(root, config) {
     }
 
     if (entries) {
+      const actualDirNames = new Set();
       for (const entry of entries) {
         if (entry.isDirectory() && MODULE_DIR_RE.test(entry.name)) {
+          actualDirNames.add(entry.name);
           if (!moduleNames.has(entry.name)) {
+            // Check if it's a case mismatch with a declared module
+            const caseMismatch = Array.from(moduleNames).find((mn) => mn.toLowerCase() === entry.name.toLowerCase());
+            if (caseMismatch) {
+              issues.push(
+                `Case mismatch: module table has '${caseMismatch}' but actual directory is 'docs/modules/${entry.name}'`,
+              );
+            } else {
+              issues.push(
+                `Orphan module directory 'docs/modules/${entry.name}' exists but is not declared in ARCHITECTURE.md module reference table`,
+              );
+            }
+          }
+        }
+      }
+
+      // Also check the reverse: declared modules whose actual directory has wrong case
+      for (const name of moduleNames) {
+        if (!MODULE_DIR_RE.test(name)) continue;
+        const dirPath = path.join(root, 'docs/modules', name);
+        if (fs.existsSync(dirPath)) {
+          // On case-insensitive filesystems, verify the actual name matches
+          const actualEntry = Array.from(actualDirNames).find(
+            (d) => d.toLowerCase() === name.toLowerCase() && d !== name,
+          );
+          if (actualEntry) {
             issues.push(
-              `Orphan module directory 'docs/modules/${entry.name}' exists but is not declared in ARCHITECTURE.md module reference table`,
+              `Case mismatch: module table has '${name}' but actual directory is 'docs/modules/${actualEntry}'`,
             );
           }
         }

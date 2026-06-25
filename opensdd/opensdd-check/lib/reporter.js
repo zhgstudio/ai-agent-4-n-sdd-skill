@@ -31,13 +31,14 @@ function terminalReport(results, strict, root) {
   let warnings = 0;
 
   for (const r of results) {
+    const messages = r.messages || [];
     const icon = statusIcon(r.status);
-    const msg = r.messages[0] || '';
+    const msg = messages[0] || '';
     const summary = `${icon}  ${r.name.padEnd(16)} ${msg}`;
     console.log(summary);
 
-    for (let i = 1; i < r.messages.length; i++) {
-      console.log(`  ${C.dim('→')} ${r.messages[i]}`);
+    for (let i = 1; i < messages.length; i++) {
+      console.log(`  ${C.dim('→')} ${messages[i]}`);
     }
 
     if (r.status === 'fail') errors++;

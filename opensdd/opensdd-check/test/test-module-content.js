@@ -66,6 +66,41 @@ describe('MODULE_CONTENT check', () => {
     cleanup();
   });
 
+  it('should pass with multi-word MODULE name in feature list (e.g., TASK-CORE-F001)', async () => {
+    const check = require('../checks/module-content');
+    const { root, cleanup } = createModuleProject(
+      '02-task-core',
+      [
+        '# 02-task-core 接口',
+        '',
+        '## 模块概述与职责边界',
+        '负责任务管理。',
+        '',
+        '## 核心数据结构',
+        '- task: { id, title }',
+        '',
+        '## 接口定义',
+        '- POST /task/create',
+      ].join('\n'),
+      [
+        '# 02-task-core 内部',
+        '',
+        '## 核心逻辑流程',
+        '任务创建流程。',
+        '',
+        '## 内部实现细节',
+        '使用队列。',
+        '',
+        '## 功能特性列表',
+        '### TASK-CORE-F001: 创建任务',
+        '实现任务创建接口。',
+      ].join('\n'),
+    );
+    const result = await check(root, DEFAULT_CONFIG);
+    assert.strictEqual(result.status, 'pass');
+    cleanup();
+  });
+
   it('should fail when API.md is missing required section', async () => {
     const check = require('../checks/module-content');
     const { root, cleanup } = createModuleProject(

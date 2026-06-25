@@ -21,6 +21,8 @@ All notable changes to the OpenSDD Skill will be documented here.
 - **`README.md`**: Removed extraneous blank line in Stage 1 description
 - **`SKILL.md` exception path**: Changed ambiguous `tmp/` reference to explicit `docs/modules/{NN}-{name}/tmp/` to eliminate path ambiguity
 - **`CONTRIBUTING.md`**: Replaced hardcoded test count (`171+ tests`) with generic description
+- **`module-content.js` / `traceability.js` feature regex**: Updated `[A-Z]+-F\d{3}` to `[A-Z]+(?:-[A-Z]+)*-F\d{3}` to support multi-word MODULE names with hyphens (e.g., `TASK-CORE-F001`). Previously only matched single-segment prefixes like `AUTH-F001`, causing false negatives for `TASK-CORE-F001` (module-content.js would fail to find feature list; traceability.js would incorrectly match `CORE-F001` instead of the full ID)
+- **`traceability.js` stale comment**: Updated `NN-FNNN` to `MODULE-FNNN` in doc comment
 
 ### Infrastructure
 - **`.editorconfig` added**: Coding style consistency across editors (indent_style, charset, end_of_line)

@@ -64,6 +64,16 @@ describe('TRACEABILITY', () => {
     assert.strictEqual(result.status, 'pass');
   });
 
+  it('should pass with multi-word MODULE feature IDs (e.g., TASK-CORE-F001)', async () => {
+    createProjectStructure(
+      ['REQ-TASK-001', 'REQ-TASK-002'],
+      { '02-task-core': ['TASK-CORE-F001', 'TASK-CORE-F005'] },
+      { '02-task-core': ['REQ-TASK-001', 'REQ-TASK-002'] },
+    );
+    const result = await check(tmpDir);
+    assert.strictEqual(result.status, 'pass');
+  });
+
   it('should warn when REQs exist but no features', async () => {
     createProjectStructure(['REQ-AUTH-001', 'REQ-AUTH-002'], {});
     const result = await check(tmpDir);

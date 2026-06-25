@@ -4,7 +4,7 @@
  * TRACEABILITY — Requirement-to-feature traceability check.
  *
  * WARN-only by intentional design. Full structural traceability (every REQ
- * mapped to one or more NN-FNNN) requires human judgement — not all requirements
+ * mapped to one or more MODULE-FNNN) requires human judgement — not all requirements
  * are implementable as isolated features, and not all features map to numbered
  * requirements. This check performs a heuristic regex scan as a lightweight
  * aid, not a hard gate. Downstream projects that want stricter enforcement
@@ -35,7 +35,7 @@ function collectDesignRefs(modulesDir) {
   }
 
   const reqRefRegex = /\bREQ-([A-Z]+)-(\d+)\b/g;
-  const feRegex = /\b([A-Z]+-F\d{3})\b/g;
+  const feRegex = /\b([A-Z]+(?:-[A-Z]+)*-F\d{3})\b/g;
 
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;

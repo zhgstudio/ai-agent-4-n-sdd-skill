@@ -78,7 +78,7 @@ module.exports = function checkModuleContent(root, config) {
       }
     }
 
-    const featureRegex = /^###\s*[A-Z]+-F\d{3}\b/m;
+    const featureRegex = /^###\s*[A-Z]+(?:-[A-Z]+)*-F\d{3}\b/m;
     if (!featureRegex.test(internalsContent)) {
       issues.push(`Module '${moduleDir}': DESIGN.md missing feature list entries (### MODULE-FNNN)`);
     }

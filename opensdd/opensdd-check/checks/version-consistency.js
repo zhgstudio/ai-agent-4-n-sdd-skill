@@ -2,25 +2,22 @@
 
 const fs = require('fs');
 const path = require('path');
+const { readFile } = require('../lib/read-file');
 const { parseFrontmatter, getField } = require('../lib/frontmatter');
 
 /**
  * Parse SKILL.md frontmatter and extract version.
  *
- * @param {string} skillPath - Absolute path to SKILL.md
+ * @param {string} root - Absolute path to the project root
  * @returns {string|null} Version string or null
  */
-function readSkillVersion(skillPath) {
-  try {
-    if (!fs.existsSync(skillPath)) return null;
-    const content = fs.readFileSync(skillPath, 'utf-8');
-    const { data } = parseFrontmatter(content);
-    if (!data) return null;
-    const version = getField(data, 'metadata.version');
-    return typeof version === 'string' ? version : null;
-  } catch {
-    return null;
-  }
+function readSkillVersion(root) {
+  const content = readFile(root, 'opensdd', 'SKILL.md');
+  if (content === null) return null;
+  const { data } = parseFrontmatter(content);
+  if (!data) return null;
+  const version = getField(data, 'metadata.version');
+  return typeof version === 'string' ? version : null;
 }
 
 /**
@@ -60,11 +57,10 @@ function extractFrontmatterVersion(frontmatter) {
  * @returns {{name: string, status: string, messages: string[]}} Check result
  */
 module.exports = function check(root) {
-  const skillPath = path.join(root, 'opensdd', 'SKILL.md');
   const rootPkgPath = path.join(root, 'package.json');
   const checkPkgPath = path.join(root, 'opensdd', 'opensdd-check', 'package.json');
 
-  const skillVersion = readSkillVersion(skillPath);
+  const skillVersion = readSkillVersion(root);
 
   if (skillVersion === null) {
     return {
@@ -79,7 +75,7 @@ module.exports = function check(root) {
   let hasMissing = false;
 
   const entries = [
-    { label: 'SKILL.md', path: skillPath, version: skillVersion, source: 'metadata.version' },
+    { label: 'SKILL.md', version: skillVersion, source: 'metadata.version' },
     { label: 'Root package.json', path: rootPkgPath, version: null, source: 'version' },
     { label: 'opensdd/opensdd-check/package.json', path: checkPkgPath, version: null, source: 'version' },
   ];

@@ -2,11 +2,12 @@
 
 function parseValue(str) {
   const trimmed = str.trim();
+  const lower = trimmed.toLowerCase();
 
-  if (trimmed === '' || trimmed === '~' || trimmed === 'null') return null;
+  if (lower === '' || lower === '~' || lower === 'null') return null;
 
-  if (trimmed === 'true' || trimmed === 'yes' || trimmed === 'on') return true;
-  if (trimmed === 'false' || trimmed === 'no' || trimmed === 'off') return false;
+  if (lower === 'true' || lower === 'yes' || lower === 'on') return true;
+  if (lower === 'false' || lower === 'no' || lower === 'off') return false;
 
   if (trimmed.startsWith('"') && trimmed.endsWith('"')) return trimmed.slice(1, -1);
   if (trimmed.startsWith("'") && trimmed.endsWith("'")) return trimmed.slice(1, -1);
@@ -61,7 +62,8 @@ function parseFrontmatter(content) {
 
   const openLen = openMatch[0].length;
   const afterOpen = content.slice(openLen);
-  const closeMatch = afterOpen.match(/\r?\n---\r?\n/);
+  // Prepend newline so closing --- at start of afterOpen (empty frontmatter) matches
+  const closeMatch = ('\n' + afterOpen).match(/\n---\r?\n/);
   if (!closeMatch) return { data: null, error: 'YAML frontmatter has no closing ---' };
 
   const yamlStr = content.substring(openLen, openLen + closeMatch.index);

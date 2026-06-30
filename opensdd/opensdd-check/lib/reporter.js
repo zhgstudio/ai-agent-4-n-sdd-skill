@@ -38,7 +38,7 @@ function terminalReport(results, strict, root) {
     console.log(summary);
 
     for (let i = 1; i < messages.length; i++) {
-      console.log(`  ${C.dim('→')} ${messages[i]}`);
+      console.log(`  ${C.dim('→')} ${messages[i] || ''}`);
     }
 
     if (r.status === 'fail') errors++;

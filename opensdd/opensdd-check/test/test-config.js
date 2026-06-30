@@ -1,6 +1,6 @@
 'use strict';
 
-const { describe, it, before, after } = require('node:test');
+const { describe, it, before, after, mock } = require('node:test');
 const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -52,10 +52,12 @@ describe('config', () => {
     const configPath = path.join(tmpDir, '.sddrc.json');
     fs.writeFileSync(configPath, JSON.stringify({ interfaceStrategy: 'grp' }));
     const warnings = [];
-    const origWarn = console.warn;
-    console.warn = (...args) => warnings.push(args.join(' '));
-    loadConfig(tmpDir);
-    console.warn = origWarn;
+    mock.method(console, 'warn', (...args) => warnings.push(args.join(' ')));
+    try {
+      loadConfig(tmpDir);
+    } finally {
+      mock.restoreAll();
+    }
     assert.ok(
       warnings.some((w) => w.includes('grp')),
       'should warn about invalid strategy',
@@ -66,10 +68,12 @@ describe('config', () => {
     const configPath = path.join(tmpDir, '.sddrc.json');
     fs.writeFileSync(configPath, JSON.stringify({ requiredFiles: 'not-an-array' }));
     const warnings = [];
-    const origWarn = console.warn;
-    console.warn = (...args) => warnings.push(args.join(' '));
-    loadConfig(tmpDir);
-    console.warn = origWarn;
+    mock.method(console, 'warn', (...args) => warnings.push(args.join(' ')));
+    try {
+      loadConfig(tmpDir);
+    } finally {
+      mock.restoreAll();
+    }
     assert.ok(
       warnings.some((w) => w.includes('requiredFiles')),
       'should warn about type mismatch',
@@ -80,10 +84,12 @@ describe('config', () => {
     const configPath = path.join(tmpDir, '.sddrc.json');
     fs.writeFileSync(configPath, JSON.stringify({ unknownKey: 'value' }));
     const warnings = [];
-    const origWarn = console.warn;
-    console.warn = (...args) => warnings.push(args.join(' '));
-    loadConfig(tmpDir);
-    console.warn = origWarn;
+    mock.method(console, 'warn', (...args) => warnings.push(args.join(' ')));
+    try {
+      loadConfig(tmpDir);
+    } finally {
+      mock.restoreAll();
+    }
     assert.ok(warnings.some((w) => w.includes('unknownKey')));
   });
 });

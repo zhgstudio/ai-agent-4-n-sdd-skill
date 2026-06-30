@@ -46,7 +46,7 @@ describe('DECISIONS_FORMAT check', () => {
       fs.writeFileSync(path.join(docsDir, 'DECISIONS.md'), '# Decision Records\n\n## 理由\n内容。\n', 'utf-8');
       const result = check(dir);
       assert.strictEqual(result.status, 'warn');
-      assert.ok(result.messages.some((m) => m.includes('Missing YAML frontmatter')));
+      assert.ok(result.messages.some((m) => m.includes('missing YAML frontmatter')));
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
     }

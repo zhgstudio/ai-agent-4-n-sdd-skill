@@ -56,31 +56,29 @@ module.exports = function checkModuleContent(root, config) {
 
     if (interfaceContent === null) {
       issues.push(`Module '${moduleDir}': API.md not found`);
-      continue;
+    } else {
+      for (const section of REQUIRED_API_SECTIONS) {
+        const headingRegex = new RegExp(`^#{1,6}\\s*${escapeRegex(section)}`, 'm');
+        if (!headingRegex.test(interfaceContent)) {
+          issues.push(`Module '${moduleDir}': API.md missing required section "${section}"`);
+        }
+      }
     }
 
     if (internalsContent === null) {
       issues.push(`Module '${moduleDir}': DESIGN.md not found`);
-      continue;
-    }
-
-    for (const section of REQUIRED_API_SECTIONS) {
-      const headingRegex = new RegExp(`^#{1,6}\\s*${escapeRegex(section)}`, 'm');
-      if (!headingRegex.test(interfaceContent)) {
-        issues.push(`Module '${moduleDir}': API.md missing required section "${section}"`);
+    } else {
+      for (const section of REQUIRED_DESIGN_SECTIONS) {
+        const headingRegex = new RegExp(`^#{1,6}\\s*${escapeRegex(section)}`, 'm');
+        if (!headingRegex.test(internalsContent)) {
+          issues.push(`Module '${moduleDir}': DESIGN.md missing required section "${section}"`);
+        }
       }
-    }
 
-    for (const section of REQUIRED_DESIGN_SECTIONS) {
-      const headingRegex = new RegExp(`^#{1,6}\\s*${escapeRegex(section)}`, 'm');
-      if (!headingRegex.test(internalsContent)) {
-        issues.push(`Module '${moduleDir}': DESIGN.md missing required section "${section}"`);
+      const featureRegex = /^###\s*[A-Z]+(?:-[A-Z]+)*-F\d{3}\b/m;
+      if (!featureRegex.test(internalsContent)) {
+        issues.push(`Module '${moduleDir}': DESIGN.md missing feature list entries (### MODULE-FNNN)`);
       }
-    }
-
-    const featureRegex = /^###\s*[A-Z]+(?:-[A-Z]+)*-F\d{3}\b/m;
-    if (!featureRegex.test(internalsContent)) {
-      issues.push(`Module '${moduleDir}': DESIGN.md missing feature list entries (### MODULE-FNNN)`);
     }
   }
 

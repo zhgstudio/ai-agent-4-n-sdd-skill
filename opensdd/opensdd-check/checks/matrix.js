@@ -117,7 +117,7 @@ function parseModuleTable(content) {
       if (cells.length >= 4) {
         modules.push({
           name: fullName,
-          description: modName,
+          description: cells[2],
           ref: cells[3],
         });
       } else {
@@ -185,13 +185,6 @@ function parseDependencyMatrix(content) {
 }
 
 /**
- * Check that module directories referenced in ARCHITECTURE.md exist.
- *
- * @param {string} root - Absolute path to the project root
- * @param {import('../config').SddConfig} config - SDD configuration
- * @returns {{name: string, status: string, messages: string[]}} Check result
- */
-/**
  * Parse a dependency string (e.g. "01-auth, 03-api-gateway") into individual module names.
  *
  * @param {string} depStr - Raw dependency string from the dependency matrix
@@ -204,6 +197,13 @@ function parseDependencies(depStr) {
     .filter(Boolean);
 }
 
+/**
+ * Check that module directories referenced in ARCHITECTURE.md exist.
+ *
+ * @param {string} root - Absolute path to the project root
+ * @param {import('../config').SddConfig} config - SDD configuration
+ * @returns {{name: string, status: string, messages: string[]}} Check result
+ */
 module.exports = function check(root, config) {
   const MODULE_DIR_RE = new RegExp(config.moduleDirPattern);
   const content = readFile(root, 'docs/ARCHITECTURE.md');

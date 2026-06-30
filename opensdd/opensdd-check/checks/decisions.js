@@ -1,6 +1,7 @@
 'use strict';
 
 const { readFile } = require('../lib/read-file');
+const { parseFrontmatter } = require('../lib/frontmatter');
 
 /**
  * Check that DECISIONS.md has valid YAML frontmatter.
@@ -22,16 +23,11 @@ module.exports = function checkDecisions(root) {
   const issues = [];
 
   // Check YAML frontmatter validity
-  const openMatch = content.match(/^---\r?\n/);
-  if (!openMatch) {
-    issues.push('Missing YAML frontmatter (must start with ---)');
-  } else {
-    const openLen = openMatch[0].length;
-    const afterOpen = content.slice(openLen);
-    const closeMatch = afterOpen.match(/\r?\n---\r?\n/);
-    if (!closeMatch) {
-      issues.push('YAML frontmatter has no closing ---');
-    }
+  const { data, error } = parseFrontmatter(content);
+  if (error) {
+    issues.push(error);
+  } else if (!data || Object.keys(data).length === 0) {
+    issues.push('YAML frontmatter is empty');
   }
 
   if (issues.length === 0) {

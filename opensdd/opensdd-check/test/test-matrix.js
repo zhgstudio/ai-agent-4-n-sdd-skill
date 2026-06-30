@@ -20,7 +20,7 @@ describe('parseModuleTable', () => {
     const modules = parseModuleTable(content);
     assert.strictEqual(modules.length, 2);
     assert.strictEqual(modules[0].name, '01-auth');
-    assert.strictEqual(modules[0].description, 'auth');
+    assert.strictEqual(modules[0].description, '用户认证');
     assert.strictEqual(modules[0].ref, 'docs/modules/01-auth/API.md');
     assert.strictEqual(modules[1].name, '02-task-core');
     assert.strictEqual(modules[1].ref, 'docs/modules/02-task-core/API.md');

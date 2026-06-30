@@ -73,31 +73,23 @@ describe('interface-consistency', () => {
   });
 
   it('should fail when required interface is missing from provider', async () => {
-    // Overwrite provider API to remove the required endpoint
     const mod01Dir = path.join(tmpDir, 'docs/modules/01-auth');
-    fs.writeFileSync(
-      path.join(mod01Dir, 'API.md'),
-      ['# 01-auth API', '', '## \u63a5\u53e3\u5b9a\u4e49', '- POST /auth/register'].join('\n'),
-      'utf-8',
-    );
+    const originalApi = fs.readFileSync(path.join(mod01Dir, 'API.md'), 'utf-8');
+    try {
+      // Overwrite provider API to remove the required endpoint
+      fs.writeFileSync(
+        path.join(mod01Dir, 'API.md'),
+        ['# 01-auth API', '', '## \u63a5\u53e3\u5b9a\u4e49', '- POST /auth/register'].join('\n'),
+        'utf-8',
+      );
 
-    const result = await check(tmpDir, DEFAULT_CONFIG);
-    assert.strictEqual(result.status, 'fail');
-    assert.ok(result.messages.some((m) => m.includes('POST /auth/verify')));
-
-    // Restore
-    fs.writeFileSync(
-      path.join(mod01Dir, 'API.md'),
-      [
-        '# 01-auth API',
-        '',
-        '## \u63a5\u53e3\u5b9a\u4e49',
-        '- POST /auth/register',
-        '- POST /auth/login',
-        '- POST /auth/verify',
-      ].join('\n'),
-      'utf-8',
-    );
+      const result = await check(tmpDir, DEFAULT_CONFIG);
+      assert.strictEqual(result.status, 'fail');
+      assert.ok(result.messages.some((m) => m.includes('POST /auth/verify')));
+    } finally {
+      // Restore
+      fs.writeFileSync(path.join(mod01Dir, 'API.md'), originalApi, 'utf-8');
+    }
   });
 
   it('should skip when no ARCHITECTURE.md', async () => {

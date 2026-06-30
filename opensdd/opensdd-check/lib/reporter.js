@@ -57,17 +57,19 @@ function jsonReport(results, strict, projectRoot) {
   let errors = 0;
   let warnings = 0;
   let passed = 0;
+  let skipped = 0;
 
   for (const r of results) {
     if (r.status === 'pass') passed++;
     else if (r.status === 'fail') errors++;
     else if (r.status === 'warn') warnings++;
+    else if (r.status === 'skip') skipped++;
   }
 
   const output = {
     projectRoot: projectRoot || process.cwd(),
     timestamp: new Date().toISOString(),
-    summary: { passed, failed: errors, warnings },
+    summary: { passed, failed: errors, warnings, skipped },
     strict,
     results: results.map((r) => ({
       name: r.name,

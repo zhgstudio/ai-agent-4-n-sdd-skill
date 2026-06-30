@@ -60,14 +60,9 @@ module.exports = function check(root, config) {
     }
 
     taskCount++;
-    const status = match[1];
     const taskId = match[2];
     const descriptionPart = match[3];
     taskIds.add(taskId);
-
-    if (status !== ' ' && status !== 'x') {
-      issues.push(`line ${i + 1}: invalid status "[${status}]", expected " " or "x"`);
-    }
 
     if (!/^T-[A-Z]+(?:-[A-Z]+)*-\d+$/.test(taskId)) {
       issues.push(`line ${i + 1}: invalid task ID "${taskId}", expected T-{MODULE}-{NNN}`);

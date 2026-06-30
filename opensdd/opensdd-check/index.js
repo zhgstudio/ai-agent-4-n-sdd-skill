@@ -54,6 +54,9 @@ function parseArgs(args) {
     switch (args[i]) {
       case '--path':
         opts.root = args[++i] || '.';
+        if (opts.root === '.') {
+          console.warn('Warning: --path flag requires a directory argument, defaulting to current directory');
+        }
         break;
       case '--json':
         opts.json = true;

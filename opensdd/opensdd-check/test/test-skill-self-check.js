@@ -49,8 +49,8 @@ describe('SKILL.md self-check', () => {
     const yaml = fm[1];
 
     // Support both flat (metadata.version: X) and nested (metadata:\n  version: X) YAML formats
-    const flatMatch = yaml.match(/^metadata\.version\s*:\s*["']?([\d.]+)["']?/m);
-    const nestedMatch = yaml.match(/^\s+version\s*:\s*["']?([\d.]+)["']?/m);
+    const flatMatch = yaml.match(/^metadata\.version\s*:\s*["']?([^\s'"]+)["']?/m);
+    const nestedMatch = yaml.match(/^\s+version\s*:\s*["']?([^\s'"]+)["']?/m);
     const version = flatMatch?.[1] || nestedMatch?.[1];
 
     assert.ok(version, 'metadata.version not found in SKILL.md frontmatter');
